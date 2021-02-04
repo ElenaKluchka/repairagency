@@ -1,4 +1,4 @@
-package com.elenakluchka.repair.agency.db.util;
+package com.elenakliuchka.repairagency.db.util;
 
 public class Config {
     private static java.util.Properties prop = new java.util.Properties();

@@ -1,11 +1,16 @@
-package com.elenakluchka.repair.agency.db.entity;
+package com.elenakliuchka.repairagency.db.entity;
 
-public class User {
+import java.io.Serializable;
+
+public class User implements Serializable{
+  
+    private static final long serialVersionUID = -2209869156502461274L;
     
     private int id;    
     private String name;    
     private String email;
-    private String password;
+    private String password;    
+    private Role role;
     
     public User() {        
     }
@@ -34,11 +39,19 @@ public class User {
     public final void setPassword(String password) {
         this.password = password;
     }    
+    
+    public final Role getRole() {
+        return role;
+    }
+
+    public final void setRole(Role role) {
+        this.role = role;
+    }
 
     @Override
     public String toString() {
         return "User [id=" + id + ", name=" + name + ", email=" + email
-                + ", password=" + password + "]";
+                + ", password=" + password+", role= "+ role + "]";
     }
 
     public static User createUser(String name, String email) {

@@ -1,18 +1,26 @@
-package com.elenakluchka.repair.agency.db.entity;
+package com.elenakliuchka.repairagency.db.entity;
 
-public class Order {
+import java.io.Serializable;
+
+public class Order implements Serializable {
+
+    private static final long serialVersionUID = -3721472966658601675L;
 
     private int id;
-    
+
     private String name;
-    
+
     private User clientUser;
-    
+
     private String description;
-    
+
     private Double price;
-    
-    public Order() {        
+
+    private OrderManagmentState managementState;
+
+    private OrderWorkState workState;
+
+    public Order() {
     }
 
     public final int getId() {
@@ -55,4 +63,19 @@ public class Order {
         this.price = price;
     }
 
+    public final OrderManagmentState getManagementState() {
+        return managementState;
+    }
+
+    public final void setManagementState(OrderManagmentState managementState) {
+        this.managementState = managementState;
+    }
+
+    public final OrderWorkState getWorkState() {
+        return workState;
+    }
+
+    public final void setWorkState(OrderWorkState workState) {
+        this.workState = workState;
+    }
 }
