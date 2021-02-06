@@ -1,11 +1,11 @@
 package com.elenakliuchka.repairagency.db.util;
 
-public class Config {
+public class ConfigProp {
     private static java.util.Properties prop = new java.util.Properties();
 
     private static void loadProperties() {
         // get class loader
-        ClassLoader loader = Config.class.getClassLoader();
+        ClassLoader loader = ConfigProp.class.getClassLoader();
         if (loader == null)
             loader = ClassLoader.getSystemClassLoader();
 

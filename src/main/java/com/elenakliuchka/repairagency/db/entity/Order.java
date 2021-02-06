@@ -1,6 +1,8 @@
 package com.elenakliuchka.repairagency.db.entity;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
+import java.util.Date;
 
 public class Order implements Serializable {
 
@@ -10,15 +12,17 @@ public class Order implements Serializable {
 
     private String name;
 
-    private User clientUser;
+    private int client_id;
 
     private String description;
 
     private Double price;
-
+    
+    private LocalDateTime date;
+    
     private OrderManagmentState managementState;
 
-    private OrderWorkState workState;
+    private OrderWorkState workState;    
 
     public Order() {
     }
@@ -39,12 +43,12 @@ public class Order implements Serializable {
         this.name = name;
     }
 
-    public final User getClientUser() {
-        return clientUser;
+    public final int getClient_id() {
+        return client_id;
     }
 
-    public final void setClientUser(User user) {
-        this.clientUser = user;
+    public final void setClient_id(int client_id) {
+        this.client_id = client_id;
     }
 
     public final String getDescription() {
@@ -78,4 +82,21 @@ public class Order implements Serializable {
     public final void setWorkState(OrderWorkState workState) {
         this.workState = workState;
     }
+    
+    public final void setDate(LocalDateTime date) {
+        this.date = date;
+    }
+
+    public final LocalDateTime getDate() {
+        return date;
+    }
+    
+    @Override
+    public String toString() {
+        return "Order [id=" + id + ", name=" + name + ", client=" + client_id
+                + ", description=" + description + ", price=" + price
+                + ", managementState=" + managementState + ", workState="
+                + workState + "]";
+    }
+    
 }

@@ -21,6 +21,7 @@ import com.elenakliuchka.repairagency.db.entity.Role;
 import com.elenakliuchka.repairagency.db.entity.User;
 import com.elenakliuchka.repairagency.db.service.ClientService;
 import com.elenakliuchka.repairagency.db.service.UserService;
+import com.elenakliuchka.repairagency.db.util.PageConstants;
 
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
@@ -67,7 +68,7 @@ public class LoginServlet extends HttpServlet {
                 LOGGER.trace("Login user " + dbUser);
                 HttpSession session = request.getSession(false);
                 if (session != null) {
-                    session.setAttribute("loggedUser", user.getName());
+                    session.setAttribute("client", user.getName());
                 }
                 
                 if (dbUser.getRole().equals(Role.CLIENT)) {
@@ -77,23 +78,32 @@ public class LoginServlet extends HttpServlet {
                     Client dbClient = clientService.find(dbUser.getId());
                     System.out.println(dbClient);
                     request.setAttribute("client", dbClient);
-                    rd = request.getRequestDispatcher("/client/welcome.jsp"); 
                     
+                    if (session != null) {
+                        session.setAttribute("role", Role.CLIENT);
+                        session.setAttribute("client", dbClient);
+                    }
+                    rd = request.getRequestDispatcher(PageConstants.PAGE_CLIENT_ORDERS);                    
                 } else if (dbUser.getRole().equals(Role.MANAGER)) {
-                    rd = request.getRequestDispatcher("/manager/manager.jsp");
+                    if (session != null) {
+                        session.setAttribute("role", Role.MANAGER);
+                    }
+                    rd = request.getRequestDispatcher(PageConstants.PAGE_MANAGE_ORDERS);
                 } else if (dbUser.getRole().equals(Role.MASTER)) {
-                    rd = request.getRequestDispatcher("/master/master.jsp");
-                }
-                
-                rd.forward(request, response);
+                    if (session != null) {
+                        session.setAttribute("role", Role.MASTER);
+                    }
+                    rd = request.getRequestDispatcher(PageConstants.PAGE_MASTER);
+                }                
             } else {
                 LOGGER.trace(" username or password is wrong for user:"
                         + user.getName());
                 out.print(
                         "<p style=\"color:red\">Sorry username or password is wrong</p>");
-                rd = request.getRequestDispatcher("index.jsp");
+                rd = request.getRequestDispatcher(PageConstants.PAGE_LOGIN_INDEX);
                 rd.include(request, response);
             }
+            rd.forward(request, response);
             dbManager.close();
         } catch (SQLException e) {
             LOGGER.error(e.getMessage(), e);
