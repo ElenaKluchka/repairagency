@@ -11,8 +11,8 @@ import com.elenakliuchka.repairagency.db.service.ClientService;
 import com.elenakliuchka.repairagency.db.service.OrderService;
 import com.elenakliuchka.repairagency.db.service.UserService;
 
-public class DBManager {
-    public static DBManager getInstance() {
+public class DAOFactory {
+    public static DAOFactory getInstance() {
         return DBManagerSingleton.INSTANCE;
     }
 
@@ -38,7 +38,7 @@ public class DBManager {
     private DataSource src;
     private Connection connection;
 
-    private DBManager() throws Exception {
+    private DAOFactory() throws Exception {
         try {
             InitialContext ctx = new InitialContext();
             this.src = (DataSource) ctx
@@ -50,11 +50,11 @@ public class DBManager {
 
     private static class DBManagerSingleton {
 
-        public static final DBManager INSTANCE;
+        public static final DAOFactory INSTANCE;
         static {
-            DBManager dm;
+            DAOFactory dm;
             try {
-                dm = new DBManager();
+                dm = new DAOFactory();
             } catch (Exception e) {
                 dm = null;
             }

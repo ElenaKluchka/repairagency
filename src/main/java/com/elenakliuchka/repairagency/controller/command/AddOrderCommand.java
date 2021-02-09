@@ -7,7 +7,7 @@ import javax.servlet.ServletException;
 
 import org.apache.log4j.Logger;
 
-import com.elenakliuchka.repairagency.db.DBManager;
+import com.elenakliuchka.repairagency.db.DAOFactory;
 import com.elenakliuchka.repairagency.db.Table;
 import com.elenakliuchka.repairagency.db.entity.Client;
 import com.elenakliuchka.repairagency.db.entity.Order;
@@ -35,7 +35,7 @@ public class AddOrderCommand extends AbstractCommand {
         order.setClient_id(client.getId());
 
         try {
-            DBManager dbManager = DBManager.getInstance();
+            DAOFactory dbManager = DAOFactory.getInstance();
             OrderService orderService = (OrderService) dbManager
                     .getService(Table.ORDER);
             orderService.save(order);
@@ -48,7 +48,9 @@ public class AddOrderCommand extends AbstractCommand {
         }
         request.setAttribute("message", "Order successfully saved");
 
-        redirect(PageConstants.PAGE_CLIENT_ORDERS_RED);
+     //   redirect(PageConstants.PAGE_CLIENT_ORDERS_RED);
+        redirect(request.getContextPath()+PageConstants.PAGE_CLIENT_ORDERS+".jsp");
+        
         /*      RequestDispatcher rd = request.getRequestDispatcher("/"+PageConstants.PAGE_CLIENT_ORDERS);
         rd.include(request, response);
         rd.forward(request, response);*/

@@ -6,6 +6,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
+import org.apache.tomcat.jni.User;
 
 import com.elenakliuchka.repairagency.util.PageConstants;
 
@@ -26,12 +27,13 @@ public class LogoutCommand extends AbstractCommand {
         }*/
         // invalidate the session if exists
         HttpSession session = request.getSession(false);
-        System.out.println("User=" + session.getAttribute("user"));
+//       System.out.println("USer=" + session.getAttribute("user"));
+        LOGGER.trace("USer=" + session.getAttribute("user"));
         if (session != null) {
             session.invalidate();
         }
      //   response.sendRedirect(PageConstants.PAGE_LOGIN_INDEX);
-        redirect(request.getContextPath()+PageConstants.PAGE_LOGIN_INDEX);       
+        redirect(request.getContextPath()+PageConstants.PAGE_LOGIN);       
     }
 
 }

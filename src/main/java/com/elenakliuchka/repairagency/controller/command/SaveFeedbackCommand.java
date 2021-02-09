@@ -7,7 +7,7 @@ import javax.servlet.ServletException;
 
 import org.apache.log4j.Logger;
 
-import com.elenakliuchka.repairagency.db.DBManager;
+import com.elenakliuchka.repairagency.db.DAOFactory;
 import com.elenakliuchka.repairagency.db.Table;
 import com.elenakliuchka.repairagency.db.entity.Client;
 import com.elenakliuchka.repairagency.db.service.OrderService;
@@ -24,7 +24,7 @@ public class SaveFeedbackCommand extends AbstractCommand {
         int orderId = Integer.parseInt(request.getParameter("orderId"));
         LOGGER.trace("Set feedback for orderId: "+orderId+ " feedback: "+feedback);
         try {
-            DBManager dbManager = DBManager.getInstance();
+            DAOFactory dbManager = DAOFactory.getInstance();
             OrderService orderService = (OrderService) dbManager
                     .getService(Table.ORDER);
             if (orderService.setFeedback(orderId, feedback)) {
@@ -37,7 +37,7 @@ public class SaveFeedbackCommand extends AbstractCommand {
         } catch (SQLException e) {
             LOGGER.trace("can't save feedback for order:" + orderId);
         }
-        redirect(PageConstants.PAGE_CLIENT_ORDERS_RED);
-
+   //     redirect(PageConstants.PAGE_CLIENT_ORDERS_RED);
+        redirect(request.getContextPath()+PageConstants.PAGE_CLIENT_ORDERS+".jsp");
     }
 }

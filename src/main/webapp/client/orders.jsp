@@ -12,7 +12,7 @@
 </head>
 <body>
 	<h1>Hello ${client.name}</h1>
-	<form action="addOrder" method="post">
+	<form action="${path }/do/client/addOrder" method="post">
 		<p>Please create your order</p>
         <input type="hidden" id="filfI" name="command" value="AddOrder">
 		Name: <input type="text" id="orderName" name="orderName"><br>
@@ -65,7 +65,8 @@
 	</table>
 	
 	<br>
-	<form action="${path }/logout" method="get">
+	<!-- <form action="${path }/do/logout" method="get"> -->
+	<form action="${path }/do/logout" method="get">
 	    <input type="hidden" id="filfI" name="command" value="Logout">
 		<input type="submit" value="Logout">
 	</form>
@@ -76,7 +77,7 @@
       <div class="modal-content" style="width:500;">
         <span class="close">&times;</span>
        <div class="container">
-       <form action="feedback" method="post">   
+       <form action="${path }/do/client/feedback" method="post">   
         <input type="hidden"  name="command" value="SaveFeedback">
         <input type="hidden" id="orderId" name="orderId" >
         <label for="subject">Subject</label>   <br>   

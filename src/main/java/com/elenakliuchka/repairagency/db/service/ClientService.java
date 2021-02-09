@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.elenakliuchka.repairagency.db.DBManager;
+import com.elenakliuchka.repairagency.db.DAOFactory;
 import com.elenakliuchka.repairagency.db.Table;
 import com.elenakliuchka.repairagency.db.entity.Client;
 import com.elenakliuchka.repairagency.db.entity.Order;
@@ -70,7 +70,7 @@ public class ClientService extends AbstractEntityService<Client> {
     }
 
     private List<Order> getOrdersForClient(Client client) throws SQLException {
-        OrderService orderService = (OrderService)DBManager.getInstance().getService(Table.ORDER);
+        OrderService orderService = (OrderService)DAOFactory.getInstance().getService(Table.ORDER);
         return orderService.findByUserId(client.getId());
     }
 

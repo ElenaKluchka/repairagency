@@ -8,12 +8,11 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 
-import com.elenakliuchka.repairagency.db.DBManager;
+import com.elenakliuchka.repairagency.db.DAOFactory;
 import com.elenakliuchka.repairagency.db.Table;
 import com.elenakliuchka.repairagency.db.entity.Client;
 import com.elenakliuchka.repairagency.db.service.OrderService;
 import com.elenakliuchka.repairagency.util.PageConstants;
-import com.mysql.cj.Session;
 
 public class ClientOrdersCommand extends AbstractCommand {
     private static final Logger LOGGER = Logger.getLogger(LoginCommand.class);
@@ -22,7 +21,7 @@ public class ClientOrdersCommand extends AbstractCommand {
     public void process() throws ServletException, IOException {
 
         Client client = (Client) request.getSession().getAttribute("client");
-        DBManager dbManager = DBManager.getInstance();
+        DAOFactory dbManager = DAOFactory.getInstance();
         OrderService orderService;
         try {
             orderService = (OrderService) dbManager.getService(Table.ORDER);
@@ -36,6 +35,10 @@ public class ClientOrdersCommand extends AbstractCommand {
         } catch (SQLException e) {
             LOGGER.trace("can't find orders for client:" + client.getId());
         }        
-        forward(PageConstants.PAGE_CLIENT_ORDERS_RED);
+        //forward(PageConstants.PAGE_CLIENT_ORDERS_RED);
+        
+//        forward(request.getContextPath()+PageConstants.PAGE_CLIENT_ORDERS+".jsp");//last        
+        forward("/"+PageConstants.PAGE_CLIENT_ORDERS+".jsp");
+  //      redirect(request.getContextPath()+PageConstants.PAGE_CLIENT_ORDERS+".jsp");
     }
 }

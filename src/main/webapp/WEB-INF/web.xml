@@ -7,8 +7,6 @@
         <welcome-file>login.jsp</welcome-file>
     </welcome-file-list>
 
-
-
     <error-page>
         <exception-type>java.lang.Throwable</exception-type>
         <location>/error/exception.jsp</location>
