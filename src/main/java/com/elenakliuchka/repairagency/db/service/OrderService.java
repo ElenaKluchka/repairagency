@@ -22,8 +22,10 @@ public class OrderService extends AbstractEntityService<Order> {
     private static final String SQL_FIND_ORDER_BY_USERID = "SELECT * FROM repair_agency.order WHERE user_id=?";
     private static final String SQL_FIND_ALL_ORDERS = "SELECT * FROM repair_agency.order";
 
-    private static final String SQL_ADD_ORDER = "INSERT INTO `repair_agency`.`order` (`user_id`, `description`, `name`) VALUES (?,?,?)";
+    private static final String SQL_ADD_ORDER = "INSERT INTO `repair_agency`.`order` (`user_id`, `name`, `description`) VALUES (?,?,?)";
     private static final String SQL_FIND_ORDER_BY_ID = "SELECT * FROM repair_agency.order WHERE id=?";
+
+    private static final String SQL_SET_FEEDBACK = "UPDATE `repair_agency`.`order` SET `feedback` = ? WHERE (`id` = ?)";
 
     private static final Logger LOGGER = Logger
             .getLogger(OrderService.class.getName());
@@ -41,6 +43,7 @@ public class OrderService extends AbstractEntityService<Order> {
     @Override
     public void save(Order order) {
         if (order == null) {
+            return;
         }
         LOGGER.trace("Add order: " + order);
         try (PreparedStatement pstmt = connection.prepareStatement(
@@ -92,7 +95,6 @@ public class OrderService extends AbstractEntityService<Order> {
 
     @Override
     public Order find(Order object) {
-        // TODO Auto-generated method stub
         return null;
     }
 
@@ -100,6 +102,25 @@ public class OrderService extends AbstractEntityService<Order> {
     public Long getCount() {
         // TODO Auto-generated method stub
         return null;
+    }
+
+    public boolean setFeedback(int id, String feedback) {
+        
+        if (id <= 0 || feedback == null || feedback.isEmpty()) {
+            return false;
+        }
+        try (PreparedStatement pstmt = connection
+                .prepareStatement(SQL_SET_FEEDBACK)) {
+            pstmt.setString(1, feedback);
+            pstmt.setInt(2, id);            
+            if (pstmt.executeUpdate() > 0) {
+                return true;
+            }
+        } catch (SQLException e) {
+            // LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            LOGGER.error("Fail add order", e);
+        }
+        return false;
     }
 
     public List<Order> findByUserId(int userId) {
@@ -130,6 +151,8 @@ public class OrderService extends AbstractEntityService<Order> {
                 .valueOf(rs.getString("managment_state").toUpperCase()));
         order.setWorkState(OrderWorkState
                 .valueOf(rs.getString("work_state").toUpperCase()));
+        order.setFeedback(rs.getString("feedback"));
+        LOGGER.trace(order);
         return order;
     }
 }

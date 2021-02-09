@@ -22,7 +22,9 @@ public class Order implements Serializable {
     
     private OrderManagmentState managementState;
 
-    private OrderWorkState workState;    
+    private OrderWorkState workState;  
+    
+    private String feedback;
 
     public Order() {
     }
@@ -89,14 +91,22 @@ public class Order implements Serializable {
 
     public final LocalDateTime getDate() {
         return date;
-    }
+    }    
     
+    public final String getFeedback() {
+        return feedback;
+    }
+
+    public final void setFeedback(String feedback) {
+        this.feedback = feedback;
+    }
+
     @Override
     public String toString() {
         return "Order [id=" + id + ", name=" + name + ", client=" + client_id
                 + ", description=" + description + ", price=" + price
                 + ", managementState=" + managementState + ", workState="
-                + workState + "]";
+                + workState +", feedback "+feedback+"]";
     }
     
 }

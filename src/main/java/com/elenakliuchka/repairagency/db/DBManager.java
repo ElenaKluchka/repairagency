@@ -33,7 +33,7 @@ public class DBManager {
             throw e;
         }
     }
-     
+
     // Private
     private DataSource src;
     private Connection connection;
@@ -41,7 +41,8 @@ public class DBManager {
     private DBManager() throws Exception {
         try {
             InitialContext ctx = new InitialContext();
-            this.src = (DataSource) ctx.lookup("java:comp/env/jdbc/RepairAgencyDB");
+            this.src = (DataSource) ctx
+                    .lookup("java:comp/env/jdbc/RepairAgencyDB");
         } catch (Exception e) {
             throw e;
         }
@@ -61,18 +62,21 @@ public class DBManager {
         }
 
     }
-    
 
-    public AbstractEntityService<?> getService(Table t) throws SQLException{
-        try
-        {
-            if(this.connection == null || this.connection.isClosed()) //Let's ensure our connection is open   
+    public AbstractEntityService<?> getService(Table t) throws SQLException {
+        try {
+            if (this.connection == null || this.connection.isClosed()) // Let's
+                                                                       // ensure
+                                                                       // our
+                                                                       // connection
+                                                                       // is
+                                                                       // open
                 this.open();
+        } catch (SQLException e) {
+            throw e;
         }
-        catch(SQLException e){ throw e; }
 
-        switch(t)
-        {
+        switch (t) {
         case USER:
             return new UserService(this.connection);
         case CLIENT:
@@ -82,6 +86,5 @@ public class DBManager {
         default:
             throw new SQLException("Trying to link to an unexistant table.");
         }
-   
     }
 }

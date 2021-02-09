@@ -60,7 +60,7 @@ public class ClientService extends AbstractEntityService<Client> {
             try (ResultSet rs = pStatement.executeQuery()) {
                 rs.next();
                 clientRes = retrieveClient(rs);
-                clientRes.setOrders(getOrdersForClient(clientRes));
+        //        clientRes.setOrders(getOrdersForClient(clientRes));
             }
 
         } catch (SQLException e) {

@@ -1,5 +1,5 @@
 package com.elenakliuchka.repairagency.db.entity;
 
 public enum OrderWorkState {
-    NEW, IN_WORK, DONE
+    NEW, IN_WORK, FINISHED
 }

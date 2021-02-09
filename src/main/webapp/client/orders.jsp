@@ -5,14 +5,16 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"
 	name="Login">
-	<link href="css/login.css" rel="stylesheet" type="text/css" media="all"/>
+	<link href="${path }/css/modal.css" rel="stylesheet" type="text/css" media="all" />	
+	<script type="text/javascript" src="${path }/js/jquery-3.5.1.min.js"></script>
+	<script type="text/javascript" src="${path }/js/modal.js"></script>
 <title>Welcome</title>
 </head>
 <body>
-	<h1>Hello ${loggedUser}</h1>
-	<form action="order" method="post">
+	<h1>Hello ${client.name}</h1>
+	<form action="addOrder" method="post">
 		<p>Please create your order</p>
-
+        <input type="hidden" id="filfI" name="command" value="AddOrder">
 		Name: <input type="text" id="orderName" name="orderName"><br>
 		<br> Description: <input type="text" id="orderDescription"
 			name="orderDescription"><br> <br>
@@ -25,11 +27,14 @@
 		<tr>
 			<th>N</th>
 			<th>Name</th>
-			<th>Description></th>
+			<th>Description</th>
 			<th>Price</th>
 			<th>Date</th>
 			<th>Payment</th>
 			<th>State</th>
+			
+			<th>Feedback</th>
+			
 		</tr>
 		<c:forEach items="${client.orders}" var="order" varStatus="count">   
 		<tr>
@@ -42,13 +47,51 @@
 			<td>${order.managementState=='NEW'?' wait for payment':order.managementState}</td>
 			<td>${order.workState=='NEW'?'in work':order.workState}
 			</td>
+	 
+			<td>
+			      <c:if test = "${ order.workState eq 'FINISHED'}">   
+			 	 <c:if test = "${ empty order.feedback}">
+				   <!--      <input type="button" value="Leave feedback " onclick="fbLikeDump();" /> -->
+				        <button id="myBtn" onclick="showFeedbackModal('${order.id}');">Feedback</button>
+				 </c:if>
+				 <c:if test = "${not empty order.feedback}">
+				 ${order.feedback}
+				 </c:if>
+				</c:if>  
+            </td>
+           
 		</tr>
 		 </c:forEach>
 	</table>
+	
 	<br>
-	<br>
-	<form action="logout" method="post">
+	<form action="${path }/logout" method="get">
+	    <input type="hidden" id="filfI" name="command" value="Logout">
 		<input type="submit" value="Logout">
 	</form>
+    
+    <div id="myModal" class="modal">
+
+      <!-- Modal content -->
+      <div class="modal-content" style="width:500;">
+        <span class="close">&times;</span>
+       <div class="container">
+       <form action="feedback" method="post">   
+        <input type="hidden"  name="command" value="SaveFeedback">
+        <input type="hidden" id="orderId" name="orderId" >
+        <label for="subject">Subject</label>   <br>   
+        <textarea name="feedback" placeholder="Write something.." style="height:200px;width:450;"></textarea>        
+        <input type="submit" value="Save">   
+       </form>
+       </div> 
+    </div>
+   </div>
+   <script>
+   var modal = document.getElementById("myModal");
+      function showFeedbackModal(orderId) {
+          modal.style.display = "block";
+          document.getElementById("orderId").value = orderId;
+      }
+</script>
 </body>
 </html>

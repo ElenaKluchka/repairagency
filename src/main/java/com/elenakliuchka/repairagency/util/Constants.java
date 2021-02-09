@@ -1,4 +1,4 @@
-package com.elenakliuchka.repairagency.db.util;
+package com.elenakliuchka.repairagency.util;
 
 /**
  * Constants.
