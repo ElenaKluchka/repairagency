@@ -9,6 +9,6 @@ import com.elenakliuchka.repairagency.util.PageConstants;
 public class UnknownCommand extends AbstractCommand {
     @Override
     public void process() throws ServletException, IOException {        
-        redirect(request.getContextPath()+PageConstants.PAGE_PAGE_NOT_FOUND);
+        redirect(request.getContextPath()+PageConstants.PAGE_NOT_FOUND);
     }
 }

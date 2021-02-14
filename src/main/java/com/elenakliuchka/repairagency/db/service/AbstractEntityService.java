@@ -5,14 +5,14 @@ import java.util.List;
 
 public abstract class AbstractEntityService<T> {    
     
-  //  public abstract List<T> findAll(int start, int max);
-    public abstract List<T> findAll();
+    public abstract List<T> findAll(int start, int max);
+ //   public abstract List<T> findAll();
 
     public abstract void save(T object);    
 
     public abstract void remove(int id);
     
-    public abstract void remove(T object);
+//    public abstract void remove(T object);
 
     public abstract T find(int id);
     

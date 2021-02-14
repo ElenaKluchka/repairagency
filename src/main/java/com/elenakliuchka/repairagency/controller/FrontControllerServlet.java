@@ -54,12 +54,10 @@ public class FrontControllerServlet extends HttpServlet {
          //   String str = request.getServletPath().substring(1);
        //     String commandName = str.substring(0, 1).toUpperCase()
         //            + str.substring(1);
-            String commandName = request.getParameter("command");
+            String commandName = request.getParameter("command");            
             Class<?> type = Class.forName(String.format(
                     "com.elenakliuchka.repairagency.controller.command.%sCommand",
                     commandName));
-//                    request.getParameter("command")));
-            // request.getPathInfo()));
             return (AbstractCommand) type.asSubclass(AbstractCommand.class)
                     .newInstance();
         } catch (Exception e) {

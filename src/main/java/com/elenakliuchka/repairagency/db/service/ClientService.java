@@ -10,8 +10,8 @@ import java.util.logging.Logger;
 
 import com.elenakliuchka.repairagency.db.DAOFactory;
 import com.elenakliuchka.repairagency.db.Table;
-import com.elenakliuchka.repairagency.db.entity.Client;
-import com.elenakliuchka.repairagency.db.entity.Order;
+import com.elenakliuchka.repairagency.entity.Client;
+import com.elenakliuchka.repairagency.entity.Order;
 
 public class ClientService extends AbstractEntityService<Client> {
 
@@ -28,12 +28,6 @@ public class ClientService extends AbstractEntityService<Client> {
     }
 
     @Override
-    public List<Client> findAll() {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
     public void save(Client object) {
         // TODO Auto-generated method stub
 
@@ -41,12 +35,6 @@ public class ClientService extends AbstractEntityService<Client> {
 
     @Override
     public void remove(int id) {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void remove(Client object) {
         // TODO Auto-generated method stub
 
     }
@@ -91,5 +79,11 @@ public class ClientService extends AbstractEntityService<Client> {
         client.setId(rs.getInt("user_id"));
         client.setBalance(rs.getDouble("balance"));
         return client;
+    }
+
+    @Override
+    public List<Client> findAll(int start, int max) {
+        // TODO Auto-generated method stub
+        return null;
     }
 }

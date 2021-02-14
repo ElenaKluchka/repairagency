@@ -1,4 +1,4 @@
-package com.elenakliuchka.repairagency.db.entity;
+package com.elenakliuchka.repairagency.entity;
 
 public enum OrderWorkState {
     NEW, IN_WORK, FINISHED

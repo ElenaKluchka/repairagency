@@ -5,14 +5,15 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"
 	name="Login">
 <link href="${path }/css/login.css" rel="stylesheet" type="text/css" media="all" />
+
 <title>Login Application</title>
 </head>
 <body>
 	<p style="color: red">${error}</p>	
 	
-	<form action="do/login" method="post" style= "width: 300px">
+	<form action="${path }/do/login" method="post" style= "width: 300px">
 	   <input type="hidden" id="filfI" name="command" value="Login">
-		<h3 style="align:center">Login Page</h3>
+		<h3 style="align:center">Login</h3>
 		<div class="container">
 			<label for="uname">
 			<b>Username</b></label> 
@@ -22,14 +23,14 @@
 			
 
 			<button type="submit">Login</button>
-			<label> <input type="checkbox" checked="checked"
+	<!--  		<label> <input type="checkbox" checked="checked"
 				name="remember"> Remember me
-			</label>
+			</label>-->
 		</div>
 
 		<div class="container" style="background-color: #f1f1f1">
-			<button type="button" class="cancelbtn">Cancel</button>
-			<span class="psw">Forgot <a href="#">password?</a></span>
+		<!--	<button type="button" class="cancelbtn">Cancel</button>-->
+		<!--	<span class="psw">Forgot <a href="#">password?</a></span>-->
 		</div>
 	</form>
 </body>

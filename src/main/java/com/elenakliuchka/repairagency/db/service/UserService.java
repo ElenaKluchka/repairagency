@@ -10,8 +10,8 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.elenakliuchka.repairagency.db.entity.Role;
-import com.elenakliuchka.repairagency.db.entity.User;
+import com.elenakliuchka.repairagency.entity.Role;
+import com.elenakliuchka.repairagency.entity.User;
 
 public class UserService extends AbstractEntityService<User> {
 
@@ -19,6 +19,7 @@ public class UserService extends AbstractEntityService<User> {
 
     private static final String SQL_FIND_USERS = "SELECT * FROM user WHERE name=? and password=?";
     private static final String SQL_FIND_ALL_USERS = "SELECT * FROM user";
+    private static final String SQL_FIND_USERS_BY_ROlE = "SELECT * FROM user WHERE role=?";
 
     private static final Logger LOGGER = Logger
             .getLogger(UserService.class.getName());
@@ -28,9 +29,9 @@ public class UserService extends AbstractEntityService<User> {
     }
 
     @Override
-    public List<User> findAll() {
-        List<User> users = new ArrayList<>();
-
+    public List<User> findAll(int start, int max) {
+        /*      List<User> users = new ArrayList<>();
+        
         try (Statement stat = connection.createStatement()) {
             try (ResultSet rs = stat.executeQuery(SQL_FIND_ALL_USERS)) {
                 while (rs.next()) {
@@ -38,6 +39,26 @@ public class UserService extends AbstractEntityService<User> {
                 }
             }
         } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+        }
+        return users;*/
+        return null;
+    }
+
+    public List<User> findUsersByRole(Role role) {
+        List<User> users = new ArrayList<>();
+
+        try (PreparedStatement pStatement = connection
+                .prepareStatement(SQL_FIND_USERS_BY_ROlE)) {
+            pStatement.setString(1, role.toString());
+            try (ResultSet rs = pStatement.executeQuery()) {
+                while (rs.next()) {
+                    users.add(retrieveUser(rs));
+                }
+            }
+        } catch (
+
+        SQLException e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
         }
         return users;
@@ -56,12 +77,6 @@ public class UserService extends AbstractEntityService<User> {
     }
 
     @Override
-    public void remove(User object) {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
     public User find(int id) {
         // TODO Auto-generated method stub
         return null;
@@ -75,14 +90,21 @@ public class UserService extends AbstractEntityService<User> {
 
     @Override
     public User find(User user) {
+        if (user == null) {
+            return null;
+        }
         User userRes = null;
         try (PreparedStatement pStatement = connection
                 .prepareStatement(SQL_FIND_USERS)) {
             pStatement.setString(1, user.getName());
             pStatement.setString(2, user.getPassword());
             try (ResultSet rs = pStatement.executeQuery()) {
-                rs.next();
-                userRes = retrieveUser(rs);
+                if (rs.next()) {
+                    userRes = retrieveUser(rs);
+                } else {
+                    LOGGER.info("Can't find user with name=" + user.getName());
+                    return null;
+                }
             }
 
         } catch (SQLException e) {
@@ -97,7 +119,7 @@ public class UserService extends AbstractEntityService<User> {
         account.setName(rs.getString("name"));
         account.setEmail(rs.getString("email"));
         account.setPassword(rs.getString("password"));
-        account.setRole(Role.valueOf(rs.getString("role").toUpperCase()));
+        account.setRole(Role.valueOf(rs.getString("role")));
         return account;
     }
 }

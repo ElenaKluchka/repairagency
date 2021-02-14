@@ -9,9 +9,9 @@ import org.apache.log4j.Logger;
 
 import com.elenakliuchka.repairagency.db.DAOFactory;
 import com.elenakliuchka.repairagency.db.Table;
-import com.elenakliuchka.repairagency.db.entity.Client;
-import com.elenakliuchka.repairagency.db.entity.Order;
 import com.elenakliuchka.repairagency.db.service.OrderService;
+import com.elenakliuchka.repairagency.entity.Client;
+import com.elenakliuchka.repairagency.entity.Order;
 import com.elenakliuchka.repairagency.util.PageConstants;
 
 public class AddOrderCommand extends AbstractCommand {
@@ -24,8 +24,7 @@ public class AddOrderCommand extends AbstractCommand {
         LOGGER.trace("ADD order command");
 
         response.setContentType("text/html");
-        // PrintWriter out = response.getWriter();
-
+        
         Order order = new Order();
         order.setName(request.getParameter("orderName"));
         order.setDescription(request.getParameter("orderDescription"));
@@ -48,12 +47,7 @@ public class AddOrderCommand extends AbstractCommand {
         }
         request.setAttribute("message", "Order successfully saved");
 
-     //   redirect(PageConstants.PAGE_CLIENT_ORDERS_RED);
-        redirect(request.getContextPath()+PageConstants.PAGE_CLIENT_ORDERS+".jsp");
-        
-        /*      RequestDispatcher rd = request.getRequestDispatcher("/"+PageConstants.PAGE_CLIENT_ORDERS);
-        rd.include(request, response);
-        rd.forward(request, response);*/
+        redirect(PageConstants.PAGE_CLIENT_ORDERS+".jsp");
     }
 
 }

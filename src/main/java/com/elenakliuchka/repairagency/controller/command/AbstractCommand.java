@@ -28,12 +28,13 @@ public abstract class AbstractCommand {
     public abstract void process() throws ServletException, IOException;
     protected void forward(String view) throws ServletException, IOException {
         LOGGER.trace("forward:"+view);
-       // request.getRequestDispatcher("/"+view+".jsp").forward(request, response);        
-        request.getRequestDispatcher(view).forward(request, response);
+        request.getRequestDispatcher(view+".jsp").forward(request, response);        
+       // request.getRequestDispatcher(view).forward(request, response);
     }
     protected void redirect(String view) throws ServletException, IOException {
-        LOGGER.trace("redirect:"+view);
-        response.sendRedirect(view); 
+        String uriString = request.getContextPath()+ view;
+        LOGGER.trace("redirect:"+uriString);
+        response.sendRedirect(uriString); 
     }
     
 /*

@@ -29,18 +29,10 @@ public class CommandFilter implements Filter {
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
 	    LOGGER.trace("CommandFilter");
 	    HttpServletRequest httpRequest = (HttpServletRequest) request;
-/*        HttpSession session = httpRequest.getSession(false);
- 
-        boolean isLoggedIn = (session != null && session.getAttribute(Role.CLIENT.toString().toLowerCase()) != null);
-        if(!isLoggedIn) {
-            RequestDispatcher dispatcher = request.getRequestDispatcher(PageConstants.PAGE_LOGIN+".jsp");
-            dispatcher.forward(request, response);
-        }*/
+
 	    if(httpRequest.getParameter("command")==null) {
-	        LOGGER.trace(" user is not logged");
-            String loginPage = PageConstants.PAGE_LOGIN;
-      //      RequestDispatcher dispatcher = httpRequest.getRequestDispatcher(httpRequest.getContextPath()+loginPage);
-            RequestDispatcher dispatcher = httpRequest.getRequestDispatcher("/"+loginPage);
+	        LOGGER.trace("no command parameter");         
+            RequestDispatcher dispatcher = httpRequest.getRequestDispatcher(PageConstants.PAGE_LOGIN+".jsp");
             dispatcher.forward(request, response);   
 	    }else {
 		chain.doFilter(request, response);

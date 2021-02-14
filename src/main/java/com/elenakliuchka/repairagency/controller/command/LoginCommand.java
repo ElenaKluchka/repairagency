@@ -11,11 +11,11 @@ import org.apache.log4j.Logger;
 
 import com.elenakliuchka.repairagency.db.DAOFactory;
 import com.elenakliuchka.repairagency.db.Table;
-import com.elenakliuchka.repairagency.db.entity.Client;
-import com.elenakliuchka.repairagency.db.entity.Role;
-import com.elenakliuchka.repairagency.db.entity.User;
 import com.elenakliuchka.repairagency.db.service.ClientService;
 import com.elenakliuchka.repairagency.db.service.UserService;
+import com.elenakliuchka.repairagency.entity.Client;
+import com.elenakliuchka.repairagency.entity.Role;
+import com.elenakliuchka.repairagency.entity.User;
 import com.elenakliuchka.repairagency.util.PageConstants;
 
 public class LoginCommand extends AbstractCommand {
@@ -46,7 +46,7 @@ public class LoginCommand extends AbstractCommand {
                 LOGGER.trace("Login user " + dbUser);
               HttpSession session = request.getSession(false);
                   if (session != null) {
-                    session.setAttribute("path", request.getContextPath());
+            //        session.setAttribute("path", request.getContextPath());
                     session.setAttribute("user", dbUser);
                 }
                 LOGGER.trace("servletPath" + request.getServletPath());
@@ -63,39 +63,38 @@ public class LoginCommand extends AbstractCommand {
                         session.setAttribute("role", Role.CLIENT);
                         session.setAttribute("client", dbClient);
                     }
-                    // redirect(PageConstants.PAGE_CLIENT_ORDERS+"?command=ClientOrders");
-                    redirect(request.getContextPath()
-                            + PageConstants.CONTROLLER_URL
+                    redirect(PageConstants.CONTROLLER_URL
                             + PageConstants.PAGE_CLIENT_ORDERS
                             + "?command=ClientOrders");
                 } else if (dbUser.getRole().equals(Role.MANAGER)) {
                     if (session != null) {
                         session.setAttribute("role", Role.MANAGER);
                     }
+                    
 //                    rd = request.getRequestDispatcher(PageConstants.PAGE_MANAGE_ORDERS);
+                    redirect(PageConstants.CONTROLLER_URL
+                            + PageConstants.PAGE_MANAGER_ORDERS
+                            + "?command=ManagerOrders");
                 } else if (dbUser.getRole().equals(Role.MASTER)) {
                     if (session != null) {
                         session.setAttribute("role", Role.MASTER);
                     }
+                    
+                    redirect(PageConstants.CONTROLLER_URL
+                            + PageConstants.PAGE_MASTER_ORDERS
+                            + "?command=MasterOrders");
 //                    rd = request.getRequestDispatcher(PageConstants.PAGE_MASTER);
                 }
             } else {
                 LOGGER.trace(" username or password is wrong for user:"
                         + user.getName());
                 request.setAttribute("error",
-                        "Unknown username/password. Please retry."); // Store
-                                                                     // error
-                                                                     // message
-                                                                     // in
-                                                                     // request
-                                                                     // scope.
-                forward(PageConstants.PAGE_LOGIN+".jsp");
+                        "Unknown username/password. Please retry."); 
+                forward(PageConstants.PAGE_LOGIN);
             }
-            // rd.forward(request, response);
             dbManager.close();
         } catch (SQLException e) {
             LOGGER.error(e.getMessage(), e);
         }
     }
-
 }

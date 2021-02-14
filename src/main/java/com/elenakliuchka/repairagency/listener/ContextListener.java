@@ -25,11 +25,5 @@ public class ContextListener implements ServletContextListener {
 
         ServletContext servletContext = event.getServletContext();
         servletContext.setAttribute("path", servletContext.getContextPath());
-
-    //    initLog4J(servletContext);
-     //   initCommandContainer();
-  //      initI18N(servletContext);
-
-    //    log("Servlet context initialization finished");
     }
 }

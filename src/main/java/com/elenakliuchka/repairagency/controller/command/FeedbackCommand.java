@@ -9,14 +9,14 @@ import org.apache.log4j.Logger;
 
 import com.elenakliuchka.repairagency.db.DAOFactory;
 import com.elenakliuchka.repairagency.db.Table;
-import com.elenakliuchka.repairagency.db.entity.Client;
 import com.elenakliuchka.repairagency.db.service.OrderService;
+import com.elenakliuchka.repairagency.entity.Client;
 import com.elenakliuchka.repairagency.util.PageConstants;
 
-public class SaveFeedbackCommand extends AbstractCommand {
+public class FeedbackCommand extends AbstractCommand {
 
     private static final Logger LOGGER = Logger
-            .getLogger(SaveFeedbackCommand.class);
+            .getLogger(FeedbackCommand.class);
 
     @Override
     public void process() throws ServletException, IOException {
@@ -37,7 +37,6 @@ public class SaveFeedbackCommand extends AbstractCommand {
         } catch (SQLException e) {
             LOGGER.trace("can't save feedback for order:" + orderId);
         }
-   //     redirect(PageConstants.PAGE_CLIENT_ORDERS_RED);
-        redirect(request.getContextPath()+PageConstants.PAGE_CLIENT_ORDERS+".jsp");
+        redirect(PageConstants.PAGE_CLIENT_ORDERS+".jsp");
     }
 }
