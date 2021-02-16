@@ -21,6 +21,7 @@ public abstract class AbstractEntityService<T> {
     public abstract Long getCount();
     
     protected final String tableName;
+    
     protected Connection connection;
     
     protected AbstractEntityService(Connection connection, String tableName){

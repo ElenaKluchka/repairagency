@@ -11,6 +11,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
@@ -43,7 +44,7 @@ public class AuthentificationFilter implements Filter {
         LOGGER.trace(" path:" + path);
 
         boolean isLoggedIn = (session != null
-                && session.getAttribute("user") != null);
+                && session.getAttribute("loggedUser") != null);
 
         String loginURI = httpRequest.getContextPath() + "/do/login";
         boolean isLoginRequest = httpRequest.getRequestURI().endsWith(loginURI);
@@ -68,8 +69,8 @@ public class AuthentificationFilter implements Filter {
                 httpRequest
                         .getRequestDispatcher(httpRequest.getContextPath()
                                 + PageConstants.CONTROLLER_URL
-                                + PageConstants.PAGE_CLIENT_ORDERS
-                                + "?command=ClientOrders")
+                                + PageConstants.PAGE_CUSTOMER_ORDERS
+                                + "?command=CustomerOrders")
                         .forward(request, response);
                 chain.doFilter(request, response);
                 return;
@@ -99,6 +100,7 @@ public class AuthentificationFilter implements Filter {
             RequestDispatcher dispatcher = httpRequest
                     .getRequestDispatcher(loginPage + ".jsp");
             dispatcher.forward(request, response);
+     //       (HttpServletResponse)response.sendRedirect(loginPage + ".jsp");
         }
     }
 

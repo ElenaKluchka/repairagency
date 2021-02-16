@@ -6,7 +6,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"
     name="Login">
     <link href="${path }/css/modal.css" rel="stylesheet" type="text/css" media="all" />
-     <link href="${path }/css/repairagency.css" rel="stylesheet" type="text/css" media="all" />  
+     <link href="${path }/css/repairagency.css" rel="stylesheet" type="text/css" media="all" />
+     <link rel="shortcut icon" href="#">  
     <script type="text/javascript" src="${path }/js/jquery-3.5.1.min.js"></script>
     <script type="text/javascript" src="${path }/js/modal.js"></script>
 <title>Welcome</title>
@@ -16,9 +17,9 @@
     <form action="${path }/do/client/addOrder" method="post">
         <p>Please create your order</p>
         <input type="hidden" id="filfI" name="command" value="AddOrder">
-        Name: <input type="text" id="orderName" name="orderName"><br>
+        Name: <input type="text" id="orderName" name="orderName" required> <br>
         <br> Description: <input type="text" id="orderDescription"
-            name="orderDescription"><br> <br>
+            name="orderDescription" required><br> <br>
         <button type="submit">Create</button>
     </form>
     <h3>Your balance:</h3>

@@ -3,6 +3,7 @@ package com.elenakliuchka.repairagency.entity;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.List;
 
 public class Order implements Serializable {
 
@@ -25,6 +26,8 @@ public class Order implements Serializable {
     private OrderWorkState workState;  
     
     private String feedback;
+    
+    private List<Employee> masters;
 
     public Order() {
     }
@@ -99,6 +102,14 @@ public class Order implements Serializable {
 
     public final void setFeedback(String feedback) {
         this.feedback = feedback;
+    }
+ 
+    public List<Employee> getMasters() {
+        return masters;
+    }
+
+    public void setMasters(List<Employee> masters) {
+        this.masters = masters;
     }
 
     @Override

@@ -11,8 +11,8 @@ import org.apache.log4j.Logger;
 import com.elenakliuchka.repairagency.db.DAOFactory;
 import com.elenakliuchka.repairagency.db.Table;
 import com.elenakliuchka.repairagency.db.service.OrderService;
+import com.elenakliuchka.repairagency.entity.Employee;
 import com.elenakliuchka.repairagency.entity.Order;
-import com.elenakliuchka.repairagency.entity.User;
 import com.elenakliuchka.repairagency.util.PageConstants;
 
 public class MasterOrdersCommand extends AbstractCommand {
@@ -21,26 +21,25 @@ public class MasterOrdersCommand extends AbstractCommand {
     @Override
     public void process() throws ServletException, IOException {
 
-        User user = (User) request.getSession().getAttribute("user");
+        Employee employee = (Employee) request.getSession().getAttribute("master");
         DAOFactory dbManager = DAOFactory.getInstance();
         OrderService orderService;
         try {
             orderService = (OrderService) dbManager.getService(Table.ORDER);
-            List<Order> orders= orderService.findOrdersForMaster(user.getId());
+            List<Order> orders= orderService.findOrdersForMaster(employee.getId());
             //useretOrders(orderService.findByUserId(client.getId()));
           /*  HttpSession session = request.getSession(false);
             if (session != null) {
                 session.setAttribute("client", client);
             }*/
-            request.setAttribute("orders", orders);
-            dbManager.close();
+            request.setAttribute("orders", orders);            
         } catch (SQLException e) {
-            LOGGER.error("can't find orders for master:" + user.getId());
+            LOGGER.error("can't find orders for master:" + employee.getId());
         }finally {
             try {
                 dbManager.close();
             } catch (SQLException e) {
-                LOGGER.error("can't find orders for master:" + user.getId());
+                LOGGER.error("can't find orders for master:" + employee.getId());
             }
         }
 

@@ -64,7 +64,8 @@
         Date: <label id="date"></label>   <br>
         Description: <label id="description"></label>   <br>
                        
-        <input type="submit" id="changeSt" value="">           
+        <input type="submit" id="changeSt" value="">
+         <button  id ="okMod" onclick="closeModal();">OK</button>           
        </form>      
        </div> 
     </div>
@@ -79,6 +80,7 @@
           $("#name").html(name);
           $("#date").html(date);
           $("#description").html(description);
+          $('#okMod').hide();
           if(workState =='NEW'){
         	  $('#changeSt').show();
         	  $('#changeSt').val('Take an order in work');
@@ -89,6 +91,7 @@
         	  $('#newState').val('FINISHED');
           }else if(workState =='FINISHED'){
         	  $('#changeSt').hide();
+        	  $('#okMod').show();
           }
       }
 </script>

@@ -28,9 +28,11 @@ public class PageConstants {
     
     public static final String PAGE_NOT_FOUND ="/error/page-not-found";
     
-    public static final String PAGE_CLIENT_ORDERS= "/client/orders";
+    public static final String PAGE_CUSTOMER_ORDERS= "/client/orders";
 
     public static final String PAGE_MASTER_ORDERS = "/master/orders";
     
     public static final String PAGE_MANAGER_ORDERS = "/manager/manage_orders";
+    
+    public static final String PAGE_MANAGER_CUSTOMERS = "/manager/find_customer";
 }

@@ -7,11 +7,10 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
 
 import org.apache.log4j.Logger;
 
-import com.elenakliuchka.repairagency.entity.Client;
+import com.elenakliuchka.repairagency.entity.Employee;
 import com.elenakliuchka.repairagency.entity.Order;
 import com.elenakliuchka.repairagency.entity.OrderManagmentState;
 import com.elenakliuchka.repairagency.entity.OrderWorkState;
@@ -19,12 +18,16 @@ import com.elenakliuchka.repairagency.entity.OrderWorkState;
 public class OrderService extends AbstractEntityService<Order> {
     private final static String TABLE_NAME = "order";
 
-    private static final String SQL_FIND_ORDER_BY_USERID = "SELECT * FROM repair_agency.order WHERE user_id=?";
-    private static final String SQL_FIND_ALL_ORDERS = "SELECT * FROM repair_agency.order ORDER BY date DESC";
+    private static final String SQL_FIND_ORDER_BY_CUSTOMER_ID = "SELECT * FROM repair_agency.order WHERE customer_id=?";
+  /*  private static final String SQL_FIND_ALL_ORDERS = "SELECT od.id, od.name,od.description, od.price, od.date, od.managment_state, od.work_state,"
+            + " e.id as master_id, e.name as master_name "
+            + "FROM repair_agency.order od, repair_agency.order_master om, employee e WHERE od.id=om.order_id AND e.id = om.master_id ORDER BY date DESC";
+    */
+    private static final String SQL_FIND_ALL_ORDERS = "SELECT * FROM repair_agency.order od ORDER BY date DESC";
 
     private static final String SQL_FIND_ALL_ORDERS_SORT = "SELECT * FROM repair_agency.order ORDER BY ";
 
-    private static final String SQL_ADD_ORDER = "INSERT INTO repair_agency.order (user_id, name, description) VALUES (?,?,?)";
+    private static final String SQL_ADD_ORDER = "INSERT INTO repair_agency.order (customer_id, name, description) VALUES (?,?,?)";
     private static final String SQL_FIND_ORDER_BY_ID = "SELECT * FROM repair_agency.order WHERE id=?";
 
     private static final String SQL_SET_FEEDBACK = "UPDATE repair_agency.order SET feedback = ? WHERE (id = ?)";
@@ -33,11 +36,16 @@ public class OrderService extends AbstractEntityService<Order> {
 
     private static final String SQL_SET_WORK_STATE = "UPDATE repair_agency.order SET work_state = ? WHERE (id = ?)";
 
-    private static final String SQL_FIND_ORDER_BY_PARAM = "SELECT * FROM repair_agency.order WHERE ";//managment_state =? AND work_state=?";
+    private static final String SQL_FIND_ORDER_BY_PARAM1 = "SELECT * FROM repair_agency.order WHERE ";// managment_state
+                                                                                                      // =?
+                                                                                                      // AND
+                                                                                                      // work_state=?";
+
+    private static final String SQL_FIND_ORDER_BY_PARAM = "SELECT * FROM repair_agency.order WHERE ";
     private static final String SQL_FIND_ORDER_BY_MASTER_AND_PARAM = "SELECT * FROM repair_agency.order od, repair_agency.order_master om "
-            + "WHERE od.id=om.order_id AND om.master_id=?";// WHERE
-                                                           // managment_state =?
-                                                           // AND work_state=?
+            + "WHERE od.id=om.order_id AND om.master_id=? ";// WHERE
+    // managment_state =?
+    // AND work_state=?
 
     private static final Logger LOGGER = Logger
             .getLogger(OrderService.class.getName());
@@ -61,7 +69,26 @@ public class OrderService extends AbstractEntityService<Order> {
         }
         return orders;
     }
-
+ /*   
+    private Order retrieveOrderWithMaster(ResultSet rs) throws SQLException {
+        Order order = new Order();
+        order.setId(rs.getInt("id"));
+        order.setName(rs.getString("name"));
+        order.setDescription(rs.getString("description"));
+        order.setPrice(rs.getDouble("price"));
+        order.setDate(rs.getTimestamp("date").toLocalDateTime());
+        order.setManagementState(
+                OrderManagmentState.valueOf(rs.getString("managment_state")));
+        order.setWorkState(OrderWorkState.valueOf(rs.getString("work_state")));
+    //    order.setFeedback(rs.getString("feedback"));
+        Employee master = new Employee();
+        master.setId(rs.getInt("master_id"));
+        master.setName(rs.getString("master_name"));
+        // LOGGER.trace(order);
+        order.setEmployee(master);
+        return order;
+    }
+*/
     @Override
     public void save(Order order) {
         if (order == null) {
@@ -159,7 +186,7 @@ public class OrderService extends AbstractEntityService<Order> {
         List<Order> orders = new ArrayList<>();
 
         try (PreparedStatement pStatement = connection
-                .prepareStatement(SQL_FIND_ORDER_BY_USERID)) {
+                .prepareStatement(SQL_FIND_ORDER_BY_CUSTOMER_ID)) {
             pStatement.setInt(1, userId);
             try (ResultSet rs = pStatement.executeQuery()) {
                 while (rs.next()) {
@@ -224,7 +251,105 @@ public class OrderService extends AbstractEntityService<Order> {
 
     }
 
-    public List<Order> findFilterSorted(String state, String workState,
+    private Boolean isFirstParam = true;
+    public List<Order> findFilterSorted(String[] stateResults,
+            String[] workStateResults, int masterId) {
+        if ((stateResults == null || stateResults.length == 0)
+                && (workStateResults == null || workStateResults.length == 0)
+                && masterId <= 0) {
+            return findAll(0, 3);
+        }
+        List<Order> orders = new ArrayList<>();
+        StringBuilder sqlBuilder = new StringBuilder();
+
+        Integer paramsSet = 0;
+
+        isFirstParam = true;
+        if (masterId <= 0) {
+            sqlBuilder.append(SQL_FIND_ORDER_BY_PARAM);
+        } else {
+            sqlBuilder.append(SQL_FIND_ORDER_BY_MASTER_AND_PARAM);
+            isFirstParam = false;
+            paramsSet++;
+        }
+
+        sqlBuilder.append(generateQueryParam(stateResults,
+                " managment_state IN(", paramsSet));
+        LOGGER.trace("isFirstParam: "+isFirstParam);
+        sqlBuilder.append(generateQueryParam(workStateResults,
+                " work_state IN(", paramsSet));
+        /*
+        if (workStateResults != null && workStateResults.length > 0) {
+            if (!isFirstParam) {
+                sqlBuilder.append(" AND ");
+            }
+            sqlBuilder.append(" work_state in(?)");
+            paramsSet++;
+        }*/
+        /*    if (stateResults != null && stateResults.length>0) {
+            sqlBuilder.append()String.format("select * from test where field in (%s)",Arrays.asList(stateResults).stream().collect(Collectors.joining(", "));
+        }*/
+        LOGGER.debug(sqlBuilder.toString());
+
+        try (PreparedStatement pStatement = connection
+                .prepareStatement(sqlBuilder.toString())) {
+
+            int curr = 1;
+            if (masterId > 0) {
+                pStatement.setInt(curr, masterId);
+                ++curr;
+            }
+
+            if (stateResults != null && stateResults.length > 0) {
+                for (String state : stateResults) {
+                    pStatement.setString(curr, state);
+                    ++curr;
+                }               
+            }
+            if (workStateResults != null && workStateResults.length > 0) {
+                for (String state : workStateResults) {
+                    pStatement.setString(curr, state);
+                    ++curr;
+                }               
+            }
+            LOGGER.debug(pStatement);
+
+            try (ResultSet rs = pStatement.executeQuery()) {
+                while (rs.next()) {
+                    orders.add(retrieveOrder(rs));
+                }
+            }
+        } catch (SQLException e) {
+            LOGGER.error("Fail to find orders", e);
+        }
+        return orders;
+    }
+
+    private String generateQueryParam(String[] stateResults, String query,
+             Integer paramsSet) {
+        if (stateResults == null || stateResults.length == 0) {
+            return "";
+        }
+        StringBuilder sqlBuilder = new StringBuilder();
+        LOGGER.trace("isFirstParam: "+isFirstParam);
+        if (!isFirstParam) {
+            sqlBuilder.append(" AND ");
+        }
+        sqlBuilder.append(query);
+        StringBuilder builder = new StringBuilder();
+        for (int i = 0; i < stateResults.length; i++) {
+            builder.append("?,");
+            paramsSet++;
+        }
+        String placeHolders = builder.deleteCharAt(builder.length() - 1)
+                .toString();
+        isFirstParam = false;
+
+        sqlBuilder.append(placeHolders).append(")");
+        return sqlBuilder.toString();
+    }
+
+    public List<Order> findFilterSorted22(String state, String workState,
             int masterId) {
         if ((state == null || state.isEmpty())
                 && (workState == null || workState.isEmpty())
@@ -238,7 +363,7 @@ public class OrderService extends AbstractEntityService<Order> {
 
         boolean isFirstParam = true;
         if (masterId <= 0) {
-            sqlBuilder.append(SQL_FIND_ORDER_BY_PARAM);
+            sqlBuilder.append(SQL_FIND_ORDER_BY_PARAM1);
         } else {
             sqlBuilder.append(SQL_FIND_ORDER_BY_MASTER_AND_PARAM);
             isFirstParam = false;

@@ -11,30 +11,30 @@ import org.apache.log4j.Logger;
 import com.elenakliuchka.repairagency.db.DAOFactory;
 import com.elenakliuchka.repairagency.db.Table;
 import com.elenakliuchka.repairagency.db.service.OrderService;
-import com.elenakliuchka.repairagency.entity.Client;
+import com.elenakliuchka.repairagency.entity.Customer;
 import com.elenakliuchka.repairagency.util.PageConstants;
 
-public class ClientOrdersCommand extends AbstractCommand {
+public class CustomerOrdersCommand extends AbstractCommand {
     private static final Logger LOGGER = Logger.getLogger(LoginCommand.class);
 
     @Override
     public void process() throws ServletException, IOException {
 
-        Client client = (Client) request.getSession().getAttribute("client");
+        Customer customer = (Customer) request.getSession().getAttribute("customer");
         DAOFactory dbManager = DAOFactory.getInstance();
         OrderService orderService;
         try {
             orderService = (OrderService) dbManager.getService(Table.ORDER);
-            client.setOrders(orderService.findByUserId(client.getId()));
+            customer.setOrders(orderService.findByUserId(customer.getId()));
             HttpSession session = request.getSession(false);
             if (session != null) {
-                session.setAttribute("client", client);
+                session.setAttribute("client", customer);
             }
             dbManager.close();
         } catch (SQLException e) {
-            LOGGER.error("can't find orders for client:" + client.getId());
+            LOGGER.error("can't find orders for client:" + customer.getId());
         }        
 
-        forward(PageConstants.PAGE_CLIENT_ORDERS);
+        forward(PageConstants.PAGE_CUSTOMER_ORDERS);
     }
 }

@@ -1,8 +1,9 @@
 package com.elenakliuchka.repairagency.entity;
 
 import java.io.Serializable;
+import java.util.List;
 
-public class Employee  implements Serializable{
+public class Customer implements Serializable{
 
     private static final long serialVersionUID = -1540587379836408091L;
     
@@ -12,23 +13,23 @@ public class Employee  implements Serializable{
 
     private String email;
     
-    private String password;
-    
-    private Role role;
+    private String password; 
     
     private int locale_id;
     
     private String phone;
     
-    private Double salary;
+    private Double balance;
     
-    public Employee() {        
-    }
+    private List<Order> orders;
 
-    public Employee(String name, String password) {
-       this.name = name;
-       this.password = password;
+    public Customer() {        
     }
+    
+    public Customer(String name, String password) {
+        this.name = name;
+        this.password = password;
+    }    
 
     public int getId() {
         return id;
@@ -62,14 +63,6 @@ public class Employee  implements Serializable{
         this.password = password;
     }
 
-    public Role getRole() {
-        return role;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
-    }
-
     public int getLocale_id() {
         return locale_id;
     }
@@ -86,11 +79,26 @@ public class Employee  implements Serializable{
         this.phone = phone;
     }
 
-    public Double getSalary() {
-        return salary;
+    public Double getBalance() {
+        return balance;
     }
 
-    public void setSalary(Double salary) {
-        this.salary = salary;
-    }   
+    public void setBalance(Double balance) {
+        this.balance = balance;
+    }
+
+    public void setOrders(List<Order> orders) {
+        this.orders = orders;
+    }
+
+    public List<Order> getOrders() {
+        return orders;
+    }
+
+    @Override
+    public String toString() {
+        return "Customer [id=" + id + ", name=" + name + ", email=" + email
+                + ", locale_id=" + locale_id + ", phone=" + phone + ", balance="
+                + balance + ", orders=" + orders + "]";
+    } 
 }

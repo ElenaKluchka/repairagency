@@ -7,9 +7,9 @@ import javax.naming.InitialContext;
 import javax.sql.DataSource;
 
 import com.elenakliuchka.repairagency.db.service.AbstractEntityService;
-import com.elenakliuchka.repairagency.db.service.ClientService;
+import com.elenakliuchka.repairagency.db.service.CustomerService;
+import com.elenakliuchka.repairagency.db.service.EmployeeService;
 import com.elenakliuchka.repairagency.db.service.OrderService;
-import com.elenakliuchka.repairagency.db.service.UserService;
 
 public class DAOFactory {
     public static DAOFactory getInstance() {
@@ -65,22 +65,17 @@ public class DAOFactory {
 
     public AbstractEntityService<?> getService(Table t) throws SQLException {
         try {
-            if (this.connection == null || this.connection.isClosed()) // Let's
-                                                                       // ensure
-                                                                       // our
-                                                                       // connection
-                                                                       // is
-                                                                       // open
+            if (this.connection == null || this.connection.isClosed()) 
                 this.open();
         } catch (SQLException e) {
             throw e;
         }
 
         switch (t) {
-        case USER:
-            return new UserService(this.connection);
-        case CLIENT:
-            return new ClientService(this.connection);
+        case CUSTOMER:
+            return new CustomerService(this.connection);
+        case EMPLOYEE:
+            return new EmployeeService(this.connection);
         case ORDER:
             return new OrderService(this.connection);
         default:

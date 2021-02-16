@@ -14,7 +14,7 @@ public class OrderMasterService extends AbstractEntityService<OrderMaster>{
     private static final String SQL_FIND_ALL_USERS = "SELECT * FROM client_info";
 
     private static final Logger LOGGER = Logger
-            .getLogger(ClientService.class.getName());
+            .getLogger(OrderMasterService.class.getName());
 
     public OrderMasterService(Connection connection) {
         super(connection, TABLE_NAME);

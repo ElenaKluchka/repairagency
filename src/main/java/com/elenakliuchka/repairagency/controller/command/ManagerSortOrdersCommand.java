@@ -12,7 +12,6 @@ import com.elenakliuchka.repairagency.db.DAOFactory;
 import com.elenakliuchka.repairagency.db.Table;
 import com.elenakliuchka.repairagency.db.service.OrderService;
 import com.elenakliuchka.repairagency.entity.Order;
-import com.elenakliuchka.repairagency.entity.User;
 import com.elenakliuchka.repairagency.util.PageConstants;
 
 public class ManagerSortOrdersCommand extends AbstractCommand {

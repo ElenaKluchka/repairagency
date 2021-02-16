@@ -12,8 +12,8 @@ import org.apache.log4j.Logger;
 import com.elenakliuchka.repairagency.db.DAOFactory;
 import com.elenakliuchka.repairagency.db.Table;
 import com.elenakliuchka.repairagency.db.service.OrderService;
+import com.elenakliuchka.repairagency.entity.Employee;
 import com.elenakliuchka.repairagency.entity.Order;
-import com.elenakliuchka.repairagency.entity.User;
 import com.elenakliuchka.repairagency.util.PageConstants;
 
 public class ChangeOrderWorkStateCommand extends AbstractCommand {
@@ -31,9 +31,9 @@ public class ChangeOrderWorkStateCommand extends AbstractCommand {
             OrderService orderService = (OrderService) dbManager
                     .getService(Table.ORDER);
             HttpSession session = request.getSession();
-            User user = (User) session.getAttribute("user");
+            Employee master = (Employee) session.getAttribute("master");
             if (orderService.setWorkState(orderId, newState)) {
-                List<Order> orders= orderService.findOrdersForMaster(user.getId());
+                List<Order> orders= orderService.findOrdersForMaster(master.getId());
                 session.setAttribute("orders", orders);
             }
             dbManager.close();
