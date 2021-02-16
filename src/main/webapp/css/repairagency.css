@@ -1,0 +1,234 @@
+#orders {
+	font-family: Arial, Helvetica, sans-serif;
+	border-collapse: collapse;
+	width: 100%;
+}
+
+#orders td, #orders th {
+	border: 3px solid #ddd;
+	padding: 8px;
+}
+
+#orders tr:nth-child(even) {
+	background-color: #f2f2f2;
+}
+
+#orders tr:hover {
+	background-color: #ddd;
+}
+
+#orders th {
+	padding-top: 12px;
+	padding-bottom: 12px;
+	text-align: left;
+	background-color: #3AADF2;
+	color: white;
+}
+/*
+.button {
+  font: bold 11px Arial;
+  text-decoration: none;
+  background-color: #EEEEEE;
+  color: #333333;
+  padding: 2px 6px 2px 6px;
+  border-top: 1px solid #CCCCCC;
+  border-right: 1px solid #333333;
+  border-bottom: 1px solid #333333;
+  border-left: 1px solid #CCCCCC;
+}
+*/
+a.button {
+	-webkit-appearance: button;
+	-moz-appearance: button;
+	appearance: button;
+}
+h2.filter{
+	color:#3AADF2;
+}
+
+body {
+	font: 11pt Arial, Helvetica, sans-serif; /* Рубленый шрифт текста */
+	margin: 20px; /* Отступы на странице */
+}
+
+h1 {
+	font-size: 36px; /* Размер шрифта */
+	margin: 0; /* Убираем отступы */
+	color: #fc6; /* Цвет текста */
+}
+
+h2 {
+	margin-top: 0; /* Убираем отступ сверху */
+}
+
+#header { /* Верхний блок */
+/*	background: #0080c0; /* Цвет фона */
+	padding: 10px; /* Поля вокруг текста */
+}
+
+#sidebar { /* Левая колонка */
+	float: left; /* Обтекание справа */
+	border: 1px solid #333; /* Параметры рамки вокруг */
+	width: 20%; /* Ширина колонки */
+	padding: 5px; /* Поля вокруг текста */
+	margin: 10px 10px 20px 5px; /* Значения отступов */
+}
+
+#content { /* Правая колонка */
+	margin: 10px 5px 20px 25%; /* Значения отступов */
+	padding: 5px; /* Поля вокруг текста */
+	border: 1px solid #333; /* Параметры рамки */
+}
+
+#footer { /* Нижний блок */
+	background: #333; /* Цвет фона */
+	padding: 5px; /* Поля вокруг текста */
+	color: #fff; /* Цвет текста */
+	clear: left; /* Отменяем действие float */
+}
+
+#changeSt {
+	margin-top:10px;
+}
+ul {
+  position: fixed;
+  top: 0;
+  width:95%; 
+}
+
+ul {	
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #f3f3f3;
+}
+
+li {
+  float: left;
+  border-right:1px solid #bbb;
+}
+
+li:last-child {
+  border-right: none;
+}
+
+li a.active {
+  color: white;
+  background-color: #0080c0;
+}
+
+li a {
+  display: block;
+   color: #666;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+li a:hover:not(.active) {
+  background-color: #111;
+}
+
+.active {
+  background-color: #0080c0;
+}
+
+.activeLan {
+	color: white;
+  background-color: #0080c0;
+}
+
+.content{
+	margin: 10px 5px 20px 25%; /* Значения отступов */
+    padding: 5px;
+    width:100%;
+}
+
+form {
+  border: 3px solid #f1f1f1;
+}
+
+/* Full-width inputs */
+input[type=text], input[type=password] {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+  color: #f44336;
+}
+
+/* Set a style for all buttons */
+button.blueBut {
+  background-color: #3AADF2;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+}
+
+/* Add a hover effect for buttons */
+button:hover {
+  opacity: 0.8;
+}
+
+/* Extra style for the cancel button (red) */
+.cancelbtn {
+  width: auto;
+  padding: 10px 18px;
+  background-color: #f44336;
+}
+
+/* Center the avatar image inside this container */
+.imgcontainer {
+  text-align: center;
+  margin: 24px 0 12px 0;
+}
+
+/* Avatar image */
+img.avatar {
+  width: 40%;
+  border-radius: 50%;
+}
+
+/* Add padding to containers */
+.container {
+  padding: 16px;
+}
+
+/* The "Forgot password" text */
+span.psw {
+  float: right;
+  padding-top: 16px;
+}
+
+/* Change styles for span and cancel button on extra small screens */
+@media screen and (max-width: 300px) {
+  span.psw {
+    display: block;
+    float: none;
+  }
+  .cancelbtn {
+    width: 100%;
+  }
+}
+
+#sidebarFind { /* Левая колонка */
+    float: left; /* Обтекание справа */
+    border: 1px solid #333; /* Параметры рамки вокруг */ 
+    padding: 5px; /* Поля вокруг текста */
+    margin: 10px 10px 20px 5px; /* Значения отступов */
+}
+
+.littleBut{
+	 background-color: #3AADF2;
+  color: white;
+  padding: 7px 10px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;  
+}
