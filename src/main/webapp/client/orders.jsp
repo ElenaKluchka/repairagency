@@ -14,13 +14,15 @@
 </head>
 <body>
     <!-- <h1>Hello ${client.name}</h1> -->
-    <form action="${path }/do/client/addOrder" method="post">
-        <p>Please create your order</p>
-        <input type="hidden" id="filfI" name="command" value="AddOrder">
-        Name: <input type="text" id="orderName" name="orderName" required> <br>
-        <br> Description: <input type="text" id="orderDescription"
-            name="orderDescription" required><br> <br>
-        <button type="submit">Create</button>
+    <form action="${path }/do/client/addOrder" method="post" style="width:400px">
+        <h3 style="text-align: center">Create your order</h3>
+            <div class="container">     
+		        <input type="hidden" name="command" value="AddOrder">
+		        Name: <input type="text" id="orderName" name="orderName" required> <br>
+		        <br> Description: <input type="text" id="orderDescription"
+		            name="orderDescription" required><br> <br>
+		        <button type="submit" class="blueBut">Save order</button>
+            </div>
     </form>
     <h3>Your balance:</h3>
     ${client.balance}

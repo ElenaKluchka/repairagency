@@ -18,7 +18,7 @@ import com.elenakliuchka.repairagency.entity.OrderWorkState;
 public class OrderService extends AbstractEntityService<Order> {
     private final static String TABLE_NAME = "order";
 
-    private static final String SQL_FIND_ORDER_BY_CUSTOMER_ID = "SELECT * FROM repair_agency.order WHERE customer_id=?";
+    private static final String SQL_FIND_ORDER_BY_CUSTOMER_ID = "SELECT * FROM repair_agency.order WHERE customer_id=? ORDER BY work_state, managment_state";
   /*  private static final String SQL_FIND_ALL_ORDERS = "SELECT od.id, od.name,od.description, od.price, od.date, od.managment_state, od.work_state,"
             + " e.id as master_id, e.name as master_name "
             + "FROM repair_agency.order od, repair_agency.order_master om, employee e WHERE od.id=om.order_id AND e.id = om.master_id ORDER BY date DESC";
@@ -30,7 +30,7 @@ public class OrderService extends AbstractEntityService<Order> {
     private static final String SQL_ADD_ORDER = "INSERT INTO repair_agency.order (customer_id, name, description) VALUES (?,?,?)";
     private static final String SQL_FIND_ORDER_BY_ID = "SELECT * FROM repair_agency.order WHERE id=?";
 
-    private static final String SQL_SET_FEEDBACK = "UPDATE repair_agency.order SET feedback = ? WHERE (id = ?)";
+    private static final String SQL_SET_FEEDBACK = "UPDATE repair_agency.order SET feedback = ? WHERE id = ?";
 
     private static final String SQL_FIND_ORDER_BY_MASTER = "SELECT * FROM repair_agency.order od, repair_agency.order_master om WHERE od.id=om.order_id AND om.master_id=?";
 
@@ -46,7 +46,8 @@ public class OrderService extends AbstractEntityService<Order> {
             + "WHERE od.id=om.order_id AND om.master_id=? ";// WHERE
     // managment_state =?
     // AND work_state=?
-
+    private static final String SQL_UPDATE_ORDER = "UPDATE repair_agency.order SET price= ?, managment_state=?  WHERE id = ?";
+   
     private static final Logger LOGGER = Logger
             .getLogger(OrderService.class.getName());
 
@@ -172,6 +173,25 @@ public class OrderService extends AbstractEntityService<Order> {
                 .prepareStatement(SQL_SET_WORK_STATE)) {
             pstmt.setString(1, state);
             pstmt.setInt(2, id);
+            if (pstmt.executeUpdate() > 0) {
+                return true;
+            }
+        } catch (SQLException e) {
+            // LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            LOGGER.error("Fail add order", e);
+        }
+        return false;
+    }
+    
+    public boolean updateOrder(Order order) {
+        if (order==null) {
+            return false;
+        }
+        try (PreparedStatement pstmt = connection
+                .prepareStatement(SQL_UPDATE_ORDER)) {
+            pstmt.setDouble(1, order.getPrice());
+            pstmt.setString(2, order.getManagementState().toString());
+            pstmt.setInt(3, order.getId());
             if (pstmt.executeUpdate() > 0) {
                 return true;
             }

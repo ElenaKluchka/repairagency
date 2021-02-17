@@ -35,4 +35,8 @@ public class PageConstants {
     public static final String PAGE_MANAGER_ORDERS = "/manager/manage_orders";
     
     public static final String PAGE_MANAGER_CUSTOMERS = "/manager/find_customer";
+
+    public static final String PAGE_MANAGER_EDIT_ORDER = "/manager/edit_order";
+    
+    public static final String PAGE_MANAGER_EDIT_ORDER_FORM = "/do/manager/editOrderForm?command=EditOrderForm&orderId=";    
 }

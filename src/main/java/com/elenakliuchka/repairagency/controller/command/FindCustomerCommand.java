@@ -2,6 +2,7 @@ package com.elenakliuchka.repairagency.controller.command;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpSession;
@@ -11,8 +12,10 @@ import org.apache.log4j.Logger;
 import com.elenakliuchka.repairagency.db.DAOFactory;
 import com.elenakliuchka.repairagency.db.Table;
 import com.elenakliuchka.repairagency.db.service.CustomerService;
+import com.elenakliuchka.repairagency.db.service.EmployeeService;
 import com.elenakliuchka.repairagency.db.service.OrderService;
 import com.elenakliuchka.repairagency.entity.Customer;
+import com.elenakliuchka.repairagency.entity.Order;
 import com.elenakliuchka.repairagency.util.PageConstants;
 
 public class FindCustomerCommand extends AbstractCommand {
@@ -46,9 +49,15 @@ public class FindCustomerCommand extends AbstractCommand {
             Customer dbCustomer = customerService.findByParam(paramName,paramValue);
             if (dbCustomer != null) {                
                 OrderService orderService = (OrderService) dbManager.getService(Table.ORDER);
-                dbCustomer.setOrders(orderService.findByUserId(dbCustomer.getId()));
+                List<Order> ordersList= orderService.findByUserId(dbCustomer.getId());
+                
+                dbCustomer.setOrders(ordersList);                
+                EmployeeService employeeService = (EmployeeService)dbManager.getService(Table.EMPLOYEE);                
+                for(Order order: ordersList){
+                    order.setMasters(employeeService.findEmployeesForOrder(order));
+                }
          //       request.setAttribute("customer", dbCustomer);
-                session.setAttribute("customer", dbCustomer);                
+                session.setAttribute("customer", dbCustomer);                                
             } else {
                 request.setAttribute("message", "No seatch results");
             }

@@ -56,7 +56,6 @@ public class SetCustomerBalanceCommand extends AbstractCommand {
             }
         }
 
-        forward(PageConstants.PAGE_MANAGER_CUSTOMERS);
+        redirect(PageConstants.PAGE_MANAGER_CUSTOMERS+".jsp");
     }
-
 }

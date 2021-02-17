@@ -30,11 +30,16 @@ public class CustomerOrdersCommand extends AbstractCommand {
             if (session != null) {
                 session.setAttribute("client", customer);
             }
-            dbManager.close();
+           
         } catch (SQLException e) {
             LOGGER.error("can't find orders for client:" + customer.getId());
-        }        
-
+        }finally {
+            try {
+                dbManager.close();
+            } catch (SQLException e) {
+                LOGGER.error("Error while close connection");
+            }
+        }
         forward(PageConstants.PAGE_CUSTOMER_ORDERS);
     }
 }

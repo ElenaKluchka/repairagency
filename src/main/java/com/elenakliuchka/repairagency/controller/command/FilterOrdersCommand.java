@@ -25,8 +25,8 @@ public class FilterOrdersCommand extends AbstractCommand {
         DAOFactory dbManager = DAOFactory.getInstance();
         
         try {
-            String state = request.getParameter("state");
-            String workState = request.getParameter("work_state");
+      //      String state = request.getParameter("state");
+      //      String workState = request.getParameter("work_state");
             
             String[] stateResults = request.getParameterValues("state");
             String[] workStateResults = request.getParameterValues("work_state");

@@ -24,7 +24,7 @@ public class ManagerOrdersCommand extends AbstractCommand {
     @Override
     public void process() throws ServletException, IOException {
 
-        HttpSession session = request.getSession(true);
+        HttpSession session = request.getSession();
         Employee user = (Employee) session.getAttribute("manager");
         DAOFactory dbManager = DAOFactory.getInstance();       
         try {

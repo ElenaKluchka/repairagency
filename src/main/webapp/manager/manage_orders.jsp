@@ -37,9 +37,8 @@
 				name="state" value="CANCELED"> Canceled<BR>
 			<h3>Work state</h3>
 			<input type="checkbox" name="work_state" value="NEW"> New<BR>
-			<input type="checkbox" name="work_state" value="IN_WORK"> In
-			work<BR> <input type="checkbox" name="work_state"
-				value="FINISHED"> Finished<BR>
+			<input type="checkbox" name="work_state" value="IN_WORK"> In work<BR> 
+			<input type="checkbox" name="work_state" value="FINISHED"> Finished<BR>
 			<h3>Master</h3>
 			<select name="masters">
 				<option value="0">Select master</option>

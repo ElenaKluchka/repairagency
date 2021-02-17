@@ -95,8 +95,8 @@
                         ${master.name}<br>
 							</c:forEach></td>
 						<td><button id="myBtn"
-								onclick="showDetailsModal('${order.id}','${order.name}',
-                '${order.date.dayOfMonth}.${order.date.month.value}.${order.date.year}','${order.description}','${order.workState}');">Details</button></td>
+                            onclick="location.href='${path }/do/manager/editOrderForm?command=EditOrderForm&orderId=${order.id}';">
+                            Edit</button></td>
 
 					</tr>
 				</c:forEach>
