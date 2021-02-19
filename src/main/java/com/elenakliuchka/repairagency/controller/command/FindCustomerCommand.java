@@ -60,7 +60,7 @@ public class FindCustomerCommand extends AbstractCommand {
                 session.setAttribute("customer", dbCustomer);                                
             } else {
                 session.removeAttribute("customer");
-                request.setAttribute("message", "No seatch results");
+                request.setAttribute("message", "No search results");
             }
             LOGGER.trace(dbCustomer);
             

@@ -42,8 +42,9 @@ a.button {
 	-moz-appearance: button;
 	appearance: button;
 }
-h2.filter{
-	color:#3AADF2;
+
+h2.filter {
+	color: #3AADF2;
 }
 
 body {
@@ -62,7 +63,7 @@ h2 {
 }
 
 #header { /* Верхний блок */
-/*	background: #0080c0; /* Цвет фона */
+	/*	background: #0080c0; /* Цвет фона */
 	padding: 10px; /* Поля вокруг текста */
 }
 
@@ -88,147 +89,158 @@ h2 {
 }
 
 #changeSt {
-	margin-top:10px;
-}
-ul {
-  position: fixed;
-  top: 0;
-  width:95%; 
+	margin-top: 10px;
 }
 
-ul {	
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
-  background-color: #f3f3f3;
+ul {
+	position: fixed;
+	top: 0;
+	width: 95%;
+}
+
+ul {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+	overflow: hidden;
+	background-color: #f3f3f3;
 }
 
 li {
-  float: left;
-  border-right:1px solid #bbb;
+	float: left;
+	border-right: 1px solid #bbb;
 }
 
 li:last-child {
-  border-right: none;
+	border-right: none;
 }
 
 li a.active {
-  color: white;
-  background-color: #0080c0;
+	color: white;
+	background-color: #0080c0;
 }
 
 li a {
-  display: block;
-   color: #666;
-  text-align: center;
-  padding: 14px 16px;
-  text-decoration: none;
+	display: block;
+	color: #666;
+	text-align: center;
+	padding: 14px 16px;
+	text-decoration: none;
 }
 
 li a:hover:not(.active) {
-  background-color: #111;
+	background-color: #111;
 }
 
 .active {
-  background-color: #0080c0;
+	background-color: #0080c0;
 }
 
 .activeLan {
 	color: white;
-  background-color: #0080c0;
+	background-color: #0080c0;
 }
 
-.content{
+.content {
 	margin: 10px 5px 20px 25%; /* Значения отступов */
-    padding: 5px;
-    width:100%;
+	padding: 5px;
 }
+
 
 form {
-  border: 3px solid #f1f1f1;
+	border: 3px solid #f1f1f1;
 }
 
 /* Full-width inputs */
-input[type=text], input[type=password] {
-  width: 100%;
-  padding: 12px 20px;
-  margin: 8px 0;
-  display: inline-block;
-  border: 1px solid #ccc;
-  box-sizing: border-box;
-  color: #f44336;
+input[type=text], input[type=password], input[type=tel]  {
+	width: 100%;
+	padding: 12px 20px;
+	margin: 8px 0;
+	display: inline-block;
+	border: 1px solid #ccc;
+	box-sizing: border-box;
+	color: #f44336;
 }
 
 /* Set a style for all buttons */
 button.blueBut {
-  background-color: #3AADF2;
-  color: white;
-  padding: 14px 20px;
-  margin: 8px 0;
-  border: none;
-  cursor: pointer;
-  width: 100%;
+	background-color: #3AADF2;
+	color: white;
+	padding: 14px 20px;
+	margin: 8px 0;
+	border: none;
+	cursor: pointer;
+	width: 100%;
 }
 
 /* Add a hover effect for buttons */
 button:hover {
-  opacity: 0.8;
+	opacity: 0.8;
 }
 
 /* Extra style for the cancel button (red) */
 .cancelbtn {
-  width: auto;
-  padding: 10px 18px;
-  background-color: #f44336;
+	width: auto;
+	padding: 10px 18px;
+	background-color: #f44336;
 }
 
 /* Center the avatar image inside this container */
 .imgcontainer {
-  text-align: center;
-  margin: 24px 0 12px 0;
+	text-align: center;
+	margin: 24px 0 12px 0;
 }
 
 /* Avatar image */
 img.avatar {
-  width: 40%;
-  border-radius: 50%;
+	width: 40%;
+	border-radius: 50%;
 }
 
 /* Add padding to containers */
 .container {
-  padding: 16px;
+	padding: 16px;
 }
 
 /* The "Forgot password" text */
 span.psw {
-  float: right;
-  padding-top: 16px;
+	float: right;
+	padding-top: 16px;
 }
 
 /* Change styles for span and cancel button on extra small screens */
 @media screen and (max-width: 300px) {
-  span.psw {
-    display: block;
-    float: none;
-  }
-  .cancelbtn {
-    width: 100%;
-  }
+	span.psw {
+		display: block;
+		float: none;
+	}
+	.cancelbtn {
+		width: 100%;
+	}
 }
 
 #sidebarFind { /* Левая колонка */
-    float: left; /* Обтекание справа */
-    border: 1px solid #333; /* Параметры рамки вокруг */ 
-    padding: 5px; /* Поля вокруг текста */
-    margin: 10px 10px 20px 5px; /* Значения отступов */
+	float: left; /* Обтекание справа */
+	border: 1px solid #333; /* Параметры рамки вокруг */
+	padding: 5px; /* Поля вокруг текста */
+	margin: 10px 10px 20px 5px; /* Значения отступов */
 }
 
-.littleBut{
-	 background-color: #3AADF2;
-  color: white;
-  padding: 7px 10px;
-  margin: 8px 0;
-  border: none;
-  cursor: pointer;  
+.littleBut {
+	background-color: #3AADF2;
+	color: white;
+	padding: 7px 10px;
+	margin: 8px 0;
+	border: none;
+	cursor: pointer;
+}
+.description {
+    height: 100px;
+    width: 370px;
+}
+
+.textO {
+	height: 200px;
+	width: 450;
+	margin: 10px;
 }

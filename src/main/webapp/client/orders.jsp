@@ -19,8 +19,8 @@
             <div class="container">     
 		        <input type="hidden" name="command" value="AddOrder">
 		        Name: <input type="text" id="orderName" name="orderName" required> <br>
-		        <br> Description: <input type="text" id="orderDescription"
-		            name="orderDescription" required><br> <br>
+		        <br> Description: <textarea name="orderDescription" id="orderDescription" 
+		             class="description" placeholder="Write description of your problem..."  maxlength="500" required></textarea>
 		        <button type="submit" class="blueBut">Save order</button>
             </div>
     </form>
@@ -86,9 +86,10 @@
         <input type="hidden"  name="command" value="Feedback">
         <input type="hidden" id="orderId" name="orderId" >
         <label for="subject">Subject</label>   <br>   
-        <textarea name="feedback" placeholder="Write something.." style="height:200px;width:450;margin:10px;"></textarea>        
-        <input type="submit" value="Save">   
+        <textarea name="feedback" class="textO" placeholder="Write something.." maxlength="500" required></textarea>        
+        <input type="submit" value="Save">       
        </form>
+        <button id="okMod" onclick="closeModal();">Cancel</button>
        </div> 
     </div>
    </div>
@@ -97,6 +98,9 @@
       function showFeedbackModal(orderId) {
           modal.style.display = "block";
           document.getElementById("orderId").value = orderId;
+      }
+      function closeModal() {
+          modal.style.display = "none";
       }
 </script>
 </body>

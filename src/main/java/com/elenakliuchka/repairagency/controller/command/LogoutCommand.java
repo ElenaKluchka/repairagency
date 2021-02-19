@@ -26,8 +26,7 @@ public class LogoutCommand extends AbstractCommand {
             }
         }*/
         // invalidate the session if exists
-        HttpSession session = request.getSession(false);
-        LOGGER.trace("USer=" + session.getAttribute("user"));
+        HttpSession session = request.getSession(false);        
         if (session != null) {
             session.invalidate();
         }

@@ -12,6 +12,7 @@
 <link rel="shortcut icon" href="#">
 <script type="text/javascript" src="${path }/js/jquery-3.5.1.min.js"></script>
 <script type="text/javascript" src="${path }/js/modal.js"></script>
+<script type="text/javascript" src="${path }/js/repairagency.js"></script>
 <title>Welcome</title>
 </head>
 <body>
@@ -34,13 +35,16 @@
 				<input type="hidden" name="command" value="FindCustomer"> 
 				    <label	for="subject">Find by Name</label> 
 				    <input type="text" name="uname"><br>
-				Or find by <label for="subject">Phone</label>
-                <input type="tel" name="phone"><br>
+				Or find by <label for="subject">Phone in format +380(xx)xxx-xx-x</label><br>
+                 <input id="online_phone" type="tel" maxlength="50"
+             name="phone"  autofocus="autofocus" required="required" value=""         
+         pattern="\+380\s?[\(][0-9]{2}[\)]{0,1}\s?\d{3}[-]{0,1}\d{2}[-]{0,1}\d{2}"
+        placeholder="+380(__)___-__-__" required><br>
 				<button type="submit" class="blueBut">Find</button>
 			</div>
 		</form>
 	</div>
-	<div id="content">
+	<div class="content">
 	   
 		<c:if test="${not empty message}">
 			<br>
@@ -97,7 +101,6 @@
 						<td><button id="myBtn"
                             onclick="location.href='${path }/do/manager/editOrderForm?command=EditOrderForm&orderId=${order.id}';">
                             Edit</button></td>
-
 					</tr>
 				</c:forEach>
 			</table>
