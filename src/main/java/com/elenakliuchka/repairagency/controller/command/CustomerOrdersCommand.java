@@ -32,7 +32,7 @@ public class CustomerOrdersCommand extends AbstractCommand {
             }
            
         } catch (SQLException e) {
-            LOGGER.error("can't find orders for client:" + customer.getId());
+            LOGGER.error(e.getMessage(), e);
         }finally {
             try {
                 dbManager.close();

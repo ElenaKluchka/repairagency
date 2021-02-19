@@ -23,11 +23,13 @@ public class ChangeOrderWorkStateCommand extends AbstractCommand {
     @Override
     public void process() throws ServletException, IOException {
         String newState = request.getParameter("newState");
-        LOGGER.trace("Change state, newState: "+newState);
+        LOGGER.info("Change state, newState: "+newState);
         int orderId = Integer.parseInt(request.getParameter("orderId"));
         LOGGER.trace("Set state for orderId: "+orderId+ " newState: "+newState);
+        
+        DAOFactory dbManager = DAOFactory.getInstance();
         try {
-            DAOFactory dbManager = DAOFactory.getInstance();
+
             OrderService orderService = (OrderService) dbManager
                     .getService(Table.ORDER);
             HttpSession session = request.getSession();
@@ -36,9 +38,15 @@ public class ChangeOrderWorkStateCommand extends AbstractCommand {
                 List<Order> orders= orderService.findOrdersForMaster(master.getId());
                 session.setAttribute("orders", orders);
             }
-            dbManager.close();
+          
         } catch (SQLException e) {
-            LOGGER.trace("can't save state for order:" + orderId);
+            LOGGER.error(e.getMessage(), e);
+        }finally {
+            try {
+                dbManager.close();
+            } catch (SQLException e) {
+                LOGGER.error("Eror while closing connection");
+            }
         }
         redirect(PageConstants.PAGE_MASTER_ORDERS+".jsp");
     }

@@ -6,23 +6,38 @@ public class OrderMaster implements Serializable{
 
     private static final long serialVersionUID = -6205048494627536380L;
 
-    int master_id;
+    int masterId;
     
-    int order_id;
-
-    public final int getMaster_id() {
-        return master_id;
+    int orderId;
+    
+    public OrderMaster() {        
+    }
+    
+    public OrderMaster(int masterId, int orderId) {
+        super();
+        this.masterId = masterId;
+        this.orderId = orderId;
     }
 
-    public final void setMaster_id(int master_id) {
-        this.master_id = master_id;
+    public int getMasterId() {
+        return masterId;
     }
 
-    public final int getOrder_id() {
-        return order_id;
+    public void setMasterId(int masterId) {
+        this.masterId = masterId;
     }
 
-    public final void setOrder_id(int order_id) {
-        this.order_id = order_id;
-    }    
+    public int getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(int orderId) {
+        this.orderId = orderId;
+    }
+
+    @Override
+    public String toString() {
+        return "OrderMaster [masterId=" + masterId + ", orderId=" + orderId
+                + "]";
+    }
 }

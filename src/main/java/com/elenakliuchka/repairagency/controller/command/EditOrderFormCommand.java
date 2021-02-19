@@ -57,7 +57,7 @@ public class EditOrderFormCommand  extends AbstractCommand {
             
            session.setAttribute("order", orderDb);
         } catch (SQLException e) {
-            LOGGER.error("can't retrieve order:");
+            LOGGER.error(e.getMessage(), e);
         }finally {
             try {
                 dbManager.close();
@@ -65,7 +65,6 @@ public class EditOrderFormCommand  extends AbstractCommand {
                 LOGGER.error("can't retrieve orders ");
             }
         }
-
         forward(PageConstants.PAGE_MANAGER_EDIT_ORDER);
     }
 }

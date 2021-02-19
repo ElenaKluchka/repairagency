@@ -11,7 +11,6 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
@@ -35,19 +34,22 @@ public class AuthentificationFilter implements Filter {
 
     public void doFilter(ServletRequest request, ServletResponse response,
             FilterChain chain) throws IOException, ServletException {
-        LOGGER.trace("AuthentificationFilter");
+        LOGGER.info("AuthentificationFilter");
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         String path = httpRequest.getRequestURI()
                 .substring(httpRequest.getContextPath().length());
 
         HttpSession session = httpRequest.getSession(false);
         LOGGER.trace(" path:" + path);
+        LOGGER.trace(" httpRequest.getContextPath(): " + httpRequest.getContextPath());
 
         boolean isLoggedIn = (session != null
                 && session.getAttribute("loggedUser") != null);
 
         String loginURI = httpRequest.getContextPath() + "/do/login";
-        boolean isLoginRequest = httpRequest.getRequestURI().endsWith(loginURI);
+        String signupURI = httpRequest.getContextPath() + "/do/signup";
+        
+        boolean isLoginRequest = (httpRequest.getRequestURI().endsWith(loginURI)||httpRequest.getRequestURI().endsWith(signupURI));
         boolean isLoginPage = httpRequest.getRequestURI()
                 .endsWith(PageConstants.PAGE_LOGIN + ".jsp");
         LOGGER.trace("loginURI: " + loginURI);
@@ -65,7 +67,7 @@ public class AuthentificationFilter implements Filter {
             LOGGER.trace(" user isLoggedIn");
             // if (path.startsWith("do/client/")) {
             if (path.contains("/client/")) {
-                LOGGER.trace("client");
+                LOGGER.info("client");
                 httpRequest
                         .getRequestDispatcher(httpRequest.getContextPath()
                                 + PageConstants.CONTROLLER_URL
@@ -89,13 +91,13 @@ public class AuthentificationFilter implements Filter {
                         .forward(request, response);
             }
         } else if (isLoggedIn || isLoginRequest) {
-            LOGGER.trace(" user is  logged or it is a login request");
+            LOGGER.info(" user is  logged or it is a login request");
             // continues the filter chain
             // allows the request to reach the destination
             chain.doFilter(request, response);
             return;
         } else {
-            LOGGER.trace(" user is not logged");
+            LOGGER.info(" user is not logged");
             String loginPage = PageConstants.PAGE_LOGIN;
             RequestDispatcher dispatcher = httpRequest
                     .getRequestDispatcher(loginPage + ".jsp");

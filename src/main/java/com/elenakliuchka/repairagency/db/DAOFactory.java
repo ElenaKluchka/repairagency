@@ -9,6 +9,7 @@ import javax.sql.DataSource;
 import com.elenakliuchka.repairagency.db.service.AbstractEntityService;
 import com.elenakliuchka.repairagency.db.service.CustomerService;
 import com.elenakliuchka.repairagency.db.service.EmployeeService;
+import com.elenakliuchka.repairagency.db.service.OrderMasterService;
 import com.elenakliuchka.repairagency.db.service.OrderService;
 
 public class DAOFactory {
@@ -18,8 +19,8 @@ public class DAOFactory {
 
     public void open() throws SQLException {
         try {
-            if (this.connection == null || this.connection.isClosed())
-                this.connection = src.getConnection();
+            if (connection == null || connection.isClosed())
+                connection = src.getConnection();
         } catch (SQLException e) {
             throw e;
         }
@@ -27,8 +28,8 @@ public class DAOFactory {
 
     public void close() throws SQLException {
         try {
-            if (this.connection != null && !this.connection.isClosed())
-                this.connection.close();
+            if (connection != null && !connection.isClosed())
+                connection.close();
         } catch (SQLException e) {
             throw e;
         }
@@ -41,7 +42,7 @@ public class DAOFactory {
     private DAOFactory() throws Exception {
         try {
             InitialContext ctx = new InitialContext();
-            this.src = (DataSource) ctx
+            src = (DataSource) ctx
                     .lookup("java:comp/env/jdbc/RepairAgencyDB");
         } catch (Exception e) {
             throw e;
@@ -65,19 +66,21 @@ public class DAOFactory {
 
     public AbstractEntityService<?> getService(Table t) throws SQLException {
         try {
-            if (this.connection == null || this.connection.isClosed()) 
-                this.open();
+            if (connection == null || connection.isClosed()) 
+                open();
         } catch (SQLException e) {
             throw e;
         }
 
         switch (t) {
         case CUSTOMER:
-            return new CustomerService(this.connection);
+            return new CustomerService(connection);
         case EMPLOYEE:
-            return new EmployeeService(this.connection);
+            return new EmployeeService(connection);
         case ORDER:
-            return new OrderService(this.connection);
+            return new OrderService(connection);
+        case ORDER_MASTER:
+            return new OrderMasterService(connection);
         default:
             throw new SQLException("Trying to link to an unexistant table.");
         }

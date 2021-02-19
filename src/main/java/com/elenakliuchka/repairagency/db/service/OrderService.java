@@ -95,7 +95,7 @@ public class OrderService extends AbstractEntityService<Order> {
         if (order == null) {
             return;
         }
-        LOGGER.trace("Add order: " + order);
+        LOGGER.info("Add order: " + order);
         try (PreparedStatement pstmt = connection.prepareStatement(
                 SQL_ADD_ORDER, Statement.RETURN_GENERATED_KEYS)) {
             pstmt.setInt(1, order.getClient_id());
@@ -112,7 +112,6 @@ public class OrderService extends AbstractEntityService<Order> {
             // LOGGER.log(Level.SEVERE, e.getMessage(), e);
             LOGGER.error("Fail add order", e);
         }
-
     }
 
     @Override

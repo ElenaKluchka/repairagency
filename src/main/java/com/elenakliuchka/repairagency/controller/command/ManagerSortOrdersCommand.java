@@ -34,7 +34,7 @@ public class ManagerSortOrdersCommand extends AbstractCommand {
             request.setAttribute("orders", orders);
             dbManager.close();
         } catch (SQLException e) {
-            LOGGER.error("can't retrieve order:");
+            LOGGER.error(e.getMessage(), e);
         }finally {
             try {
                 dbManager.close();

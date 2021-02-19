@@ -47,7 +47,7 @@ public class ManagerOrdersCommand extends AbstractCommand {
             request.getSession().setAttribute("orders", ordersList);
             
         } catch (SQLException e) {
-            LOGGER.error("can't find orders for master:" + user.getId());
+            LOGGER.error(e.getMessage(), e);
         }finally {
             try {
                 dbManager.close();

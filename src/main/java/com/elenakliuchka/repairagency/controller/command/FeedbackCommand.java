@@ -23,8 +23,8 @@ public class FeedbackCommand extends AbstractCommand {
         String feedback = request.getParameter("feedback");
         int orderId = Integer.parseInt(request.getParameter("orderId"));
         LOGGER.trace("Set feedback for orderId: "+orderId+ " feedback: "+feedback);
-        try {
-            DAOFactory dbManager = DAOFactory.getInstance();
+        DAOFactory dbManager = DAOFactory.getInstance();
+        try {            
             OrderService orderService = (OrderService) dbManager
                     .getService(Table.ORDER);
             if (orderService.setFeedback(orderId, feedback)) {
@@ -32,10 +32,15 @@ public class FeedbackCommand extends AbstractCommand {
                         .getAttribute("customer");
                 customer.setOrders(orderService.findByUserId(customer.getId()));
                 request.getSession().setAttribute("client", customer);
-            }
-            dbManager.close();
+            }            
         } catch (SQLException e) {
-            LOGGER.trace("can't save feedback for order:" + orderId);
+            LOGGER.error(e.getMessage(), e);
+        }finally {
+            try {
+                dbManager.close();
+            } catch (SQLException e) {
+                LOGGER.error("Error while close connection");
+            }
         }
         redirect(PageConstants.PAGE_CUSTOMER_ORDERS+".jsp");
     }

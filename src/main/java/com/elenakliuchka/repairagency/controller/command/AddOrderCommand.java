@@ -21,9 +21,7 @@ public class AddOrderCommand extends AbstractCommand {
 
     @Override
     public void process() throws ServletException, IOException {
-        LOGGER.trace("ADD order command");
-
-        response.setContentType("text/html");
+        LOGGER.info("ADD order command");
         
         Order order = new Order();
         order.setName(request.getParameter("orderName"));
@@ -32,18 +30,22 @@ public class AddOrderCommand extends AbstractCommand {
         LOGGER.trace("servletPath" + request.getServletPath());
         Customer customer = (Customer) request.getSession().getAttribute("customer");
         order.setClient_id(customer.getId());
-
-        try {
-            DAOFactory dbManager = DAOFactory.getInstance();
+        DAOFactory dbManager = DAOFactory.getInstance();
+        try {            
             OrderService orderService = (OrderService) dbManager
                     .getService(Table.ORDER);
             orderService.save(order);
             order = orderService.find(order.getId());
             customer.getOrders().add(order);
-            request.getSession().setAttribute("client", customer);
-            dbManager.close();
-        } catch (SQLException e) {
-            LOGGER.trace("can't save order:" + order);
+            request.getSession().setAttribute("client", customer);           
+        } catch (SQLException e) {            
+            LOGGER.error("Error open connection to add new order" + order,e);
+        }finally {
+            try {
+                dbManager.close();
+            } catch (SQLException e) {
+                LOGGER.error("Eror while closing connection");
+            }
         }
         request.setAttribute("message", "Order successfully saved");
 

@@ -3,7 +3,6 @@ package com.elenakliuchka.repairagency.controller.command;
 import java.io.IOException;
 import java.sql.SQLException;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpSession;
 
@@ -25,7 +24,7 @@ public class LoginCommand extends AbstractCommand {
     @Override
     public void process() throws ServletException, IOException {
 
-        LOGGER.trace("Login command");
+        LOGGER.info("Login command");
 
         String name = request.getParameter("uname");
         String password = request.getParameter("psw");
@@ -36,10 +35,10 @@ public class LoginCommand extends AbstractCommand {
                     .getService(Table.CUSTOMER);
             Customer dbCustomer = customerService
                     .find(new Customer(name, password));
-            HttpSession session = request.getSession(false);
+            HttpSession session = request.getSession();
             if (dbCustomer != null) {
 
-                LOGGER.trace("Login customer " + dbCustomer);
+                LOGGER.info("Login customer " + dbCustomer);
                
                 if (session != null) {
                     session.setAttribute("customer", dbCustomer);
@@ -53,7 +52,7 @@ public class LoginCommand extends AbstractCommand {
                         + PageConstants.PAGE_CUSTOMER_ORDERS
                         + "?command=CustomerOrders");
             } else {
-                LOGGER.trace("Check employee ");
+                LOGGER.info("Check employee ");
                 EmployeeService employeeService = (EmployeeService) dbManager
                         .getService(Table.EMPLOYEE);
                 Employee dbEmployee = employeeService
@@ -85,11 +84,15 @@ public class LoginCommand extends AbstractCommand {
                             "Unknown username/password. Please retry.");
                     forward(PageConstants.PAGE_LOGIN);
                 }
-            }
-
-            dbManager.close();
+            }          
         } catch (SQLException e) {
             LOGGER.error(e.getMessage(), e);
+        }finally {
+            try {
+                dbManager.close();
+            } catch (SQLException e) {
+                LOGGER.error("Eror while closing connection");
+            }
         }
     }
 }

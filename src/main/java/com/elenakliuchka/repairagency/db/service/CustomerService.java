@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -18,6 +19,7 @@ public class CustomerService extends AbstractEntityService<Customer> {
     private static final String SQL_FIND_CUSTOMERS = "SELECT * FROM "+TABLE_NAME+" WHERE name=? and password=?";
     private static final String SQL_FIND_CUSTOMERS_BY_PARAM = "SELECT * FROM "+TABLE_NAME+" WHERE %s=?";
     private static final String SQL_FIND_CUSTOMERS_SET_BALANCE= "UPDATE "+TABLE_NAME+" SET balance = ? WHERE (id = ?)";
+    private static final String SQL_ADD_CUSTOMER = "INSERT INTO "+TABLE_NAME+" (name,email,password,phone) VALUES (?,?,?,?)";
 //    private static final String SQL_FIND_ALL_CUSTOMERS = "SELECT * FROM "+TABLE_NAME;
 
     private static final Logger LOGGER = Logger
@@ -45,11 +47,31 @@ public class CustomerService extends AbstractEntityService<Customer> {
     }
 
    
-
+    //ABLE_NAME+" (name,email,password,phone) VALUES (?,?,?,?)";
     @Override
-    public void save(Customer object) {
-        // TODO Auto-generated method stub
-
+    public void save(Customer customer) {
+      if(customer==null) {
+          return;
+      }
+      LOGGER.info("Add customer: " + customer);
+      try (PreparedStatement pstmt = connection.prepareStatement(
+              SQL_ADD_CUSTOMER, Statement.RETURN_GENERATED_KEYS)) {
+         
+          pstmt.setString(1, customer.getName());
+          pstmt.setString(2, customer.getEmail());
+          pstmt.setString(3, customer.getPassword());
+          pstmt.setString(4, customer.getPhone());
+         
+          if (pstmt.executeUpdate() > 0) {
+              try (ResultSet rs = pstmt.getGeneratedKeys()) {
+                  if (rs.next()) {
+                      customer.setId(rs.getInt(1));
+                  }
+              }
+          }
+      } catch (SQLException e) {          
+          LOGGER.error("Fail to add customer: "+customer, e);
+      }
     }
 
     @Override

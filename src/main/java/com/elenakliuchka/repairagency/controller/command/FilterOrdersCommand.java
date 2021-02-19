@@ -10,9 +10,7 @@ import org.apache.log4j.Logger;
 
 import com.elenakliuchka.repairagency.db.DAOFactory;
 import com.elenakliuchka.repairagency.db.Table;
-import com.elenakliuchka.repairagency.db.service.EmployeeService;
 import com.elenakliuchka.repairagency.db.service.OrderService;
-import com.elenakliuchka.repairagency.entity.Employee;
 import com.elenakliuchka.repairagency.entity.Order;
 import com.elenakliuchka.repairagency.util.PageConstants;
 
@@ -43,7 +41,7 @@ public class FilterOrdersCommand extends AbstractCommand {
                 request.setAttribute("message", "No search results");
             }            
         } catch (SQLException e) {
-            LOGGER.error("can't retrieve order:");
+            LOGGER.error(e.getMessage(), e);
         }finally {
             try {
                 dbManager.close();

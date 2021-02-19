@@ -9,7 +9,7 @@
 <title>Login Application</title>
 </head>
 <body>
-<div class="content">
+<div class="content" align="center">
 	<p style="color: red">${error}</p>	
 	
 	<form action="${path }/do/login" method="post" style= "width: 300px">
@@ -27,6 +27,7 @@
 	<!--  		<label> <input type="checkbox" checked="checked"
 				name="remember"> Remember me
 			</label>-->
+			<a href="${path }/signup.jsp">Registration</a>
 		</div>
 
 		<div class="container" style="background-color: #f1f1f1">

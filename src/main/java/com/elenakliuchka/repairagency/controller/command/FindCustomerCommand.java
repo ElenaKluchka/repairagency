@@ -59,12 +59,13 @@ public class FindCustomerCommand extends AbstractCommand {
          //       request.setAttribute("customer", dbCustomer);
                 session.setAttribute("customer", dbCustomer);                                
             } else {
+                session.removeAttribute("customer");
                 request.setAttribute("message", "No seatch results");
             }
             LOGGER.trace(dbCustomer);
             
         } catch (SQLException e) {
-            LOGGER.error("can't find customer "+customer);
+            LOGGER.error(e.getMessage(), e);
         }finally {
             try {
                 dbManager.close();
