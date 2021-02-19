@@ -24,8 +24,8 @@
 		        <button type="submit" class="blueBut">Save order</button>
             </div>
     </form>
-    <h3>Your balance:</h3>
-    ${client.balance}
+    Your balance:
+    ${client.balance==0?'0.00f':client.balance}
     <h3>Your orders:</h3>
     <table style="width:100%" id= "orders">
         <tr>

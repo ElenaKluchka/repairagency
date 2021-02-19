@@ -48,9 +48,7 @@ public class LoginCommand extends AbstractCommand {
                 LOGGER.trace("servletPath" + request.getServletPath());
                 LOGGER.trace("PATH " + request.getContextPath());
 
-                redirect(PageConstants.CONTROLLER_URL
-                        + PageConstants.PAGE_CUSTOMER_ORDERS
-                        + "?command=CustomerOrders");
+                redirect(PageConstants.HOME_PAGE_CUSTOMER);
             } else {
                 LOGGER.info("Check employee ");
                 EmployeeService employeeService = (EmployeeService) dbManager
@@ -65,17 +63,13 @@ public class LoginCommand extends AbstractCommand {
                             session.setAttribute("role", Role.MANAGER);
                             session.setAttribute("manager", dbEmployee);
                         }                       
-                        redirect(PageConstants.CONTROLLER_URL
-                                + PageConstants.PAGE_MANAGER_ORDERS
-                                + "?command=ManagerOrders");
+                        redirect(PageConstants.HOME_PAGE_MANAGER);
                     } else if (dbEmployee.getRole().equals(Role.MASTER)) {
                         if (session != null) {
                             session.setAttribute("role", Role.MASTER);
                             session.setAttribute("master", dbEmployee);
                         }                        
-                        redirect(PageConstants.CONTROLLER_URL
-                                + PageConstants.PAGE_MASTER_ORDERS
-                                + "?command=MasterOrders");
+                        redirect(PageConstants.HOME_PAGE_MASTER);
                     }
                 } else{
                     LOGGER.trace(" username or password is wrong for user:"

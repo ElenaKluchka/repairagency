@@ -6,6 +6,10 @@
     <welcome-file-list>
         <welcome-file>login.jsp</welcome-file>
     </welcome-file-list>
+    
+    <session-config>
+    <session-timeout>10</session-timeout>
+    </session-config>
 
     <error-page>
         <exception-type>java.lang.Throwable</exception-type>

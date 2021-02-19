@@ -21,13 +21,13 @@
             <input type="text" placeholder="Enter Username" name="uname" required> 
             
               <label for="email"><b>Email</b></label>
-            <input type="text" placeholder="Enter email" name="email" required>
+            <input type="email" placeholder="Enter email" name="email" required>
             
             <label for="phone">Phone</label>
-            <input type="text" placeholder="Enter Phone" name="phone" required>
+            <input type="tel" placeholder="Enter Phone" name="phone" pattern="[0-9]{5}[-][0-9]{7}[-][0-9]{1}" required >
             
             <label for="psw"><b>Password</b></label> 
-            <input type="password" placeholder="Enter Password" name="psw" required>            
+            <input type="password" placeholder="Enter Password" name="psw" required minlength="6" maxlength="10">            
 
             <button type="submit" class ="blueBut">Registration</button>           
         </div>

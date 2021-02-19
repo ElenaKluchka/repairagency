@@ -11,16 +11,19 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 
+import com.elenakliuchka.repairagency.entity.Role;
 import com.elenakliuchka.repairagency.util.PageConstants;
 
 /**
  * Servlet Filter implementation class AuthentificationFilter
  */
-@WebFilter({ "/do/*", "/client/*", "/manager/*", "/master/*" })
+//@WebFilter({ "/do/*", "/client/*", "/manager/*", "/master/*" })
+@WebFilter("/*")
 public class AuthentificationFilter implements Filter {
 
     private static final Logger LOGGER = Logger
@@ -32,24 +35,37 @@ public class AuthentificationFilter implements Filter {
     public void destroy() {
     }
 
+    HttpServletRequest httpRequest;
+
+    private static final String[] loginRequiredURLs = { "/do/*", "/client/*",
+            "/manager/*", "/master/*" };
+
     public void doFilter(ServletRequest request, ServletResponse response,
             FilterChain chain) throws IOException, ServletException {
         LOGGER.info("AuthentificationFilter");
-        HttpServletRequest httpRequest = (HttpServletRequest) request;
+        httpRequest = (HttpServletRequest) request;
+        // HttpServletResponse httpResponse = (HttpServletResponse) response;
         String path = httpRequest.getRequestURI()
                 .substring(httpRequest.getContextPath().length());
 
+        if (path.matches(".*(css|jpg|png|gif|js)")) {
+            chain.doFilter(request, response);
+            return;
+        }
+
         HttpSession session = httpRequest.getSession(false);
         LOGGER.trace(" path:" + path);
-        LOGGER.trace(" httpRequest.getContextPath(): " + httpRequest.getContextPath());
+        LOGGER.trace(" httpRequest.getContextPath(): "
+                + httpRequest.getContextPath());
 
         boolean isLoggedIn = (session != null
                 && session.getAttribute("loggedUser") != null);
 
         String loginURI = httpRequest.getContextPath() + "/do/login";
         String signupURI = httpRequest.getContextPath() + "/do/signup";
-        
-        boolean isLoginRequest = (httpRequest.getRequestURI().endsWith(loginURI)||httpRequest.getRequestURI().endsWith(signupURI));
+
+        boolean isLoginRequest = (httpRequest.getRequestURI().endsWith(loginURI)
+                || httpRequest.getRequestURI().endsWith(signupURI));
         boolean isLoginPage = httpRequest.getRequestURI()
                 .endsWith(PageConstants.PAGE_LOGIN + ".jsp");
         LOGGER.trace("loginURI: " + loginURI);
@@ -61,33 +77,38 @@ public class AuthentificationFilter implements Filter {
         LOGGER.trace("isLoginRequest: " + isLoginRequest + " isLoginPage: "
                 + isLoginPage);
 
-        if (isLoggedIn && (isLoginRequest || isLoginPage)) {
+        // if (isLoggedIn && (isLoginRequest || isLoginPage)) {
+        if (isLoggedIn && (isLoginPage || isLoginRequest || path.equals("/"))) {
             // the user is already logged in and he's trying to login again
             // then forward to the homepage
             LOGGER.trace(" user isLoggedIn");
             // if (path.startsWith("do/client/")) {
-            if (path.contains("/client/")) {
-                LOGGER.info("client");
-                httpRequest
-                        .getRequestDispatcher(httpRequest.getContextPath()
-                                + PageConstants.CONTROLLER_URL
-                                + PageConstants.PAGE_CUSTOMER_ORDERS
-                                + "?command=CustomerOrders")
-                        .forward(request, response);
+            Role role = (Role) session.getAttribute("role");
+            /*   if(role==null) {
+                LOGGER.info(" user not lo");
+                // continues the filter chain
+                // allows the request to reach the destination
                 chain.doFilter(request, response);
                 return;
-            } else if (path.contains("/manager/")) {
+            }*/
+            LOGGER.trace(" role" + role);
+            if (role.equals(Role.CUSTOMER)) {
+                LOGGER.info("client");
                 httpRequest
-                        .getRequestDispatcher(PageConstants.CONTROLLER_URL
-                                + PageConstants.PAGE_MANAGER_ORDERS
-                                + "?command=ManagerOrders")
+                        .getRequestDispatcher(PageConstants.HOME_PAGE_CUSTOMER)
                         .forward(request, response);
-            } else if (path.contains("/master/")) {
-                
+
+                LOGGER.debug("forward: " + PageConstants.HOME_PAGE_CUSTOMER);
+            } else if (role.equals(Role.MANAGER)) {
+                LOGGER.info("manager");
                 httpRequest
-                        .getRequestDispatcher(PageConstants.CONTROLLER_URL
-                                + PageConstants.PAGE_MASTER_ORDERS
-                                + "?command=MasterOrders")
+                        .getRequestDispatcher(PageConstants.HOME_PAGE_MANAGER)
+                        .forward(request, response);
+                // } else if ((path.contains("/master/")||path.equals("/")) &&
+                // role.equals(Role.MASTER)) {
+            } else if (role.equals(Role.MASTER)) {
+                LOGGER.info("master");
+                httpRequest.getRequestDispatcher(PageConstants.HOME_PAGE_MASTER)
                         .forward(request, response);
             }
         } else if (isLoggedIn || isLoginRequest) {
@@ -96,14 +117,29 @@ public class AuthentificationFilter implements Filter {
             // allows the request to reach the destination
             chain.doFilter(request, response);
             return;
-        } else {
+        } else if (!isLoggedIn && isLoginRequired()) {
             LOGGER.info(" user is not logged");
             String loginPage = PageConstants.PAGE_LOGIN;
             RequestDispatcher dispatcher = httpRequest
                     .getRequestDispatcher(loginPage + ".jsp");
             dispatcher.forward(request, response);
-     //       (HttpServletResponse)response.sendRedirect(loginPage + ".jsp");
+        } else {
+            chain.doFilter(request, response);
+            return;
         }
+        LOGGER.debug(" end filter");
+    }
+
+    private boolean isLoginRequired() {
+        String requestURL = httpRequest.getRequestURL().toString();
+
+        for (String loginRequiredURL : loginRequiredURLs) {
+            if (requestURL.contains(loginRequiredURL)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**

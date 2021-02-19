@@ -35,7 +35,7 @@
 				    <label	for="subject">Find by Name</label> 
 				    <input type="text" name="uname"><br>
 				Or find by <label for="subject">Phone</label>
-                <input type="text" name="phone"><br>
+                <input type="tel" name="phone"><br>
 				<button type="submit" class="blueBut">Find</button>
 			</div>
 		</form>

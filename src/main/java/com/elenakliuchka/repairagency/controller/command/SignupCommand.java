@@ -14,6 +14,7 @@ import com.elenakliuchka.repairagency.db.Table;
 import com.elenakliuchka.repairagency.db.service.CustomerService;
 import com.elenakliuchka.repairagency.entity.Customer;
 import com.elenakliuchka.repairagency.entity.Order;
+import com.elenakliuchka.repairagency.entity.Role;
 import com.elenakliuchka.repairagency.util.PageConstants;
 
 public class SignupCommand extends AbstractCommand {
@@ -43,6 +44,7 @@ public class SignupCommand extends AbstractCommand {
             HttpSession session = request.getSession();
             session.setAttribute("customer", customer);
             session.setAttribute("loggedUser", name);
+            session.setAttribute("role", Role.CUSTOMER);
         } catch (SQLException e) {
             LOGGER.error("Error open connection to add new customer" + customer,e);
         }finally {
