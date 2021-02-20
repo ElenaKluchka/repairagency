@@ -20,7 +20,7 @@
         
             <label for="uname">
             <b>Username</b></label>             
-            <input type="text" placeholder="Enter Username" name="uname" required> 
+            <input type="text" placeholder="Enter Username" name="uname" maxlength="45" required> 
             
               <label for="email"><b>Email</b></label>
             <input type="email" placeholder="Enter email" name="email" required>
@@ -29,7 +29,7 @@
             <input id="online_phone" type="tel" maxlength="50"
              name="phone"  autofocus="autofocus" required="required"
          value="+380()"
-         pattern="\+380\s?[\(][0-9]{2}[\)]{0,1}\s?\d{3}[-]{0,1}\d{2}[-]{0,1}\d{2}"
+         pattern="\+380\s?[\(]{0,1}[0-9]{2}[\)]{0,1}\s?\d{3}[-]{0,1}\d{2}[-]{0,1}\d{2}"       
         placeholder="+380(__)___-__-__" required>
             
             <label for="psw"><b>Password</b></label> 

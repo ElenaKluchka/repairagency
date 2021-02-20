@@ -37,9 +37,9 @@
 				    <input type="text" name="uname"><br>
 				Or find by <label for="subject">Phone in format +380(xx)xxx-xx-x</label><br>
                  <input id="online_phone" type="tel" maxlength="50"
-             name="phone"  autofocus="autofocus" required="required" value=""         
-         pattern="\+380\s?[\(][0-9]{2}[\)]{0,1}\s?\d{3}[-]{0,1}\d{2}[-]{0,1}\d{2}"
-        placeholder="+380(__)___-__-__" required><br>
+             name="phone"  autofocus="autofocus" value="+380()"         
+           pattern="(\+380[-_()\s]+)?|\+380\s?[(]{0,1}[0-9]{2}[)]{0,1}\s?\d{3}[-]{0,1}\d{2}[-]{0,1}\d{2}"
+        placeholder="+380(__)___-__-__" ><br>
 				<button type="submit" class="blueBut">Find</button>
 			</div>
 		</form>

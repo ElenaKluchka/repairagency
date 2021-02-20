@@ -18,9 +18,10 @@
 		<div class="container">
 			<label for="uname">
 			<b>Username</b></label> 
-			<input type="text" placeholder="Enter Username" name="uname" required> 
+			<input type="text" placeholder="Enter Username" name="uname" maxlength="45" required> 
+			<input type="text" placeholder="Enter Username" name="uname" maxlength="45" required>
 			<label for="psw"><b>Password</b></label> 
-			<input type="password" placeholder="Enter Password" name="psw" required >
+			<input type="password" placeholder="Enter Password" name="psw" minlength="6" maxlength="10" required >
 			
 
 			<button type="submit" class ="blueBut">Login</button>

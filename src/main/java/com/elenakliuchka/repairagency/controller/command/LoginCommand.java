@@ -28,7 +28,12 @@ public class LoginCommand extends AbstractCommand {
 
         String name = request.getParameter("uname");
         String password = request.getParameter("psw");
-
+        
+        if(!validate(name, password)) {
+            forward(PageConstants.PAGE_LOGIN);
+            return;
+        }
+      
         DAOFactory dbManager = DAOFactory.getInstance();    
         try {
             CustomerService customerService = (CustomerService) dbManager
@@ -72,7 +77,7 @@ public class LoginCommand extends AbstractCommand {
                         redirect(PageConstants.HOME_PAGE_MASTER);
                     }
                 } else{
-                    LOGGER.trace(" username or password is wrong for user:"
+                    LOGGER.info(" username or password is wrong for user:"
                             + name);
                     request.setAttribute("error",
                             "Unknown username/password. Please retry.");
@@ -88,5 +93,24 @@ public class LoginCommand extends AbstractCommand {
                 LOGGER.error("Eror while closing connection");
             }
         }
+    }
+    
+    private boolean validate(String name, String password) {
+        if(name==null || name.isEmpty()) {            
+            request.setAttribute("error",
+                    "Please fill all fields");
+           return false;
+        }
+        if(password==null ||password.isEmpty()) {
+            request.setAttribute("error",
+                    "Please fill all fields");
+            return false;
+        }
+        if(password.length()<6) {
+            request.setAttribute("error",
+                    "Wrong password.");
+            return false;
+        }
+        return true;
     }
 }
