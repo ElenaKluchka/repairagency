@@ -44,6 +44,9 @@ public class AuthentificationFilter implements Filter {
             FilterChain chain) throws IOException, ServletException {
         LOGGER.info("AuthentificationFilter");
         httpRequest = (HttpServletRequest) request;
+        if (request.getCharacterEncoding() == null) {
+            request.setCharacterEncoding("UTF-8");
+        }
         // HttpServletResponse httpResponse = (HttpServletResponse) response;
         String path = httpRequest.getRequestURI()
                 .substring(httpRequest.getContextPath().length());

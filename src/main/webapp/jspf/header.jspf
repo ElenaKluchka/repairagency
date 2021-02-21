@@ -1,0 +1,10 @@
+<div id="header">       
+        <ul>           
+           <!--   <li style="float:right"><a class="active" href="${path }/do/SetLocale?command=SetLocale&locale=ru" >RU</a></li>         
+             <li style="float:right"><a  href="${path }/do/SetLocale?command=SetLocale&locale=en">EN</a></li> -->
+             
+              <li style="float:right"><a class="active" href="?locale=ru" >RU</a></li>         
+              <li style="float:right"><a  href="?locale=en">EN</a></li>
+        </ul>
+ </div>
+    

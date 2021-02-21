@@ -26,8 +26,9 @@ public class EditOrderCommand extends AbstractCommand {
     @Override
     public void process() throws ServletException, IOException {
 
-        Customer customer = (Customer) request.getSession()
-                .getAttribute("customer");
+        
+        //Customer customer = (Customer) request.getSession()
+         //       .getAttribute("customer");
         int orderId = Integer.parseInt(request.getParameter("orderId"));
 
         Double price = Double.parseDouble(request.getParameter("price"));

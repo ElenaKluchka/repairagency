@@ -17,6 +17,7 @@ import com.elenakliuchka.repairagency.db.service.OrderService;
 import com.elenakliuchka.repairagency.entity.Customer;
 import com.elenakliuchka.repairagency.entity.Order;
 import com.elenakliuchka.repairagency.util.PageConstants;
+import com.elenakliuchka.repairagency.util.ValidationUtils;
 
 public class FindCustomerCommand extends AbstractCommand {
     
@@ -29,9 +30,17 @@ public class FindCustomerCommand extends AbstractCommand {
         HttpSession session = request.getSession(true);
         String name = request.getParameter("uname");
         String phone = request.getParameter("phone");
+        
+        LOGGER.trace("name:" +name);
         Customer customer = new Customer();
-        customer.setName(name);
-        customer.setPhone(phone);
+        customer.setName(name.trim());
+        customer.setPhone(phone.trim());
+        
+        
+        if(!validate(customer)) {
+            forward(PageConstants.PAGE_MANAGER_CUSTOMERS);
+            return;
+        }
         
         DAOFactory dbManager = DAOFactory.getInstance();    
         try {
@@ -56,10 +65,11 @@ public class FindCustomerCommand extends AbstractCommand {
                 for(Order order: ordersList){
                     order.setMasters(employeeService.findEmployeesForOrder(order));
                 }
-         //       request.setAttribute("customer", dbCustomer);
-                session.setAttribute("customer", dbCustomer);                                
+               // session.setAttribute("customer", dbCustomer);                                
+                request.setAttribute("customer", dbCustomer);
             } else {
-                session.removeAttribute("customer");
+             //   session.removeAttribute("customer");
+                request.setAttribute("searchCustomer", customer);            
                 request.setAttribute("message", "No search results");
             }
             LOGGER.trace(dbCustomer);
@@ -75,5 +85,29 @@ public class FindCustomerCommand extends AbstractCommand {
         }
 
         forward(PageConstants.PAGE_MANAGER_CUSTOMERS);
+    }
+    
+    private boolean validate(Customer customer) {
+        String name= customer.getName();
+        String phone= customer.getPhone();
+        LOGGER.trace("name:" +name);
+        if( (name==null || name.isEmpty())&& (phone==null || phone.isEmpty()|| phone.equals("+380()"))) {
+            request.setAttribute("searchCustomer", customer);            
+            request.setAttribute("error", "Please fill at least one field");
+            LOGGER.trace("empty fields");
+            return false;
+        }
+        if(ValidationUtils.isValidName(name)) {
+            return true;
+        }
+        
+        String resultString = ValidationUtils.validatePhone(phone);
+        if(!resultString.isEmpty()) {
+            request.setAttribute("searchCustomer",resultString);
+            request.setAttribute("error", "Wrong name and phone");
+            return false;
+        }    
+     
+        return true;
     }
 }

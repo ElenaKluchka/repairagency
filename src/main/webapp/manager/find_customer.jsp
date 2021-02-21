@@ -27,6 +27,7 @@
 		</ul>
 	</div>
 	<div id="sidebar">
+	<p style="color: red">${error}</p>  
 		<br>
 		<form action="${path }/do/manager/findCustomer" >
 			<h3 style="text-align: center">Find customer</h3>
@@ -34,10 +35,11 @@
 			<div class="container">
 				<input type="hidden" name="command" value="FindCustomer"> 
 				    <label	for="subject">Find by Name</label> 
-				    <input type="text" name="uname"><br>
+				    <input type="text" name="uname" value="${searchCustomer.name }" placeholder="name"><br>
 				Or find by <label for="subject">Phone in format +380(xx)xxx-xx-x</label><br>
                  <input id="online_phone" type="tel" maxlength="50"
-             name="phone"  autofocus="autofocus" value="+380()"         
+                 value="${searchCustomer.phone}"
+             name="phone"  autofocus="autofocus"         
            pattern="(\+380[-_()\s]+)?|\+380\s?[(]{0,1}[0-9]{2}[)]{0,1}\s?\d{3}[-]{0,1}\d{2}[-]{0,1}\d{2}"
         placeholder="+380(__)___-__-__" ><br>
 				<button type="submit" class="blueBut">Find</button>

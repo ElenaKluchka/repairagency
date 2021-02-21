@@ -24,10 +24,12 @@ public class AddOrderCommand extends AbstractCommand {
         LOGGER.info("ADD order command");
         
         Order order = new Order();
+        request.setCharacterEncoding("UTF-8");
         order.setName(request.getParameter("orderName"));
         order.setDescription(request.getParameter("orderDescription"));
 
         LOGGER.trace("servletPath" + request.getServletPath());
+        LOGGER.trace("add order:"+order);
         Customer customer = (Customer) request.getSession().getAttribute("customer");
         order.setClient_id(customer.getId());
         DAOFactory dbManager = DAOFactory.getInstance();

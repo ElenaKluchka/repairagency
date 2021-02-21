@@ -29,6 +29,8 @@ public class FilterOrdersCommand extends AbstractCommand {
             String[] stateResults = request.getParameterValues("state");
             String[] workStateResults = request.getParameterValues("work_state");
             
+            LOGGER.trace("stateResults: "+stateResults+ " workStateResults"+workStateResults);
+            
             int masterId = Integer.parseInt(request.getParameter("masters"));
             OrderService orderService = (OrderService) dbManager.getService(Table.ORDER);
             List<Order> orders= orderService.findFilterSorted(stateResults, workStateResults, masterId);  

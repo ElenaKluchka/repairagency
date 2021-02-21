@@ -32,7 +32,7 @@ public class SetCustomerBalanceCommand extends AbstractCommand {
             if (customerService.setBalance(customerId, balance)) {
                 Customer customer = (Customer) request.getSession()
                         .getAttribute("customer");
-                customer.setBalance(balance);
+               customer.setBalance(balance+customer.getBalance());
                 request.getSession().setAttribute("customer", customer);
             }else {
                 request.setAttribute("error_message", "Error set customer balance");

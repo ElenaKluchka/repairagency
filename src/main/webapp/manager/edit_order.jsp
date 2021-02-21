@@ -26,7 +26,7 @@
 		</ul>
 	</div>
 	<div class="container">
-	    <form action="${path }/do/client/editOrder" method="post" style="width:400px">
+	    <form action="${path }/do/manager/editOrder" method="post" style="width:400px">
 	      <input type="hidden" name="command" value="EditOrder">
 	      <input type="hidden" name="orderId" value="${order.id }">
         <h3 style="text-align: center">Edit Order</h3>

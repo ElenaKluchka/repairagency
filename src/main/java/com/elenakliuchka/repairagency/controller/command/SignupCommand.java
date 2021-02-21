@@ -16,6 +16,9 @@ import com.elenakliuchka.repairagency.entity.Customer;
 import com.elenakliuchka.repairagency.entity.Order;
 import com.elenakliuchka.repairagency.entity.Role;
 import com.elenakliuchka.repairagency.util.PageConstants;
+import com.elenakliuchka.repairagency.util.ValidationUtils;
+
+import exception.NotUniqueException;
 
 public class SignupCommand extends AbstractCommand {
 
@@ -30,34 +33,70 @@ public class SignupCommand extends AbstractCommand {
         String password = request.getParameter("psw");
         String email = request.getParameter("email");
         String phone = request.getParameter("phone");
+        Customer customer = new Customer(name.trim(),password.trim());
+        customer.setEmail(email.trim());
+        customer.setPhone(phone.trim());
         
-        Customer customer = new Customer(name,password);
-        customer.setEmail(email);
-        customer.setPhone(phone);
+        if(!validate(name, password,email,phone)) {
+            request.setAttribute("newCustomer", customer);
+            forward(PageConstants.PAGE_SIGNUP);
+            return;
+        }
+        
+      
  
         DAOFactory dbManager = DAOFactory.getInstance();
         try {            
             CustomerService customerService = (CustomerService) dbManager
                     .getService(Table.CUSTOMER);
-            customerService.save(customer);
+            try {
+                customerService.save(customer);
+            } catch (NotUniqueException e) {
+                LOGGER.error(e.getMessage(),e);
+                request.setAttribute("error", e.getMessage());
+                request.setAttribute("newCustomer", customer);
+                forward(PageConstants.PAGE_SIGNUP);
+                return;
+            }
             customer.setOrders( new ArrayList<Order>());
             HttpSession session = request.getSession();
             session.setAttribute("customer", customer);
             session.setAttribute("loggedUser", name);
             session.setAttribute("role", Role.CUSTOMER);
         } catch (SQLException e) {
-            LOGGER.error("Error open connection to add new customer" + customer,e);
+            LOGGER.error(e.getMessage(),e);            
         }finally {
             try {
                 dbManager.close();
             } catch (SQLException e) {
-                LOGGER.error("Eror while closing connection");
+                LOGGER.error(e.getMessage(),e);
             }
         }
         request.setAttribute("message", "Order successfully saved");
 
         redirect(PageConstants.PAGE_CUSTOMER_ORDERS+".jsp");
     }
-
-
+    
+    private boolean validate(String name, String password, String email, String phone) {
+        
+        String resultString= ValidationUtils.validateNameAndPassword(name, password);
+        if(!resultString.isEmpty()) {
+            request.setAttribute("error",resultString); 
+            return false;
+        }        
+        
+        resultString = ValidationUtils.validateEmail(email);
+        if(!resultString.isEmpty()) {
+            request.setAttribute("error",resultString); 
+            return false;
+        }
+        
+        resultString = ValidationUtils.validatePhone(phone);
+        if(!resultString.isEmpty()) {
+            request.setAttribute("error",resultString); 
+            return false;
+        }    
+     
+        return true;
+    }
 }

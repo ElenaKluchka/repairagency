@@ -13,7 +13,11 @@ import com.elenakliuchka.repairagency.db.Table;
 import com.elenakliuchka.repairagency.db.service.OrderService;
 import com.elenakliuchka.repairagency.entity.Customer;
 import com.elenakliuchka.repairagency.util.PageConstants;
-
+/**
+ * Retrieve ordeers for logged customer
+ * @author kos
+ *
+ */
 public class CustomerOrdersCommand extends AbstractCommand {
     private static final Logger LOGGER = Logger.getLogger(LoginCommand.class);
 

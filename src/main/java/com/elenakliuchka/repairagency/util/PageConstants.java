@@ -23,6 +23,8 @@ public class PageConstants {
     public static final String CONTROLLER_URL = "/do";
 
     public static final String PAGE_LOGIN = "/login";
+    
+    public static final String PAGE_SIGNUP = "/signup";
 
     public static final String PAGE_NOT_FOUND = "/error/page-not-found";
 
@@ -45,5 +47,5 @@ public class PageConstants {
             + PAGE_MANAGER_ORDERS + "?command=ManagerOrders";
 
     public static final String HOME_PAGE_MASTER = CONTROLLER_URL
-            + PAGE_MASTER_ORDERS + "?command=MasterOrders";
+            + PAGE_MASTER_ORDERS + "?command=MasterOrders";    
 }
