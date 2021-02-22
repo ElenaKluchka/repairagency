@@ -17,19 +17,15 @@
 			<tr>
 				<td>${order.id}</td>
 				<td>${order.name}</td>
-<!-- 				<td>${order.description}</td> -->
-				<td>${order.date.dayOfMonth}.${order.date.month.value}.${order.date.year}</td>
-				<!--      <td>${order.date}</td>-->
-
-				<td>${order.workState}</td> 
-		<!-- 		     <c:if test="${ order.workState eq 'NEW'}">           
-                        <button id="myBtn"	onclick="changeOrderState('${order.id}');"> Change to: In work</button>
-					</c:if> <c:if test="${ order.workState eq 'IN_WORK'}">          
-                       <button id="myBtn" onclick="changeOrderState('${order.id}');">Change to: Finished</button>
-					</c:if> -->
+				<td>     
+				    <fmt:parseDate  value="${order.date}"  type="date" pattern="yyyy-MM-dd" var="parsedDate" />
+                    <fmt:formatDate value="${parsedDate}" type="date" pattern="dd.MM.yyyy" var="stdDatum" />
+                    ${stdDatum }
+                </td>			
+				<td>${order.workState}</td>
 				<td><button id="myBtn" 
 				onclick="showDetailsModal('${order.id}','${order.name}',
-				'${order.date.dayOfMonth}.${order.date.month.value}.${order.date.year}','${order.description}','${order.workState}');">Details</button></td>				
+				'${stdDatum }','${order.description}','${order.workState}');">Details</button></td>				
 						
 			</tr>
 		</c:forEach>

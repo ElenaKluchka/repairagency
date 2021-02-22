@@ -23,7 +23,11 @@ public class CustomerOrdersCommand extends AbstractCommand {
 
     @Override
     public void process() throws ServletException, IOException {
-
+        
+        if(request.getAttribute("locale")!=null) {
+            request.setAttribute("command", "CustomerOrders");
+            forward(PageConstants.PAGE_CUSTOMER_ORDERS);
+        }
         Customer customer = (Customer) request.getSession().getAttribute("customer");
         DAOFactory dbManager = DAOFactory.getInstance();
         OrderService orderService;
@@ -34,6 +38,7 @@ public class CustomerOrdersCommand extends AbstractCommand {
             if (session != null) {
                 session.setAttribute("client", customer);
             }
+            request.setAttribute("command", "CustomerOrders");
            
         } catch (SQLException e) {
             LOGGER.error(e.getMessage(), e);

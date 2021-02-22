@@ -4,7 +4,7 @@
 <%@ include file="/jspf/logged_user_head.jspf" %>
 <body>
 <%@ include file="/jspf/header.jspf" %>  <!--   <fmt:message key=""/> -->
-    
+
     <form action="${path }/do/client/addOrder" method="post" style="width:400px">
         <h3 style="text-align: center"><fmt:message key="orders_jsp.label.create"/></h3>
             <div class="container">     
@@ -33,14 +33,14 @@
             
         </tr>
         <c:forEach items="${client.orders}" var="order" varStatus="count">   
-        <tr>
-      <!--     <td> <c:out value="${count.index+1}" /></td> -->
+        <tr>      
             <td>${order.id}</td>
             <td>${order.name}</td>
             <td>${order.description}</td>
             <td>${order.price}</td>
-            <td>${order.date.dayOfMonth}.${order.date.month.value}.${order.date.year}</td>
-         <!--      <td>${order.date}</td>-->
+            <td>            
+                <my:date dat="${order.date}"/>
+            </td>
             <td>${order.managementState=='NEW'?' wait for payment':order.managementState}</td>
             <td>${order.workState=='NEW'?'in work':order.workState}
             </td>
@@ -48,7 +48,6 @@
             <td>
                   <c:if test = "${ order.workState eq 'FINISHED'}">   
                  <c:if test = "${ empty order.feedback}">
-                   <!--      <input type="button" value="Leave feedback " onclick="fbLikeDump();" /> -->
                         <button id="myBtn" onclick="showFeedbackModal('${order.id}');"><fmt:message key="orders_jsp.button.feedback"/></button>
                  </c:if>
                  <c:if test = "${not empty order.feedback}">

@@ -1,0 +1,32 @@
+
+<c:choose>
+    <c:when test="${command eq null}">
+        <li style="float: right">
+        <a class="${lang eq 'ru'? 'active':''}"  href="?locale=ru">RU</a></li>
+        <li style="float: right"><a class="${lang eq 'en'? 'active':''}" href="?locale=en">EN</a></li>
+    </c:when>
+    <c:otherwise>
+		<li style="float: right">
+		  <a class="${lang eq 'ru'? 'active':''}"  href="?command=${command}&locale=ru">RU</a>
+		</li>
+		<li style="float: right">
+		   <a class="${lang eq 'en'? 'active':''}"href="?command=${command}&locale=en">EN</a>
+		</li>
+	</c:otherwise>
+</c:choose>
+
+<c:choose>
+	<c:when test="${loggedUser eq null}">
+		<li style="float: right">
+		      <a href="${path }/login.jsp">
+		          <fmt:message key="header_jspf.link.login" /> 
+		      </a></li>
+	</c:when>
+	<c:otherwise>
+		<li style="float: right">
+		      <a href="${path }/do/logout?command=Logout">
+		      <fmt:message	key="header_jspf.link.logout" /> 
+		     </a>
+		</li>
+	</c:otherwise>
+</c:choose>

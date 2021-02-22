@@ -17,15 +17,15 @@
                 <tr>
                <td> Name: </td> <td>${order.name}</td></tr>
                <tr>
-                <td>Date: </td><td>${order.date.dayOfMonth}.${order.date.month.value}.${order.date.year}</td>
+                <td>Date: </td><td> <my:date dat="${order.date}"/></td>
                 </tr>
                 <tr>  <td>Description: </td><td>${order.description}</td></tr>
                 <tr><td>Work state:  </td><td>${order.workState}</td></tr>
                 <tr><td>Price:   </td>
-                    <td><input type="number" name ="price" value="${order.price}" min="0" step=".01">
-                             <!--  <button id="setPriceBut${order.id}" onclick="setPrice('${order.id}');">Set price</button><br> --> 
-                               </td>
-                               </tr>
+                    <td>
+                        <input type="number" name ="price" value="${order.price}" min="0" step=".01">                              
+                     </td>
+                </tr>
                <tr>
                <td>Payment state: </td>
 					<td><select name="managementState" size=1 >

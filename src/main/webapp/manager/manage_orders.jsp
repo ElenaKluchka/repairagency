@@ -1,9 +1,17 @@
 <%@ include file="/jspf/page_taglib.jspf" %>
+
 <html>
 <c:set var="title" value="Manage orders" />
 <%@ include file="/jspf/logged_user_head.jspf" %>
 <body>
-	<%@ include file="manager_header.jspf" %>
+	<div id="header">       
+        <ul>
+            <li><a class="active" href="">Manage orders</a></li>
+            <li><a href="${path }/manager/find_customer.jsp">Find customer</a></li>
+            
+            <%@ include file="/jspf/header_right_part.jspf" %>
+        </ul>
+    </div>
 	<div id="sidebar">
 		<h2 class="filter">Filter BY</h2>
 		<form action="${path }/do/manager/filter">
@@ -62,29 +70,20 @@
 				<tr>
 					<td>${order.id}</td>
 					<td>${order.name}</td>
-					<td>${order.date.dayOfMonth}.${order.date.month.value}.${order.date.year}</td>
+					<td>					   
+					   <my:date dat="${order.date}"/>
+                    </td>
 					<td>${order.managementState}</td>
 					<td>${order.workState}</td>
 					<td>
-					${order.price}
-    	<!-- 				<c:choose>
-	                        <c:when test="${order.price >0}">
-	                        ${order.price}
-	                        </c:when>
-	                        <c:otherwise>
-	                           <input type="number" id ="price${order.id}">
-	                           <button id="setPriceBut${order.id}" onclick="setPrice('${order.id}');">Set price</button>
-	                        </c:otherwise>
-                        </c:choose>	
-                         -->
+					${order.price}    
 					</td>
-					<td><c:forEach items="${order.masters}" var="master"
-							varStatus="count">
-                        ${master.name}<br>
-						</c:forEach></td>
+					<td>
+					   <my:masters par="${order }"/>
+					</td>
 					<td><button id="myBtn"
 							onclick="showDetailsModal('${order.id}','${order.name}',
-                '${order.date.dayOfMonth}.${order.date.month.value}.${order.date.year}','${order.description}','${order.workState}');">Details</button></td>
+							'${stdDatum }','${order.description}','${order.workState}');">Details</button></td>
 
 				</tr>
 			</c:forEach>

@@ -13,7 +13,6 @@ import com.elenakliuchka.repairagency.db.Table;
 import com.elenakliuchka.repairagency.db.service.EmployeeService;
 import com.elenakliuchka.repairagency.db.service.OrderMasterService;
 import com.elenakliuchka.repairagency.db.service.OrderService;
-import com.elenakliuchka.repairagency.entity.Customer;
 import com.elenakliuchka.repairagency.entity.Order;
 import com.elenakliuchka.repairagency.entity.OrderManagmentState;
 import com.elenakliuchka.repairagency.entity.OrderMaster;
