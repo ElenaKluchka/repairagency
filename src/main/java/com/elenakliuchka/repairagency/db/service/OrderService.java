@@ -19,11 +19,11 @@ public class OrderService extends AbstractEntityService<Order> {
     private final static String TABLE_NAME = "order";
 
     private static final String SQL_FIND_ORDER_BY_CUSTOMER_ID = "SELECT * FROM repair_agency.order WHERE customer_id=? ORDER BY work_state, managment_state";
-  /*  private static final String SQL_FIND_ALL_ORDERS = "SELECT od.id, od.name,od.description, od.price, od.date, od.managment_state, od.work_state,"
+    /*  private static final String SQL_FIND_ALL_ORDERS = "SELECT od.id, od.name,od.description, od.price, od.date, od.managment_state, od.work_state,"
             + " e.id as master_id, e.name as master_name "
             + "FROM repair_agency.order od, repair_agency.order_master om, employee e WHERE od.id=om.order_id AND e.id = om.master_id ORDER BY date DESC";
     */
-    private static final String SQL_FIND_ALL_ORDERS = "SELECT * FROM repair_agency.order od ORDER BY date DESC";
+    private static final String SQL_FIND_ALL_ORDERS = "SELECT * FROM repair_agency.order ORDER BY date DESC ";
 
     private static final String SQL_FIND_ALL_ORDERS_SORT = "SELECT * FROM repair_agency.order ORDER BY ";
 
@@ -47,7 +47,9 @@ public class OrderService extends AbstractEntityService<Order> {
     // managment_state =?
     // AND work_state=?
     private static final String SQL_UPDATE_ORDER = "UPDATE repair_agency.order SET price= ?, managment_state=?  WHERE id = ?";
-   
+    // select count(*) from users
+    private static final String SQL_COUNT_ORDERS = "SELECT COUNT(*) FROM  repair_agency.order";
+
     private static final Logger LOGGER = Logger
             .getLogger(OrderService.class.getName());
 
@@ -56,11 +58,14 @@ public class OrderService extends AbstractEntityService<Order> {
     }
 
     @Override
-    public List<Order> findAll(int start, int max) {
+    public List<Order> findAll(int offset, int limit) {
         List<Order> orders = new ArrayList<>();
 
+        String queryString = SQL_FIND_ALL_ORDERS +querylimit(offset, limit);
+
+        LOGGER.trace(queryString);
         try (Statement st = connection.createStatement()) {
-            try (ResultSet rs = st.executeQuery(SQL_FIND_ALL_ORDERS)) {
+            try (ResultSet rs = st.executeQuery(queryString)) {
                 while (rs.next()) {
                     orders.add(retrieveOrder(rs));
                 }
@@ -70,7 +75,18 @@ public class OrderService extends AbstractEntityService<Order> {
         }
         return orders;
     }
- /*   
+
+    private String querylimit(int offset, int limit) {
+        StringBuilder strBuilder = new StringBuilder();
+        if (limit > 0) {
+            strBuilder.append("LIMIT")
+                    .append(offset > 0 ? String.format(" %d, ", offset) : " ")
+                    .append(limit);
+        }
+        return strBuilder.toString();
+    }
+
+    /*   
     private Order retrieveOrderWithMaster(ResultSet rs) throws SQLException {
         Order order = new Order();
         order.setId(rs.getInt("id"));
@@ -89,7 +105,7 @@ public class OrderService extends AbstractEntityService<Order> {
         order.setEmployee(master);
         return order;
     }
-*/
+    */
     @Override
     public void save(Order order) {
         if (order == null) {
@@ -140,8 +156,20 @@ public class OrderService extends AbstractEntityService<Order> {
     }
 
     @Override
-    public Long getCount() {
-        return null;
+    public int getCount() {
+        int ordersCount = 0;
+
+        try (Statement st = connection.createStatement()) {
+            try (ResultSet rs = st.executeQuery(SQL_FIND_ALL_ORDERS)) {
+                if (rs.next()) {
+                    ordersCount = rs.getInt(1);
+                }
+            }
+        } catch (SQLException e) {
+            LOGGER.error("Fail to count orders", e);
+        }
+        LOGGER.trace("count orders:"+ordersCount);
+        return ordersCount;
     }
 
     public boolean setFeedback(int id, String feedback) {
@@ -181,9 +209,9 @@ public class OrderService extends AbstractEntityService<Order> {
         }
         return false;
     }
-    
+
     public boolean updateOrder(Order order) {
-        if (order==null) {
+        if (order == null) {
             return false;
         }
         try (PreparedStatement pstmt = connection
@@ -271,6 +299,7 @@ public class OrderService extends AbstractEntityService<Order> {
     }
 
     private Boolean isFirstParam = true;
+
     public List<Order> findFilterSorted(String[] stateResults,
             String[] workStateResults, int masterId) {
         if ((stateResults == null || stateResults.length == 0)
@@ -294,7 +323,7 @@ public class OrderService extends AbstractEntityService<Order> {
 
         sqlBuilder.append(generateQueryParam(stateResults,
                 " managment_state IN(", paramsSet));
-        LOGGER.trace("isFirstParam: "+isFirstParam);
+        LOGGER.trace("isFirstParam: " + isFirstParam);
         sqlBuilder.append(generateQueryParam(workStateResults,
                 " work_state IN(", paramsSet));
         /*
@@ -323,13 +352,13 @@ public class OrderService extends AbstractEntityService<Order> {
                 for (String state : stateResults) {
                     pStatement.setString(curr, state);
                     ++curr;
-                }               
+                }
             }
             if (workStateResults != null && workStateResults.length > 0) {
                 for (String state : workStateResults) {
                     pStatement.setString(curr, state);
                     ++curr;
-                }               
+                }
             }
             LOGGER.debug(pStatement);
 
@@ -345,12 +374,12 @@ public class OrderService extends AbstractEntityService<Order> {
     }
 
     private String generateQueryParam(String[] stateResults, String query,
-             Integer paramsSet) {
+            Integer paramsSet) {
         if (stateResults == null || stateResults.length == 0) {
             return "";
         }
         StringBuilder sqlBuilder = new StringBuilder();
-        LOGGER.trace("isFirstParam: "+isFirstParam);
+        LOGGER.trace("isFirstParam: " + isFirstParam);
         if (!isFirstParam) {
             sqlBuilder.append(" AND ");
         }

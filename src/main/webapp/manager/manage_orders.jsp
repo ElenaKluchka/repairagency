@@ -1,29 +1,9 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ include file="/jspf/page_taglib.jspf" %>
 <html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"
-	name="Login">
-<link href="${path }/css/modal.css" rel="stylesheet" type="text/css"
-	media="all" />
-<link href="${path }/css/repairagency.css" rel="stylesheet"
-	type="text/css" media="all" />
-<link rel="shortcut icon" href="#">
-<script type="text/javascript" src="${path }/js/jquery-3.5.1.min.js"></script>
-<script type="text/javascript" src="${path }/js/modal.js"></script>
-<title>Welcome</title>
-</head>
+<c:set var="title" value="Manage orders" />
+<%@ include file="/jspf/logged_user_head.jspf" %>
 <body>
-	<div id="header">		
-		<ul>
-			<li><a class="active" href="">Manage orders</a></li>
-			<li><a href="${path }/manager/find_customer.jsp">Find customer</a></li>
-			
-			 <li style="float:right"><a class="activeLan" href="#about">RU</a></li>			
-			 <li style="float:right"><a  href="#about">EN</a></li>
-		</ul>
-	</div>
+	<%@ include file="manager_header.jspf" %>
 	<div id="sidebar">
 		<h2 class="filter">Filter BY</h2>
 		<form action="${path }/do/manager/filter">
@@ -111,12 +91,26 @@
 			</c:otherwise>
 			</c:choose>
 		</table>
-		<br>
-		<form action="${path }/do/logout" method="get">
-			<input type="hidden" id="filfI" name="command" value="Logout">
-			<input type="submit" value="Logout">
-		</form>
+	<br>
+	
+<!-- Pagination -->
+
+	<c:choose>
+        <c:when test="${page == 1}">Previous </c:when>
+        <c:otherwise>
+            <a href="${path }/do/manager/manage_orders?command=ManagerOrders&page=${page-1}">Previous</a>
+        </c:otherwise>
+    </c:choose>
+    
+    <c:choose>
+        <c:when test="${page == maxPage}">Next</c:when>
+        <c:otherwise>
+            <a href="${path }/do/manager/manage_orders?command=ManagerOrders&page=${page+1}">Next</a>
+        </c:otherwise>
+    </c:choose>
 	</div>
+	
+<!-- Modal window to view details of order -->	
 	<div id="myModal" class="modal">
 
 		<!-- Modal content -->

@@ -77,8 +77,8 @@ public class EmployeeService extends AbstractEntityService<Employee> {
     }
 
     @Override
-    public Long getCount() {
-        return null;
+    public int getCount() {
+        return 0;
     }
 
     @Override

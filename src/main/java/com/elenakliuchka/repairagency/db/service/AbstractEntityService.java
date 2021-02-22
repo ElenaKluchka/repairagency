@@ -21,7 +21,7 @@ public abstract class AbstractEntityService<T> {
     
     public abstract T find(T object);
     
-    public abstract Long getCount();
+    public abstract int getCount();
     
     protected final String tableName;
     

@@ -1,31 +1,9 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ include file="/jspf/page_taglib.jspf" %>
 <html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"
-	name="Login">
-<link href="${path }/css/modal.css" rel="stylesheet" type="text/css"
-	media="all" />
-<link href="${path }/css/repairagency.css" rel="stylesheet"
-	type="text/css" media="all" />
-<link rel="shortcut icon" href="#">
-<script type="text/javascript" src="${path }/js/jquery-3.5.1.min.js"></script>
-<script type="text/javascript" src="${path }/js/modal.js"></script>
-<script type="text/javascript" src="${path }/js/repairagency.js"></script>
-<title>Welcome</title>
-</head>
+<c:set var="title" value="Find customer" />
+<%@ include file="/jspf/logged_user_head.jspf" %>
 <body>
-	<div id="header">
-		<ul>
-			<li><a href="${path }/manager/manage_orders.jsp">Manage
-					orders</a></li>
-			<li><a class="active" href="">Find customer</a></li>
-
-			<li style="float: right"><a class="activeLan" href="#about">RU</a></li>
-			<li style="float: right"><a href="#about">EN</a></li>
-		</ul>
-	</div>
+	<%@ include file="manager_header.jspf" %>
 	<div id="sidebar">
 	<p style="color: red">${error}</p>  
 		<br>

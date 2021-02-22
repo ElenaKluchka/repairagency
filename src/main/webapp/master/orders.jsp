@@ -1,18 +1,9 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ include file="/jspf/page_taglib.jspf" %>
 <html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"
-	name="Login">
-<link href="${path }/css/modal.css" rel="stylesheet" type="text/css"
-	media="all" />
-	<link href="${path }/css/repairagency.css" rel="stylesheet" type="text/css" media="all" />
-<script type="text/javascript" src="${path }/js/jquery-3.5.1.min.js"></script>
-<script type="text/javascript" src="${path }/js/modal.js"></script>
-<title>Welcome</title>
-</head>
+<c:set var="title" value="Manage orders" />
+<%@ include file="/jspf/logged_user_head.jspf" %>
 <body>
+<%@ include file="/jspf/header.jspf" %>
 	<h3>Your orders:</h3>
 	<table style="width: 100%" id= "orders">
 		<tr>

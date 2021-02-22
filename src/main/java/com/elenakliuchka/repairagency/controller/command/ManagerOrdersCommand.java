@@ -20,20 +20,35 @@ import com.elenakliuchka.repairagency.util.PageConstants;
 
 public class ManagerOrdersCommand extends AbstractCommand {
     private static final Logger LOGGER = Logger.getLogger(ManagerOrdersCommand.class);
+    
+    private static final int ordersPerPage = 3;
 
     @Override
     public void process() throws ServletException, IOException {
-
+        LOGGER.info("Get orders for manager");
         HttpSession session = request.getSession();
-        Employee user = (Employee) session.getAttribute("manager");
+        Employee user = (Employee) session.getAttribute("manager");        
+             
+        int page = 1;
+        if(request.getParameter("page") != null)
+            page = Integer.parseInt(request.getParameter("page"));   
+
+        LOGGER.trace("page: " + page);
+        System.out.println("ordersPerPage: " + ordersPerPage);
+        
         DAOFactory dbManager = DAOFactory.getInstance();       
         try {
             OrderService orderService = (OrderService) dbManager.getService(Table.ORDER);
             
-            List<Order> ordersList= orderService.findAll(0,3);
+            List<Order> ordersList= orderService.findAll((page-1)*ordersPerPage,ordersPerPage);
             
-            EmployeeService employeeService = (EmployeeService)dbManager.getService(Table.EMPLOYEE);
+            int ordersNumber = orderService.getCount();
+            int maxPage = (int)Math.ceil((double)ordersNumber / ordersPerPage);
+        
+            request.setAttribute("page", page);        
+            request.setAttribute("maxPage", maxPage);
             
+            EmployeeService employeeService = (EmployeeService)dbManager.getService(Table.EMPLOYEE);            
             for(Order order: ordersList){
                 order.setMasters(employeeService.findEmployeesForOrder(order));
             }

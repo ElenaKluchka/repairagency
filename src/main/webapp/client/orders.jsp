@@ -1,43 +1,35 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ include file="/jspf/page_taglib.jspf" %>
 <html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"
-    name="Login">
-    <link href="${path }/css/modal.css" rel="stylesheet" type="text/css" media="all" />
-     <link href="${path }/css/repairagency.css" rel="stylesheet" type="text/css" media="all" />
-     <link rel="shortcut icon" href="#">  
-    <script type="text/javascript" src="${path }/js/jquery-3.5.1.min.js"></script>
-    <script type="text/javascript" src="${path }/js/modal.js"></script>
-<title>Welcome</title>
-</head>
+<c:set var="title" value="Manage orders" />
+<%@ include file="/jspf/logged_user_head.jspf" %>
 <body>
-    <!-- <h1>Hello ${client.name}</h1> -->
+<%@ include file="/jspf/header.jspf" %>  <!--   <fmt:message key=""/> -->
+    
     <form action="${path }/do/client/addOrder" method="post" style="width:400px">
-        <h3 style="text-align: center">Create your order</h3>
+        <h3 style="text-align: center"><fmt:message key="orders_jsp.label.create"/></h3>
             <div class="container">     
 		        <input type="hidden" name="command" value="AddOrder">
-		        Name: <input type="text" id="orderName" name="orderName" required> <br>
-		        <br> Description: <textarea name="orderDescription" id="orderDescription" 
-		             class="description" placeholder="Write description of your problem..."  maxlength="500" required></textarea>
-		        <button type="submit" class="blueBut">Save order</button>
+		        <fmt:message key="order.name"/>: <input type="text" id="orderName" name="orderName" required> <br>
+		        <br> <fmt:message key="order.description"/>: <textarea name="orderDescription" id="orderDescription" 
+		             class="description" placeholder=" <fmt:message key="orders_jsp.descript"/>" 
+		              maxlength="500" required></textarea>
+		        <button type="submit" class="blueBut"> <fmt:message key="orders_jsp.label.create"/></button>
             </div>
     </form>
-    Your balance:
+    <fmt:message key="orders_jsp.balance"/>:
     ${client.balance==0?'0.00f':client.balance}
-    <h3>Your orders:</h3>
+    <h3><fmt:message key="orders_jsp.label.orders"/>:</h3>
     <table style="width:100%" id= "orders">
         <tr>
-            <th>Number</th>
-            <th>Name</th>
-            <th>Description</th>
-            <th>Price</th>
-            <th>Date</th>
-            <th>Payment</th>
-            <th>State</th>
+            <th><fmt:message key="order.number"/></th>
+            <th><fmt:message key="order.name"/></th>
+            <th><fmt:message key="order.description"/></th>
+            <th><fmt:message key="order.price"/></th>
+            <th><fmt:message key="order.date"/></th>
+            <th><fmt:message key="order.payment"/></th>
+            <th><fmt:message key="order.state"/></th>
             
-            <th>Feedback</th>
+            <th><fmt:message key="order.feedback"/></th>
             
         </tr>
         <c:forEach items="${client.orders}" var="order" varStatus="count">   
@@ -57,7 +49,7 @@
                   <c:if test = "${ order.workState eq 'FINISHED'}">   
                  <c:if test = "${ empty order.feedback}">
                    <!--      <input type="button" value="Leave feedback " onclick="fbLikeDump();" /> -->
-                        <button id="myBtn" onclick="showFeedbackModal('${order.id}');">Feedback</button>
+                        <button id="myBtn" onclick="showFeedbackModal('${order.id}');"><fmt:message key="orders_jsp.button.feedback"/></button>
                  </c:if>
                  <c:if test = "${not empty order.feedback}">
                  ${order.feedback}
@@ -70,26 +62,24 @@
     </table>
     
     <br>
-    <!-- <form action="${path }/do/logout" method="get"> -->
-    <form action="${path }/do/logout" method="get">
-        <input type="hidden" id="filfI" name="command" value="Logout">
-        <input type="submit" value="Logout">
-    </form>
     
-    <div id="myModal" class="modal">
+    <div id="myModal" class="modal"><fmt:message key=""/>
 
       <!-- Modal content -->
       <div class="modal-content" style="width:500;">
         <span class="close">&times;</span>
-       <div class="container">
+       <div class="containerModal">
        <form action="${path }/do/client/feedback" method="post">   
         <input type="hidden"  name="command" value="Feedback">
         <input type="hidden" id="orderId" name="orderId" >
-        <label for="subject">Subject</label>   <br>   
-        <textarea name="feedback" class="textO" placeholder="Write something.." maxlength="500" required></textarea>        
-        <input type="submit" value="Save">       
+        <label for="subject"><fmt:message key="orders_jsp.modal.feedback"/></label>   <br>   
+        <textarea name="feedback" class="textModal" placeholder="<fmt:message key="orders_jsp.modal.text"/>" maxlength="500" required></textarea>
+        <div class="submMod">        
+        <input type="submit" value="<fmt:message key="button.save"/>">  
+         <button id="okMod" onclick="closeModal();"><fmt:message key="button.cancel"/></button>  
+         </div>   
        </form>
-        <button id="okMod" onclick="closeModal();">Cancel</button>
+       
        </div> 
     </div>
    </div>

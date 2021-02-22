@@ -7,15 +7,14 @@
 <body>
 <%@ include file="jspf/header.jspf" %>
 <div align="center">
-	<p style="color: red">${error}</p>	
-	${lang}
-	${cookie['lang'].value}
+	<p style="color: red">${error}</p>
+
 	<form action="${path }/do/login" method="post" style= "width: 300px">
 	   <input type="hidden" id="filfI" name="command" value="Login">
 		<h3 style="text-align:center"><fmt:message key="login_jsp.label.login"/></h3>
 		<div class="container">
 			<label for="uname">
-			<b><fmt:message key="login_jsp.link.name"/></b></label> 
+			<b><fmt:message key="login_jsp.label.name"/></b></label> 
 			<input type="text" value="${login}" placeholder='<fmt:message key="login_jsp.placeholder.name"/>' name="uname" maxlength="45" required>
 			<label for="psw"><b><fmt:message key="login_jsp.label.password"/></b></label> 
 			<input type="password" placeholder="<fmt:message key="login_jsp.placeholder.psw"/>" name="psw" minlength="6" maxlength="15" required >

@@ -142,9 +142,9 @@ public class CustomerService extends AbstractEntityService<Customer> {
     }
 
     @Override
-    public Long getCount() {
+    public int getCount() {
         // TODO Auto-generated method stub
-        return null;
+        return 0;
     }
 
     @Override

@@ -64,7 +64,7 @@ h2 {
 
 #header { /* Верхний блок */
 	/*	background: #0080c0; /* Цвет фона */
-	padding: 10px; /* Поля вокруг текста */
+	padding: 20px; /* Поля вокруг текста */
 }
 
 #sidebar { /* Левая колонка */
@@ -243,4 +243,12 @@ span.psw {
 	height: 200px;
 	width: 450;
 	margin: 10px;
+}
+
+li span.name {
+    display: block;
+    color: #666;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
 }

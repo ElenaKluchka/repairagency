@@ -64,9 +64,9 @@ public class OrderMasterService extends AbstractEntityService<OrderMaster>{
     }
 
     @Override
-    public Long getCount() {
+    public int getCount() {
         // TODO Auto-generated method stub
-        return null;
+        return 0;
     }
 
 }
