@@ -13,6 +13,8 @@ import com.elenakliuchka.repairagency.entity.Employee;
 import com.elenakliuchka.repairagency.entity.Order;
 import com.elenakliuchka.repairagency.entity.Role;
 
+import exception.DBException;
+
 public class EmployeeService extends AbstractEntityService<Employee> {
 
     private final static String TABLE_NAME = "employee";
@@ -31,23 +33,10 @@ public class EmployeeService extends AbstractEntityService<Employee> {
 
     public EmployeeService(Connection connection) {
         super(connection, TABLE_NAME);
-    }
+    }  
 
     @Override
-    public void save(Employee object) {
-    }
-
-    @Override
-    public void remove(int id) {
-    }
-
-    @Override
-    public Employee find(int id) {
-        return null;
-    }
-
-    @Override
-    public Employee find(Employee employee) {
+    public Employee find(Employee employee) throws DBException {
         if (employee == null) {
             return null;
         }
@@ -67,36 +56,24 @@ public class EmployeeService extends AbstractEntityService<Employee> {
                 }
             }
 
-        } catch (SQLException e) {
-            // LOGGER.log(Level.SEVERE, e.getMessage(), e);
-            LOGGER.error("Can't find Customer with name=" + employee.getName(),
+        } catch (SQLException e) {      
+            LOGGER.error("Can't find employee with name=" + employee.getName(),
                     e);
-            // throw e;
+             throw new DBException("Can't find employee with name=" + employee.getName());
         }
         return employeeRes;
     }
 
     @Override
-    public int getCount() {
-        return 0;
-    }
-
-    @Override
-    public List<Employee> findAll(int start, int max) {
-        // TODO Auto-generated method stub
+    public List<Employee> findAll(int start, int max) {      
         return null;
     }
     
     public List<Employee> findEmployeesForOrder(Order order) {     
-        List<Employee> mastersList = new ArrayList<>();
-   //     String paramString  = ordersList.stream().map(e->String.valueOf(e.getId())).collect(Collectors.joining(", "));
-   //    LOGGER.trace(paramString);
-
+        List<Employee> mastersList = new ArrayList<>(); 
         try (PreparedStatement pStatement = connection
                 .prepareStatement(SQL_FIND_EMPLOYEES_FOR_ORDER)) {
-     //          .prepareStatement(String.format(SQL_FIND_EMPLOYEES_FOR_ORDERS,paramString))) {
             pStatement.setInt(1, order.getId());
-           
             
             try (ResultSet rs = pStatement.executeQuery()) {
                 while (rs.next()) {
@@ -135,10 +112,18 @@ public class EmployeeService extends AbstractEntityService<Employee> {
         employee.setName(rs.getString("name"));
         employee.setEmail(rs.getString("email"));
         employee.setPassword(rs.getString("password"));
-        employee.setRole(Role.valueOf(rs.getString("role")));
-        employee.setLocale_id(rs.getInt("locale_id"));
+        employee.setRole(Role.valueOf(rs.getString("role")));        
         employee.setPhone(rs.getString("phone"));
         employee.setSalary(rs.getDouble("salary"));
         return employee;
+    }
+    
+    @Override
+    public void save(Employee object) {
+    }
+
+    @Override
+    public Employee find(int id) {
+        return null;
     }
 }

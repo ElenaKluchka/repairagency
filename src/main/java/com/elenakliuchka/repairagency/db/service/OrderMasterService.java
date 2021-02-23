@@ -46,12 +46,6 @@ public class OrderMasterService extends AbstractEntityService<OrderMaster>{
     }
 
     @Override
-    public void remove(int id) {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
     public OrderMaster find(int id) {
         // TODO Auto-generated method stub
         return null;
@@ -62,11 +56,4 @@ public class OrderMasterService extends AbstractEntityService<OrderMaster>{
         // TODO Auto-generated method stub
         return null;
     }
-
-    @Override
-    public int getCount() {
-        // TODO Auto-generated method stub
-        return 0;
-    }
-
 }

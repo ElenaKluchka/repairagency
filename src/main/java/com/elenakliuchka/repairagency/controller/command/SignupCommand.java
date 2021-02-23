@@ -18,6 +18,7 @@ import com.elenakliuchka.repairagency.entity.Role;
 import com.elenakliuchka.repairagency.util.PageConstants;
 import com.elenakliuchka.repairagency.util.ValidationUtils;
 
+import exception.DBException;
 import exception.NotUniqueException;
 
 public class SignupCommand extends AbstractCommand {
@@ -45,16 +46,17 @@ public class SignupCommand extends AbstractCommand {
         
       
  
-        DAOFactory dbManager = DAOFactory.getInstance();
+        DAOFactory daoFactory = DAOFactory.getInstance();
         try {            
-            CustomerService customerService = (CustomerService) dbManager
+            CustomerService customerService = (CustomerService) daoFactory
                     .getService(Table.CUSTOMER);
             try {
                 customerService.save(customer);
-            } catch (NotUniqueException e) {
+            } catch (NotUniqueException | DBException e) {
                 LOGGER.error(e.getMessage(),e);
                 request.setAttribute("error", e.getMessage());
                 request.setAttribute("newCustomer", customer);
+                daoFactory.rollback();  
                 forward(PageConstants.PAGE_SIGNUP);
                 return;
             }
@@ -63,14 +65,10 @@ public class SignupCommand extends AbstractCommand {
             session.setAttribute("customer", customer);
             session.setAttribute("loggedUser", name);
             session.setAttribute("role", Role.CUSTOMER);
-        } catch (SQLException e) {
-            LOGGER.error(e.getMessage(),e);            
-        }finally {
-            try {
-                dbManager.close();
-            } catch (SQLException e) {
-                LOGGER.error(e.getMessage(),e);
-            }
+        } catch (SQLException e) {            
+            LOGGER.error(e.getMessage(),e);                    
+        }finally {           
+           daoFactory.close();
         }
         request.setAttribute("message", "Order successfully saved");
 

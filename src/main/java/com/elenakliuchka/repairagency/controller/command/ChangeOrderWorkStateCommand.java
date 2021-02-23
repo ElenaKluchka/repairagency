@@ -23,31 +23,28 @@ public class ChangeOrderWorkStateCommand extends AbstractCommand {
     @Override
     public void process() throws ServletException, IOException {
         String newState = request.getParameter("newState");
-        LOGGER.info("Change state, newState: "+newState);
+        LOGGER.info("Change state, newState: " + newState);
         int orderId = Integer.parseInt(request.getParameter("orderId"));
-        LOGGER.trace("Set state for orderId: "+orderId+ " newState: "+newState);
-        
-        DAOFactory dbManager = DAOFactory.getInstance();
-        try {
+        LOGGER.trace(
+                "Set state for orderId: " + orderId + " newState: " + newState);
 
-            OrderService orderService = (OrderService) dbManager
+        DAOFactory daoFactory = DAOFactory.getInstance();
+        try {
+            OrderService orderService = (OrderService) daoFactory
                     .getService(Table.ORDER);
             HttpSession session = request.getSession();
             Employee master = (Employee) session.getAttribute("master");
             if (orderService.setWorkState(orderId, newState)) {
-                List<Order> orders= orderService.findOrdersForMaster(master.getId());
+                List<Order> orders = orderService
+                        .findOrdersForMaster(master.getId());
                 session.setAttribute("orders", orders);
             }
-          
+
         } catch (SQLException e) {
             LOGGER.error(e.getMessage(), e);
-        }finally {
-            try {
-                dbManager.close();
-            } catch (SQLException e) {
-                LOGGER.error("Eror while closing connection");
-            }
+        } finally {
+            daoFactory.close();
         }
-        redirect(PageConstants.PAGE_MASTER_ORDERS+".jsp");
+        redirect(PageConstants.PAGE_MASTER_ORDERS + ".jsp");
     }
 }

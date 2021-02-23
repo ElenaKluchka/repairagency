@@ -18,52 +18,52 @@ import com.elenakliuchka.repairagency.entity.Order;
 import com.elenakliuchka.repairagency.entity.Role;
 import com.elenakliuchka.repairagency.util.PageConstants;
 
-public class EditOrderFormCommand  extends AbstractCommand {
-    private static final Logger LOGGER = Logger.getLogger(EditOrderFormCommand.class);
+public class EditOrderFormCommand extends AbstractCommand {
+    private static final Logger LOGGER = Logger
+            .getLogger(EditOrderFormCommand.class);
 
     @Override
     public void process() throws ServletException, IOException {
-      
-        DAOFactory dbManager = DAOFactory.getInstance();
-        HttpSession session = request.getSession();        
+
+        DAOFactory daoFactory = DAOFactory.getInstance();
+        HttpSession session = request.getSession();
         int orderId = Integer.parseInt(request.getParameter("orderId"));
-        
+
         Order order = (Order) session.getAttribute("editOrder");
-        if(order!=null &&  order.getId()==orderId) {
-            LOGGER.debug("order in session");   
+        if (order != null && order.getId() == orderId) {
+            LOGGER.debug("order in session");
             LOGGER.trace(order);
-            LOGGER.trace("orderId"+orderId);
+            LOGGER.trace("orderId" + orderId);
             forward(PageConstants.PAGE_MANAGER_EDIT_ORDER);
             return;
         }
-        LOGGER.trace("Set state for orderId: "+orderId);
+        LOGGER.trace("Set state for orderId: " + orderId);
         try {
-            EmployeeService employeeService = (EmployeeService)dbManager.getService(Table.EMPLOYEE);
-            if(session.getAttribute("mastersList")==null) {
-                List<Employee> mastersList = employeeService.findEmployeesByRole(Role.MASTER);
+            EmployeeService employeeService = (EmployeeService) daoFactory
+                    .getService(Table.EMPLOYEE);
+            if (session.getAttribute("mastersList") == null) {
+                List<Employee> mastersList = employeeService
+                        .findEmployeesByRole(Role.MASTER);
                 request.getSession().setAttribute("mastersList", mastersList);
                 LOGGER.trace(mastersList);
             }
-            OrderService orderService = (OrderService) dbManager
+            OrderService orderService = (OrderService) daoFactory
                     .getService(Table.ORDER);
-            Order orderDb = orderService.find(orderId);            
+            Order orderDb = orderService.find(orderId);
             orderDb.setMasters(employeeService.findEmployeesForOrder(orderDb));
-            
-           String successMessage= (String) session.getAttribute("successMessage");
-           if(successMessage!=null && !successMessage.isEmpty()) {
-               request.setAttribute("successMessage", successMessage);
-               session.removeAttribute("successMessage");
-           }
-            
-           session.setAttribute("order", orderDb);
+
+            String successMessage = (String) session
+                    .getAttribute("successMessage");
+            if (successMessage != null && !successMessage.isEmpty()) {
+                request.setAttribute("successMessage", successMessage);
+                session.removeAttribute("successMessage");
+            }
+
+            session.setAttribute("order", orderDb);
         } catch (SQLException e) {
             LOGGER.error(e.getMessage(), e);
-        }finally {
-            try {
-                dbManager.close();
-            } catch (SQLException e) {
-                LOGGER.error("can't retrieve orders ");
-            }
+        } finally {
+            daoFactory.close();
         }
         forward(PageConstants.PAGE_MANAGER_EDIT_ORDER);
     }

@@ -15,41 +15,39 @@ import com.elenakliuchka.repairagency.entity.Order;
 import com.elenakliuchka.repairagency.util.PageConstants;
 
 public class FilterOrdersCommand extends AbstractCommand {
-    private static final Logger LOGGER = Logger.getLogger(FilterOrdersCommand.class);
+    private static final Logger LOGGER = Logger
+            .getLogger(FilterOrdersCommand.class);
 
     @Override
     public void process() throws ServletException, IOException {
-      
-        DAOFactory dbManager = DAOFactory.getInstance();
-        
+
+        DAOFactory daoFactory = DAOFactory.getInstance();
+
         try {
-      //      String state = request.getParameter("state");
-      //      String workState = request.getParameter("work_state");
-            
             String[] stateResults = request.getParameterValues("state");
-            String[] workStateResults = request.getParameterValues("work_state");
-            
-            LOGGER.trace("stateResults: "+stateResults+ " workStateResults"+workStateResults);
-            
+            String[] workStateResults = request
+                    .getParameterValues("work_state");
+
+            LOGGER.trace("stateResults: " + stateResults + " workStateResults"
+                    + workStateResults);
+
             int masterId = Integer.parseInt(request.getParameter("masters"));
-            OrderService orderService = (OrderService) dbManager.getService(Table.ORDER);
-            List<Order> orders= orderService.findFilterSorted(stateResults, workStateResults, masterId);  
-     
-      //      request.setAttribute("selectedState", state);
-    //        request.setAttribute("selectedWorkState", workState);
-   //         request.setAttribute("selectedMaster", masterId);  
+            OrderService orderService = (OrderService) daoFactory
+                    .getService(Table.ORDER);
+            List<Order> orders = orderService.findFilterSorted(stateResults,
+                    workStateResults, masterId);
+
+            // request.setAttribute("selectedState", state);
+            // request.setAttribute("selectedWorkState", workState);
+            // request.setAttribute("selectedMaster", masterId);
             request.setAttribute("orders", orders);
-            if(orders == null || orders.isEmpty()) {
+            if (orders == null || orders.isEmpty()) {
                 request.setAttribute("message", "No search results");
-            }            
+            }
         } catch (SQLException e) {
             LOGGER.error(e.getMessage(), e);
-        }finally {
-            try {
-                dbManager.close();
-            } catch (SQLException e) {
-                LOGGER.error("can't retrieve orders ");
-            }
+        } finally {
+            daoFactory.close();
         }
 
         forward(PageConstants.PAGE_MANAGER_ORDERS);

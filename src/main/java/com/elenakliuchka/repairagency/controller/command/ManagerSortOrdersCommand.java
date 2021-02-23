@@ -19,28 +19,19 @@ public class ManagerSortOrdersCommand extends AbstractCommand {
 
     @Override
     public void process() throws ServletException, IOException {
-      
+
         DAOFactory dbManager = DAOFactory.getInstance();
         OrderService orderService;
         try {
             String sortOptionString = request.getParameter("param");
             orderService = (OrderService) dbManager.getService(Table.ORDER);
-            List<Order> orders= orderService.findAllSorted(sortOptionString);
-            //useretOrders(orderService.findByUserId(client.getId()));
-          /*  HttpSession session = request.getSession(false);
-            if (session != null) {
-                session.setAttribute("client", client);
-            }*/
+            List<Order> orders = orderService.findAllSorted(sortOptionString);
             request.setAttribute("orders", orders);
             dbManager.close();
         } catch (SQLException e) {
             LOGGER.error(e.getMessage(), e);
-        }finally {
-            try {
-                dbManager.close();
-            } catch (SQLException e) {
-                LOGGER.error("can't retrieve orders ");
-            }
+        } finally {
+            dbManager.close();
         }
 
         forward(PageConstants.PAGE_MANAGER_ORDERS);

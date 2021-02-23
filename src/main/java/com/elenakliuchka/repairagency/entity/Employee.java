@@ -15,9 +15,7 @@ public class Employee  implements Serializable{
     private String password;
     
     private Role role;
-    
-    private int locale_id;
-    
+ 
     private String phone;
     
     private Double salary;
@@ -68,14 +66,6 @@ public class Employee  implements Serializable{
 
     public void setRole(Role role) {
         this.role = role;
-    }
-
-    public int getLocale_id() {
-        return locale_id;
-    }
-
-    public void setLocale_id(int locale_id) {
-        this.locale_id = locale_id;
     }
 
     public String getPhone() {

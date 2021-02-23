@@ -5,16 +5,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 import org.apache.log4j.Logger;
 
 import com.elenakliuchka.repairagency.entity.Customer;
-import com.mysql.cj.exceptions.RSAException;
 
+import exception.DBException;
 import exception.NotUniqueException;
 
 public class CustomerService extends AbstractEntityService<Customer> {
@@ -32,8 +29,7 @@ public class CustomerService extends AbstractEntityService<Customer> {
 
     private static final String SQL_FIND_CUSTOMERS_BY_PARAMETERS = "SELECT * FROM "
             + TABLE_NAME + " WHERE name=? OR email=? OR phone=?";
-//    private static final String SQL_FIND_ALL_CUSTOMERS = "SELECT * FROM "+TABLE_NAME;
-
+    
     private static final Logger LOGGER = Logger
             .getLogger(CustomerService.class.getName());
 
@@ -42,23 +38,11 @@ public class CustomerService extends AbstractEntityService<Customer> {
     }
 
     @Override
-    public List<Customer> findAll(int start, int max) {
-        /*      List<Customer> Customers = new ArrayList<>();
-        
-        try (Statement stat = connection.createStatement()) {
-            try (ResultSet rs = stat.executeQuery(SQL_FIND_ALL_CustomerS)) {
-                while (rs.next()) {
-                    Customers.add(retrieveCustomer(rs));
-                }
-            }
-        } catch (SQLException e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
-        }
-        return Customers;*/
+    public List<Customer> findAll(int start, int max) {   
         return null;
     }
 
-    public String checkUnique(Customer customer) throws SQLException {
+    private String checkUnique(Customer customer) throws SQLException {
         String emailNotUnique="";
         String nameNotUnique="";
         String phoneNotUnique="";
@@ -93,10 +77,9 @@ public class CustomerService extends AbstractEntityService<Customer> {
         return nameNotUnique+emailNotUnique+phoneNotUnique;
     }
 
-    // ABLE_NAME+" (name,email,password,phone) VALUES (?,?,?,?)";
     @Override
     public void save(Customer customer)
-            throws SQLException, NotUniqueException {
+            throws SQLException, NotUniqueException, DBException {
         LOGGER.info("Add customer: " + customer);
         if (customer == null) {
             return;
@@ -124,15 +107,9 @@ public class CustomerService extends AbstractEntityService<Customer> {
                 }
             }
         } catch (SQLException e) {
-            // LOGGER.error("Fail to add customer: "+customer, e);
-            throw e;
+             LOGGER.error("Fail to add customer: "+customer, e);
+            throw new DBException("Fail to add customer: "+customer);
         }
-    }
-
-    @Override
-    public void remove(int id) {
-        // TODO Auto-generated method stub
-
     }
 
     @Override
@@ -142,13 +119,7 @@ public class CustomerService extends AbstractEntityService<Customer> {
     }
 
     @Override
-    public int getCount() {
-        // TODO Auto-generated method stub
-        return 0;
-    }
-
-    @Override
-    public Customer find(Customer сustomer) {// throws SQLException {
+    public Customer find(Customer сustomer) throws DBException {
         if (сustomer == null) {
             return null;
         }
@@ -168,11 +139,10 @@ public class CustomerService extends AbstractEntityService<Customer> {
                 }
             }
 
-        } catch (SQLException e) {
-            // LOGGER.log(Level.SEVERE, e.getMessage(), e);
+        } catch (SQLException e) {            
             LOGGER.error("Can't find Customer with name=" + сustomer.getName(),
                     e);
-            // throw e;
+             throw new DBException("Can't find Customer with name=" + сustomer.getName());
         }
         return сustomerRes;
     }
@@ -182,14 +152,13 @@ public class CustomerService extends AbstractEntityService<Customer> {
         customer.setId(rs.getInt("id"));
         customer.setName(rs.getString("name"));
         customer.setEmail(rs.getString("email"));
-        customer.setPassword(rs.getString("password"));
-        customer.setLocale_id(rs.getInt("locale_id"));
+        customer.setPassword(rs.getString("password"));      
         customer.setPhone(rs.getString("phone"));
         customer.setBalance(rs.getDouble("balance"));
         return customer;
     }
 
-    public Customer findByParam(String paramName, String paramValue) {
+    public Customer findByParam(String paramName, String paramValue) throws SQLException {
         Customer сustomerRes = null;
         LOGGER.trace(paramName + ": " + paramValue);
         try (PreparedStatement pStatement = connection.prepareStatement(
@@ -207,33 +176,14 @@ public class CustomerService extends AbstractEntityService<Customer> {
             }
 
         } catch (SQLException e) {
-            // LOGGER.log(Level.SEVERE, e.getMessage(), e);
             LOGGER.error("Can't find Customer with " + paramName + " = "
                     + paramValue);
-            // throw e;
+             throw e;
         }
         return сustomerRes;
     }
 
-    /*    public boolean setWorkState(int id, String state) {
-    
-        if (id <= 0 || state == null) {
-            return false;
-        }
-        try (PreparedStatement pstmt = connection
-                .prepareStatement(SQL_SET_WORK_STATE)) {
-            pstmt.setString(1, state);
-            pstmt.setInt(2, id);
-            if (pstmt.executeUpdate() > 0) {
-                return true;
-            }
-        } catch (SQLException e) {
-            // LOGGER.log(Level.SEVERE, e.getMessage(), e);
-            LOGGER.error("Fail add order", e);
-        }
-        return false;
-    }*/
-    public boolean setBalance(int id, double balance) {
+    public boolean setBalance(int id, double balance) throws DBException {
         if (id <= 0 || balance < 0) {
             return false;
         }
@@ -244,9 +194,9 @@ public class CustomerService extends AbstractEntityService<Customer> {
             if (pstmt.executeUpdate() > 0) {
                 return true;
             }
-        } catch (SQLException e) {
-            // LOGGER.log(Level.SEVERE, e.getMessage(), e);
-            LOGGER.error("Fail add order", e);
+        } catch (SQLException e) {     
+            LOGGER.error("Fail to set balance", e);
+            throw new DBException("Fail to set balance");
         }
         return false;
     }

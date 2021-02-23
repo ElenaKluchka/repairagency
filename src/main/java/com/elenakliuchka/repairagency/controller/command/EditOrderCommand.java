@@ -30,10 +30,7 @@ public class EditOrderCommand extends AbstractCommand {
             
             int orderId = Integer.parseInt(request.getParameter("orderId"));        
             redirect(PageConstants.PAGE_MANAGER_EDIT_ORDER_FORM + orderId);
-        }
-        
-        //Customer customer = (Customer) request.getSession()
-         //       .getAttribute("customer");
+        }     
         int orderId = Integer.parseInt(request.getParameter("orderId"));        
 
         Double price = Double.parseDouble(request.getParameter("price"));
@@ -48,19 +45,19 @@ public class EditOrderCommand extends AbstractCommand {
         order.setPrice(price);
         order.setManagementState(OrderManagmentState.valueOf(managementState));       
 
-        DAOFactory dbManager = DAOFactory.getInstance();
+        DAOFactory daoFactory = DAOFactory.getInstance();
         try {
-            OrderService orderService = (OrderService) dbManager
+            OrderService orderService = (OrderService) daoFactory
                     .getService(Table.ORDER);
             if (orderService.updateOrder(order)) {
                 Order orderDb = orderService.find(orderId);
 
                 if (masterId > 0) {
-                    OrderMasterService orderMasterService = (OrderMasterService) dbManager
+                    OrderMasterService orderMasterService = (OrderMasterService) daoFactory
                             .getService(Table.ORDER_MASTER);
 
                     orderMasterService.save(new OrderMaster(masterId,orderId));
-                    EmployeeService employeeService = (EmployeeService)dbManager.getService(Table.EMPLOYEE);
+                    EmployeeService employeeService = (EmployeeService)daoFactory.getService(Table.EMPLOYEE);
                     orderDb.setMasters(employeeService.findEmployeesForOrder(orderDb));
                 }
 
@@ -72,12 +69,8 @@ public class EditOrderCommand extends AbstractCommand {
 
         } catch (SQLException e) {
             LOGGER.error(e.getMessage(), e);
-        } finally {
-            try {
-                dbManager.close();
-            } catch (SQLException e) {
-                LOGGER.error("Error while close connection");
-            }
+        } finally {         
+                daoFactory.close();
         }
 
         redirect(PageConstants.PAGE_MANAGER_EDIT_ORDER_FORM + orderId);

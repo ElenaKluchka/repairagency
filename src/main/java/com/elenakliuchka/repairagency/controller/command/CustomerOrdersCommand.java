@@ -13,6 +13,7 @@ import com.elenakliuchka.repairagency.db.Table;
 import com.elenakliuchka.repairagency.db.service.OrderService;
 import com.elenakliuchka.repairagency.entity.Customer;
 import com.elenakliuchka.repairagency.util.PageConstants;
+
 /**
  * Retrieve ordeers for logged customer
  * @author kos
@@ -23,31 +24,26 @@ public class CustomerOrdersCommand extends AbstractCommand {
 
     @Override
     public void process() throws ServletException, IOException {
-        
-        if(request.getAttribute("locale")!=null) {
+        if (request.getAttribute("locale") != null) {
             request.setAttribute("command", "CustomerOrders");
             forward(PageConstants.PAGE_CUSTOMER_ORDERS);
         }
-        Customer customer = (Customer) request.getSession().getAttribute("customer");
-        DAOFactory dbManager = DAOFactory.getInstance();
+        Customer customer = (Customer) request.getSession()
+                .getAttribute("customer");
+        DAOFactory daoFactory = DAOFactory.getInstance();        
         OrderService orderService;
         try {
-            orderService = (OrderService) dbManager.getService(Table.ORDER);
+            orderService = (OrderService) daoFactory.getService(Table.ORDER);
             customer.setOrders(orderService.findByUserId(customer.getId()));
             HttpSession session = request.getSession(false);
             if (session != null) {
                 session.setAttribute("client", customer);
             }
             request.setAttribute("command", "CustomerOrders");
-           
         } catch (SQLException e) {
             LOGGER.error(e.getMessage(), e);
-        }finally {
-            try {
-                dbManager.close();
-            } catch (SQLException e) {
-                LOGGER.error("Error while close connection");
-            }
+        } finally {
+            daoFactory.close();
         }
         forward(PageConstants.PAGE_CUSTOMER_ORDERS);
     }

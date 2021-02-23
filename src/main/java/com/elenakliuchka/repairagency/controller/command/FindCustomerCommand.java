@@ -20,14 +20,14 @@ import com.elenakliuchka.repairagency.util.PageConstants;
 import com.elenakliuchka.repairagency.util.ValidationUtils;
 
 public class FindCustomerCommand extends AbstractCommand {
-    
 
-    private static final Logger LOGGER = Logger.getLogger(FindCustomerCommand.class);
+    private static final Logger LOGGER = Logger
+            .getLogger(FindCustomerCommand.class);
 
     @Override
     public void process() throws ServletException, IOException {
-        
-        if(request.getAttribute("locale")!=null) {
+
+        if (request.getAttribute("locale") != null) {
             request.setAttribute("command", "FindCustomer");
             forward(PageConstants.PAGE_MANAGER_CUSTOMERS);
         }
@@ -35,84 +35,83 @@ public class FindCustomerCommand extends AbstractCommand {
         HttpSession session = request.getSession(true);
         String name = request.getParameter("uname");
         String phone = request.getParameter("phone");
-        
-        LOGGER.trace("name:" +name);
+
+        LOGGER.trace("name:" + name);
         Customer customer = new Customer();
         customer.setName(name.trim());
         customer.setPhone(phone.trim());
-        
-        
-        if(!validate(customer)) {
+
+        if (!validate(customer)) {
             forward(PageConstants.PAGE_MANAGER_CUSTOMERS);
             return;
         }
-        
-        DAOFactory dbManager = DAOFactory.getInstance();    
+
+        DAOFactory daoFactory = DAOFactory.getInstance();
         try {
-            CustomerService customerService = (CustomerService) dbManager
+            CustomerService customerService = (CustomerService) daoFactory
                     .getService(Table.CUSTOMER);
             String paramName = null;
             String paramValue = null;
-            if(name!=null && !name.isEmpty()) {
+            if (name != null && !name.isEmpty()) {
                 paramName = "name";
                 paramValue = name;
-            }else if(phone!=null && !phone.isEmpty()) {
+            } else if (phone != null && !phone.isEmpty()) {
                 paramName = "phone";
                 paramValue = phone;
             }
-            Customer dbCustomer = customerService.findByParam(paramName,paramValue);
-            if (dbCustomer != null) {                
-                OrderService orderService = (OrderService) dbManager.getService(Table.ORDER);
-                List<Order> ordersList= orderService.findByUserId(dbCustomer.getId());
-                
-                dbCustomer.setOrders(ordersList);                
-                EmployeeService employeeService = (EmployeeService)dbManager.getService(Table.EMPLOYEE);                
-                for(Order order: ordersList){
-                    order.setMasters(employeeService.findEmployeesForOrder(order));
+            Customer dbCustomer = customerService.findByParam(paramName,
+                    paramValue);
+            if (dbCustomer != null) {
+                OrderService orderService = (OrderService) daoFactory
+                        .getService(Table.ORDER);
+                List<Order> ordersList = orderService
+                        .findByUserId(dbCustomer.getId());
+
+                dbCustomer.setOrders(ordersList);
+                EmployeeService employeeService = (EmployeeService) daoFactory
+                        .getService(Table.EMPLOYEE);
+                for (Order order : ordersList) {
+                    order.setMasters(
+                            employeeService.findEmployeesForOrder(order));
                 }
-               // session.setAttribute("customer", dbCustomer);                                
                 request.setAttribute("customer", dbCustomer);
             } else {
-             //   session.removeAttribute("customer");
-                request.setAttribute("searchCustomer", customer);            
+                request.setAttribute("searchCustomer", customer);
                 request.setAttribute("message", "No search results");
             }
             LOGGER.trace(dbCustomer);
-            
+
         } catch (SQLException e) {
             LOGGER.error(e.getMessage(), e);
-        }finally {
-            try {
-                dbManager.close();
-            } catch (SQLException e) {
-                LOGGER.error("Error while close connection");
-            }
+        } finally {
+            daoFactory.close();
         }
 
         forward(PageConstants.PAGE_MANAGER_CUSTOMERS);
     }
-    
+
     private boolean validate(Customer customer) {
-        String name= customer.getName();
-        String phone= customer.getPhone();
-        LOGGER.trace("name:" +name);
-        if( (name==null || name.isEmpty())&& (phone==null || phone.isEmpty()|| phone.equals("+380()"))) {
-            request.setAttribute("searchCustomer", customer);            
+        String name = customer.getName();
+        String phone = customer.getPhone();
+        LOGGER.trace("name:" + name);
+        if ((name == null || name.isEmpty()) && (phone == null
+                || phone.isEmpty() || phone.equals("+380()"))) {
+            request.setAttribute("searchCustomer", customer);
             request.setAttribute("error", "Please fill at least one field");
             LOGGER.trace("empty fields");
             return false;
         }
-        if(ValidationUtils.isValidName(name)) {
+        if (ValidationUtils.isValidName(name)) {
             return true;
         }
-        
+
         String resultString = ValidationUtils.validatePhone(phone);
-        if(!resultString.isEmpty()) {
-            request.setAttribute("searchCustomer",resultString);
+        if (!resultString.isEmpty()) {
+            request.setAttribute("searchCustomer", resultString);
             request.setAttribute("error", "Wrong name and phone");
             return false;
-        }    
-     
+        }
+
         return true;
     }
 }

@@ -22,36 +22,33 @@ public class AddOrderCommand extends AbstractCommand {
     @Override
     public void process() throws ServletException, IOException {
         LOGGER.info("ADD order command");
-        
+
         Order order = new Order();
         request.setCharacterEncoding("UTF-8");
         order.setName(request.getParameter("orderName"));
         order.setDescription(request.getParameter("orderDescription"));
 
         LOGGER.trace("servletPath" + request.getServletPath());
-        LOGGER.trace("add order:"+order);
-        Customer customer = (Customer) request.getSession().getAttribute("customer");
+        LOGGER.trace("add order:" + order);
+        Customer customer = (Customer) request.getSession()
+                .getAttribute("customer");
         order.setClient_id(customer.getId());
-        DAOFactory dbManager = DAOFactory.getInstance();
-        try {            
-            OrderService orderService = (OrderService) dbManager
+        DAOFactory daoFactory = DAOFactory.getInstance();
+        try {
+            OrderService orderService = (OrderService) daoFactory
                     .getService(Table.ORDER);
             orderService.save(order);
             order = orderService.find(order.getId());
             customer.getOrders().add(order);
-            request.getSession().setAttribute("client", customer);           
-        } catch (SQLException e) {            
-            LOGGER.error("Error open connection to add new order" + order,e);
-        }finally {
-            try {
-                dbManager.close();
-            } catch (SQLException e) {
-                LOGGER.error("Eror while closing connection");
-            }
+            request.getSession().setAttribute("client", customer);
+        } catch (SQLException e) {
+            LOGGER.error("Error open connection to add new order" + order, e);
+        } finally {
+            daoFactory.close();
         }
         request.setAttribute("message", "Order successfully saved");
 
-        redirect(PageConstants.PAGE_CUSTOMER_ORDERS+".jsp");
+        redirect(PageConstants.PAGE_CUSTOMER_ORDERS + ".jsp");
     }
 
 }

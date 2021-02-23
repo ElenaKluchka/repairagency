@@ -19,63 +19,63 @@ import com.elenakliuchka.repairagency.entity.Role;
 import com.elenakliuchka.repairagency.util.PageConstants;
 
 public class ManagerOrdersCommand extends AbstractCommand {
-    private static final Logger LOGGER = Logger.getLogger(ManagerOrdersCommand.class);
-    
+    private static final Logger LOGGER = Logger
+            .getLogger(ManagerOrdersCommand.class);
+
     private static final int ordersPerPage = 3;
 
     @Override
     public void process() throws ServletException, IOException {
         LOGGER.info("Get orders for manager");
-        
-        if(request.getAttribute("locale")!=null) {
+
+        if (request.getAttribute("locale") != null) {
             request.setAttribute("command", "ManagerOrders");
             forward(PageConstants.PAGE_MANAGER_ORDERS);
         }
-        
+
         HttpSession session = request.getSession();
-        Employee user = (Employee) session.getAttribute("manager");        
-             
+    
         int page = 1;
-        if(request.getParameter("page") != null)
-            page = Integer.parseInt(request.getParameter("page"));   
+        if (request.getParameter("page") != null)
+            page = Integer.parseInt(request.getParameter("page"));
 
         LOGGER.trace("page: " + page);
         System.out.println("ordersPerPage: " + ordersPerPage);
-        
-        DAOFactory dbManager = DAOFactory.getInstance();       
+
+        DAOFactory dbManager = DAOFactory.getInstance();
         try {
-            OrderService orderService = (OrderService) dbManager.getService(Table.ORDER);
-            
-            List<Order> ordersList= orderService.findAll((page-1)*ordersPerPage,ordersPerPage);
-            
+            OrderService orderService = (OrderService) dbManager
+                    .getService(Table.ORDER);
+
+            List<Order> ordersList = orderService
+                    .findAll((page - 1) * ordersPerPage, ordersPerPage);
+
             int ordersNumber = orderService.getCount();
-            int maxPage = (int)Math.ceil((double)ordersNumber / ordersPerPage);
-        
-            request.setAttribute("page", page);        
+            int maxPage = (int) Math
+                    .ceil((double) ordersNumber / ordersPerPage);
+
+            request.setAttribute("page", page);
             request.setAttribute("maxPage", maxPage);
-            
-            EmployeeService employeeService = (EmployeeService)dbManager.getService(Table.EMPLOYEE);            
-            for(Order order: ordersList){
+
+            EmployeeService employeeService = (EmployeeService) dbManager
+                    .getService(Table.EMPLOYEE);
+            for (Order order : ordersList) {
                 order.setMasters(employeeService.findEmployeesForOrder(order));
             }
-           
-            if(session.getAttribute("mastersList")==null) {
-                List<Employee> mastersList = employeeService.findEmployeesByRole(Role.MASTER);
+
+            if (session.getAttribute("mastersList") == null) {
+                List<Employee> mastersList = employeeService
+                        .findEmployeesByRole(Role.MASTER);
                 request.getSession().setAttribute("mastersList", mastersList);
                 LOGGER.trace(mastersList);
-            }            
-            //request.setAttribute("orders", ordersList);
+            }
             request.getSession().setAttribute("orders", ordersList);
-            
+
             request.setAttribute("command", "ManagerOrders");
         } catch (SQLException e) {
             LOGGER.error(e.getMessage(), e);
-        }finally {
-            try {
-                dbManager.close();
-            } catch (SQLException e) {
-                LOGGER.error("Error close connection" + user.getId());
-            }
+        } finally {
+            dbManager.close();
         }
 
         forward(PageConstants.PAGE_MANAGER_ORDERS);

@@ -6,6 +6,9 @@ import java.sql.SQLException;
 import javax.naming.InitialContext;
 import javax.sql.DataSource;
 
+import org.apache.log4j.Logger;
+
+import com.elenakliuchka.repairagency.controller.command.SignupCommand;
 import com.elenakliuchka.repairagency.db.service.AbstractEntityService;
 import com.elenakliuchka.repairagency.db.service.CustomerService;
 import com.elenakliuchka.repairagency.db.service.EmployeeService;
@@ -13,8 +16,12 @@ import com.elenakliuchka.repairagency.db.service.OrderMasterService;
 import com.elenakliuchka.repairagency.db.service.OrderService;
 
 public class DAOFactory {
+    
+    private static final Logger LOGGER = Logger
+            .getLogger(DAOFactory.class);
+    
     public static DAOFactory getInstance() {
-        return DBManagerSingleton.INSTANCE;
+        return DAOFactorySingleton.INSTANCE;
     }
 
     public void open() throws SQLException {
@@ -26,12 +33,21 @@ public class DAOFactory {
         }
     }
 
-    public void close() throws SQLException {
+    public void close() {
         try {
             if (connection != null && !connection.isClosed())
                 connection.close();
+        } catch (SQLException e) {            
+            LOGGER.error(e);
+        }
+    }
+    
+    public void rollback() {
+        try {
+            if (connection != null && !connection.isClosed())
+                connection.rollback();
         } catch (SQLException e) {
-            throw e;
+            LOGGER.error(e);
         }
     }
 
@@ -49,7 +65,7 @@ public class DAOFactory {
         }
     }
 
-    private static class DBManagerSingleton {
+    private static class DAOFactorySingleton {
 
         public static final DAOFactory INSTANCE;
         static {

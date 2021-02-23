@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context>
+    <!-- Specify a JDBC datasource -->
+    <Resource name="jdbc/RepairAgencyDB"
+             auth="Container"
+             type="javax.sql.DataSource"
+             username="root"
+             password="pass"
+             driverClassName="com.mysql.cj.jdbc.Driver"
+             url="jdbc:mysql://localhost:3306/repair_agency?autoReconnect=true&amp;serverTimezone=UTC"
+             validationQuery="select 1"
+             maxActive="10"
+             maxIdle="4"/>
+</Context>

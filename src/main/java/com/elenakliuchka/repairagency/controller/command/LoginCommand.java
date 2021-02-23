@@ -19,6 +19,8 @@ import com.elenakliuchka.repairagency.entity.Role;
 import com.elenakliuchka.repairagency.util.PageConstants;
 import com.elenakliuchka.repairagency.util.ValidationUtils;
 
+import exception.DBException;
+
 public class LoginCommand extends AbstractCommand {
 
     private static final Logger LOGGER = Logger.getLogger(LoginCommand.class);
@@ -30,15 +32,15 @@ public class LoginCommand extends AbstractCommand {
 
         String name = request.getParameter("uname");
         String password = request.getParameter("psw");
-        
-        if(!validate(name, password)) {
+
+        if (!validate(name, password)) {
             forward(PageConstants.PAGE_LOGIN);
             return;
         }
-      
-        DAOFactory dbManager = DAOFactory.getInstance();    
+
+        DAOFactory daoFactory = DAOFactory.getInstance();
         try {
-            CustomerService customerService = (CustomerService) dbManager
+            CustomerService customerService = (CustomerService) daoFactory
                     .getService(Table.CUSTOMER);
             Customer dbCustomer = customerService
                     .find(new Customer(name, password));
@@ -46,7 +48,7 @@ public class LoginCommand extends AbstractCommand {
             if (dbCustomer != null) {
 
                 LOGGER.info("Login customer " + dbCustomer);
-               
+
                 if (session != null) {
                     session.setAttribute("customer", dbCustomer);
                     session.setAttribute("loggedUser", name);
@@ -54,61 +56,62 @@ public class LoginCommand extends AbstractCommand {
                 }
                 LOGGER.trace("servletPath" + request.getServletPath());
                 LOGGER.trace("PATH " + request.getContextPath());
-                
-                String userLocaleName="en";
-                Config.set(session, "javax.servlet.jsp.jstl.fmt.locale", userLocaleName);
-                
+
+                String userLocaleName = "en";
+                Config.set(session, "javax.servlet.jsp.jstl.fmt.locale",
+                        userLocaleName);
+
                 session.setAttribute("defaultLocale", userLocaleName);
 
                 redirect(PageConstants.HOME_PAGE_CUSTOMER);
             } else {
                 LOGGER.info("Check employee ");
-                EmployeeService employeeService = (EmployeeService) dbManager
+                EmployeeService employeeService = (EmployeeService) daoFactory
                         .getService(Table.EMPLOYEE);
                 Employee dbEmployee = employeeService
                         .find(new Employee(name, password));
-                if (dbEmployee != null) {                    
-                    
+                if (dbEmployee != null) {
                     session.setAttribute("loggedUser", name);
                     if (dbEmployee.getRole().equals(Role.MANAGER)) {
                         if (session != null) {
                             session.setAttribute("role", Role.MANAGER);
                             session.setAttribute("manager", dbEmployee);
-                        }                       
+                        }
                         redirect(PageConstants.HOME_PAGE_MANAGER);
                     } else if (dbEmployee.getRole().equals(Role.MASTER)) {
                         if (session != null) {
                             session.setAttribute("role", Role.MASTER);
                             session.setAttribute("master", dbEmployee);
-                        }                        
+                        }
                         redirect(PageConstants.HOME_PAGE_MASTER);
                     }
-                } else{
-                    LOGGER.info(" username or password is wrong for user:"
-                            + name);
+                } else {
+                    LOGGER.info(
+                            " username or password is wrong for user:" + name);
                     request.setAttribute("error",
                             "Unknown username or wrong password. Please retry.");
-                    request.setAttribute("login",name);
+                    request.setAttribute("login", name);
                     forward(PageConstants.PAGE_LOGIN);
                 }
-            }          
+            }
         } catch (SQLException e) {
             LOGGER.error(e.getMessage(), e);
-        }finally {
-            try {
-                dbManager.close();
-            } catch (SQLException e) {
-                LOGGER.error("Eror while closing connection");
-            }
+        } catch (DBException e) {
+            request.setAttribute("error",e.getMessage());
+            request.setAttribute("login", name);
+            forward(PageConstants.PAGE_LOGIN);
+        } finally {
+            daoFactory.close();
         }
     }
-    
+
     private boolean validate(String name, String password) {
-        String resultString= ValidationUtils.validateNameAndPassword(name, password);
-        if(!resultString.isEmpty()) {
-            request.setAttribute("error",resultString); 
+        String resultString = ValidationUtils.validateNameAndPassword(name,
+                password);
+        if (!resultString.isEmpty()) {
+            request.setAttribute("error", resultString);
             return false;
-        }        
+        }
         return true;
     }
 }

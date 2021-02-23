@@ -131,10 +131,6 @@ public class OrderService extends AbstractEntityService<Order> {
     }
 
     @Override
-    public void remove(int id) {
-    }
-
-    @Override
     public Order find(int id) {
         Order order = null;
         try (PreparedStatement pStatement = connection
@@ -155,7 +151,6 @@ public class OrderService extends AbstractEntityService<Order> {
         return null;
     }
 
-    @Override
     public int getCount() {
         int ordersCount = 0;
 
@@ -223,7 +218,6 @@ public class OrderService extends AbstractEntityService<Order> {
                 return true;
             }
         } catch (SQLException e) {
-            // LOGGER.log(Level.SEVERE, e.getMessage(), e);
             LOGGER.error("Fail add order", e);
         }
         return false;

@@ -3,33 +3,31 @@ package com.elenakliuchka.repairagency.entity;
 import java.io.Serializable;
 import java.util.List;
 
-public class Customer implements Serializable{
+public class Customer implements Serializable {
 
     private static final long serialVersionUID = -1540587379836408091L;
-    
+
     private int id;
-    
-    private String name; 
+
+    private String name;
 
     private String email;
-    
-    private String password; 
-    
-    private int locale_id;
-    
+
+    private String password;
+
     private String phone;
-    
+
     private Double balance;
-    
+
     private List<Order> orders;
 
-    public Customer() {        
+    public Customer() {
     }
-    
+
     public Customer(String name, String password) {
         this.name = name;
         this.password = password;
-    }    
+    }
 
     public int getId() {
         return id;
@@ -63,14 +61,6 @@ public class Customer implements Serializable{
         this.password = password;
     }
 
-    public int getLocale_id() {
-        return locale_id;
-    }
-
-    public void setLocale_id(int locale_id) {
-        this.locale_id = locale_id;
-    }
-
     public String getPhone() {
         return phone;
     }
@@ -94,11 +84,84 @@ public class Customer implements Serializable{
     public List<Order> getOrders() {
         return orders;
     }
+    
+    
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((balance == null) ? 0 : balance.hashCode());
+        result = prime * result + ((email == null) ? 0 : email.hashCode());
+        result = prime * result + ((name == null) ? 0 : name.hashCode());
+        result = prime * result + ((orders == null) ? 0 : orders.hashCode());
+        result = prime * result
+                + ((password == null) ? 0 : password.hashCode());
+        result = prime * result + ((phone == null) ? 0 : phone.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        Customer other = (Customer) obj;
+        if (balance == null) {
+            if (other.balance != null) {
+                return false;
+            }
+        } else if (!balance.equals(other.balance)) {
+            return false;
+        }
+        if (email == null) {
+            if (other.email != null) {
+                return false;
+            }
+        } else if (!email.equals(other.email)) {
+            return false;
+        }
+        if (name == null) {
+            if (other.name != null) {
+                return false;
+            }
+        } else if (!name.equals(other.name)) {
+            return false;
+        }
+        if (orders == null) {
+            if (other.orders != null) {
+                return false;
+            }
+        } else if (!orders.equals(other.orders)) {
+            return false;
+        }
+        if (password == null) {
+            if (other.password != null) {
+                return false;
+            }
+        } else if (!password.equals(other.password)) {
+            return false;
+        }
+        if (phone == null) {
+            if (other.phone != null) {
+                return false;
+            }
+        } else if (!phone.equals(other.phone)) {
+            return false;
+        }
+        return true;
+    }
 
     @Override
     public String toString() {
         return "Customer [id=" + id + ", name=" + name + ", email=" + email
-                + ", locale_id=" + locale_id + ", phone=" + phone + ", balance="
-                + balance + ", orders=" + orders + "]";
-    } 
+                + ", phone=" + phone + ", balance=" + balance + ", orders="
+                + orders + "]";
+    }
 }

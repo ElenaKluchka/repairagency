@@ -4,24 +4,18 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
+import exception.DBException;
 import exception.NotUniqueException;
 
 public abstract class AbstractEntityService<T> {    
     
     public abstract List<T> findAll(int start, int max);
- //   public abstract List<T> findAll();
 
-    public abstract void save(T object) throws SQLException, NotUniqueException;    
-
-    public abstract void remove(int id);
-    
-//    public abstract void remove(T object);
+    public abstract void save(T object) throws SQLException, NotUniqueException, DBException;
 
     public abstract T find(int id);
     
-    public abstract T find(T object);
-    
-    public abstract int getCount();
+    public abstract T find(T object) throws DBException;
     
     protected final String tableName;
     

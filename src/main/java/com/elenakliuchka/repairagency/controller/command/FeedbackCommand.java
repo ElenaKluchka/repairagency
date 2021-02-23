@@ -22,26 +22,23 @@ public class FeedbackCommand extends AbstractCommand {
     public void process() throws ServletException, IOException {
         String feedback = request.getParameter("feedback");
         int orderId = Integer.parseInt(request.getParameter("orderId"));
-        LOGGER.trace("Set feedback for orderId: "+orderId+ " feedback: "+feedback);
-        DAOFactory dbManager = DAOFactory.getInstance();
-        try {            
-            OrderService orderService = (OrderService) dbManager
+        LOGGER.trace("Set feedback for orderId: " + orderId + " feedback: "
+                + feedback);
+        DAOFactory daoFactory = DAOFactory.getInstance();
+        try {
+            OrderService orderService = (OrderService) daoFactory
                     .getService(Table.ORDER);
             if (orderService.setFeedback(orderId, feedback)) {
                 Customer customer = (Customer) request.getSession()
                         .getAttribute("customer");
                 customer.setOrders(orderService.findByUserId(customer.getId()));
                 request.getSession().setAttribute("client", customer);
-            }            
+            }
         } catch (SQLException e) {
             LOGGER.error(e.getMessage(), e);
-        }finally {
-            try {
-                dbManager.close();
-            } catch (SQLException e) {
-                LOGGER.error("Error while close connection");
-            }
+        } finally {
+            daoFactory.close();
         }
-        redirect(PageConstants.PAGE_CUSTOMER_ORDERS+".jsp");
+        redirect(PageConstants.PAGE_CUSTOMER_ORDERS + ".jsp");
     }
 }
