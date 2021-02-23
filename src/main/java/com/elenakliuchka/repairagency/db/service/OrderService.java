@@ -16,19 +16,19 @@ import com.elenakliuchka.repairagency.entity.OrderManagmentState;
 import com.elenakliuchka.repairagency.entity.OrderWorkState;
 
 public class OrderService extends AbstractEntityService<Order> {
-    private final static String TABLE_NAME = "order";
+    private final static String TABLE_NAME = "orders";
 
-    private static final String SQL_FIND_ORDER_BY_CUSTOMER_ID = "SELECT * FROM repair_agency.order WHERE customer_id=? ORDER BY work_state, managment_state";
+    private static final String SQL_FIND_ORDER_BY_CUSTOMER_ID = "SELECT * FROM "+TABLE_NAME+ " WHERE customer_id=? ORDER BY work_state, managment_state";
     /*  private static final String SQL_FIND_ALL_ORDERS = "SELECT od.id, od.name,od.description, od.price, od.date, od.managment_state, od.work_state,"
             + " e.id as master_id, e.name as master_name "
             + "FROM repair_agency.order od, repair_agency.order_master om, employee e WHERE od.id=om.order_id AND e.id = om.master_id ORDER BY date DESC";
     */
-    private static final String SQL_FIND_ALL_ORDERS = "SELECT * FROM repair_agency.order ORDER BY date DESC ";
+    private static final String SQL_FIND_ALL_ORDERS = "SELECT * FROM "+TABLE_NAME+ " ORDER BY date DESC ";
 
-    private static final String SQL_FIND_ALL_ORDERS_SORT = "SELECT * FROM repair_agency.order ORDER BY ";
+    private static final String SQL_FIND_ALL_ORDERS_SORT = "SELECT * FROM "+TABLE_NAME+"ORDER BY ";
 
-    private static final String SQL_ADD_ORDER = "INSERT INTO repair_agency.order (customer_id, name, description) VALUES (?,?,?)";
-    private static final String SQL_FIND_ORDER_BY_ID = "SELECT * FROM repair_agency.order WHERE id=?";
+    private static final String SQL_ADD_ORDER = "INSERT INTO "+TABLE_NAME+" (customer_id, name, description) VALUES (?,?,?)";
+    private static final String SQL_FIND_ORDER_BY_ID = "SELECT * FROM "+TABLE_NAME+" WHERE id=?";
 
     private static final String SQL_SET_FEEDBACK = "UPDATE repair_agency.order SET feedback = ? WHERE id = ?";
 

@@ -25,7 +25,6 @@ public class OrderMasterService extends AbstractEntityService<OrderMaster>{
     
     @Override
     public List<OrderMaster> findAll(int start, int max) {
-        // TODO Auto-generated method stub
         return null;
     }
 
@@ -47,13 +46,11 @@ public class OrderMasterService extends AbstractEntityService<OrderMaster>{
 
     @Override
     public OrderMaster find(int id) {
-        // TODO Auto-generated method stub
         return null;
     }
 
     @Override
     public OrderMaster find(OrderMaster object) {
-        // TODO Auto-generated method stub
         return null;
     }
 }

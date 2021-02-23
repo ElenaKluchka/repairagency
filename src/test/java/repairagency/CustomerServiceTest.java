@@ -36,7 +36,7 @@ public class CustomerServiceTest {
     Connection connection;
 
     @BeforeClass
-    public static void beforeTest()
+    public static void createCustomerTable()
             throws SQLException, ClassNotFoundException {
         Class.forName(JDBC_DRIVER);
 
