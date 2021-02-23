@@ -25,10 +25,16 @@ public class EditOrderCommand extends AbstractCommand {
     @Override
     public void process() throws ServletException, IOException {
 
+        if(request.getAttribute("locale")!=null) {
+            request.setAttribute("command", "FindCustomer");
+            
+            int orderId = Integer.parseInt(request.getParameter("orderId"));        
+            redirect(PageConstants.PAGE_MANAGER_EDIT_ORDER_FORM + orderId);
+        }
         
         //Customer customer = (Customer) request.getSession()
          //       .getAttribute("customer");
-        int orderId = Integer.parseInt(request.getParameter("orderId"));
+        int orderId = Integer.parseInt(request.getParameter("orderId"));        
 
         Double price = Double.parseDouble(request.getParameter("price"));
         String managementState = request.getParameter("managementState");
@@ -40,7 +46,7 @@ public class EditOrderCommand extends AbstractCommand {
         Order order = new Order();
         order.setId(orderId);
         order.setPrice(price);
-        order.setManagementState(OrderManagmentState.valueOf(managementState));
+        order.setManagementState(OrderManagmentState.valueOf(managementState));       
 
         DAOFactory dbManager = DAOFactory.getInstance();
         try {
@@ -61,7 +67,7 @@ public class EditOrderCommand extends AbstractCommand {
                 HttpSession session = request.getSession();
                 session.setAttribute("order", orderDb);
                 session.setAttribute("successMessage",
-                        "New parameters was saved");
+                        "New parameters was saved");                
             }
 
         } catch (SQLException e) {
@@ -75,7 +81,5 @@ public class EditOrderCommand extends AbstractCommand {
         }
 
         redirect(PageConstants.PAGE_MANAGER_EDIT_ORDER_FORM + orderId);
-
-        // ${path }/do/manager/editOrderForm?command=EditOrderForm&orderId=
     }
 }

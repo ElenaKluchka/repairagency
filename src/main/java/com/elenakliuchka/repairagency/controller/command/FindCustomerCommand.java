@@ -26,6 +26,11 @@ public class FindCustomerCommand extends AbstractCommand {
 
     @Override
     public void process() throws ServletException, IOException {
+        
+        if(request.getAttribute("locale")!=null) {
+            request.setAttribute("command", "FindCustomer");
+            forward(PageConstants.PAGE_MANAGER_CUSTOMERS);
+        }
 
         HttpSession session = request.getSession(true);
         String name = request.getParameter("uname");

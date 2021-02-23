@@ -1,10 +1,8 @@
 <div id="header">       
-        <ul>      
-         <c:if test = "${loggedUser ne null}">
+        <ul>             
             <li>
-            <span class="name">${loggedUser}</span>
-            </li>     
-          </c:if>     
+            <span class="name"> <mytaglib:user/>    </span>
+            </li>          
           <%@ include file="header_right_part.jspf" %>
         </ul>
  </div>

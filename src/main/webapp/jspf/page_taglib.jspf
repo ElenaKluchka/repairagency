@@ -7,6 +7,8 @@
 
 <%@ taglib prefix="my" tagdir="/WEB-INF/tags"%>
 
+<%@ taglib uri="/WEB-INF/repairagency_tags.tld" prefix="mytaglib" %>
+
 <%@ page isELIgnored="false" %>
 <%@ page session="true" %>
 

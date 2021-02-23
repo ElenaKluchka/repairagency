@@ -1,4 +1,5 @@
-<%@ include file="/jspf/page_taglib.jspf" %>
+<%@ include file="/jspf/page_taglib.jspf" %>  
+ 
 <html>
 <c:set var="title" value="Edit order" />
 <%@ include file="/jspf/logged_user_head.jspf" %>
@@ -40,7 +41,7 @@
 					      </select>
 					</td>
 					</tr>
-				<tr> 
+				<tr> 				
 			     <td>Masters: </td>
 			     <td>
 			         <c:forEach items="${order.masters}" var="master"
@@ -48,13 +49,14 @@
                         ${master.name}<br>
                         </c:forEach>
                        <br>
-                       Add master:
+                       Add master:                
                  <select name="masters">
 	                <option value="0">Select master</option>
 	                <c:forEach items="${mastersList}" var="master">
 	                    <option value="${master.id}">${master.name}</option>
 	                </c:forEach>
-	               </select>   
+	               </select>
+	                  
 	                </td>    
                  </tr>                                     
                </table>

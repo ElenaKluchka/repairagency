@@ -2,15 +2,16 @@
 <html>
 <c:set var="title" value="Manage orders" />
 <%@ include file="/jspf/logged_user_head.jspf" %>
-<body>
+<body>                                               <!--   <fmt:message key=""/> -->
 <%@ include file="/jspf/header.jspf" %>
-	<h3>Your orders:</h3>
+     
+	<h3><fmt:message key="orders_jsp.label.orders"/>:</h3>
 	<table style="width: 100%" id= "orders">
 		<tr>
-			<th>N</th>
-			<th>Name</th>			
-			<th>Date</th>
-			<th>State</th>
+			<th><fmt:message key="order.number"/></th>
+			<th><fmt:message key="order.name"/></th>			
+			<th><fmt:message key="order.date"/></th>
+			<th><fmt:message key="order.state"/></th>
 			<th></th>
 		</tr>
 		<c:forEach items="${orders}" var="order" varStatus="count">
@@ -25,17 +26,13 @@
 				<td>${order.workState}</td>
 				<td><button id="myBtn" 
 				onclick="showDetailsModal('${order.id}','${order.name}',
-				'${stdDatum }','${order.description}','${order.workState}');">Details</button></td>				
+				'${stdDatum }','${order.description}','${order.workState}');"><fmt:message key="order.details"/></button></td>				
 						
 			</tr>
 		</c:forEach>
 	</table>
 	<br>
-  <form action="${path }/do/logout" method="get">
-        <input type="hidden" id="filfI" name="command" value="Logout">
-        <input type="submit" value="Logout">
-    </form>
-    
+	 
     <div id="myModal" class="modal">
 
       <!-- Modal content -->
@@ -46,13 +43,13 @@
         <input type="hidden"  name="command" value="ChangeOrderWorkState">        
         <input type="hidden" id="orderId" name="orderId" >
         <input type="hidden" id="newState" name="newState" >
-        N: <label id="N"></label>   <br>
-        Order name: <label id="name"></label>   <br>
-        Date: <label id="date"></label>   <br>
-        Description: <label id="description"></label>   <br>
+        <fmt:message key="order.number"/>: <label id="N"></label>   <br>
+        <fmt:message key="order.name"/>: <label id="name"></label>   <br>
+        <fmt:message key="order.date"/>: <label id="date"></label>   <br>
+        <fmt:message key="order.description"/>: <label id="description"></label>   <br>
                        
         <input type="submit" id="changeSt" value="">
-         <button  id ="okMod" onclick="closeModal();">OK</button>           
+         <button  id ="okMod" onclick="closeModal();"> <fmt:message key="button.close"/></button>           
        </form>      
        </div> 
     </div>
@@ -70,17 +67,40 @@
           $('#okMod').hide();
           if(workState =='NEW'){
         	  $('#changeSt').show();
-        	  $('#changeSt').val('Take an order in work');
+        	  $('#changeSt').val('<fmt:message key="orders_jsp.master.modal.button"/>');
         	  $('#newState').val('IN_WORK');
           }else if(workState =='IN_WORK'){
-        	  $('#changeSt').show();
-        	  $('#changeSt').val('FINISHED');
+        	  $('#changeSt').show();  
+        	  $('#changeSt').val('<fmt:message key="orders_jsp.master.modal.button.finished"/>');
         	  $('#newState').val('FINISHED');
           }else if(workState =='FINISHED'){
         	  $('#changeSt').hide();
         	  $('#okMod').show();
           }
       }
+      
+      // Get the button that opens the modal
+      var btn = document.getElementById("myBtn");
+
+      // Get the <span> element that closes the modal
+      var span = document.getElementsByClassName("close")[0];
+
+      $(document).ready(function() {
+          span.onclick = function() {
+              modal.style.display = "none";
+          }
+          
+          // When the user clicks anywhere outside of the modal, close it
+          window.onclick = function(event) {
+              if (event.target == modal) {
+                  modal.style.display = "none";
+              }
+          }
+      });
+      function closeModal(){
+    	  modal.style.display = "none";
+    	  }
+
 </script>
 </body>
 </html>

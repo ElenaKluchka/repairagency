@@ -3,7 +3,7 @@
 <c:set var="title" value="Manage orders" />
 <%@ include file="/jspf/logged_user_head.jspf" %>
 <body>
-<%@ include file="/jspf/header.jspf" %>  <!--   <fmt:message key=""/> -->
+<%@ include file="/jspf/header.jspf" %> 
 
     <form action="${path }/do/client/addOrder" method="post" style="width:400px">
         <h3 style="text-align: center"><fmt:message key="orders_jsp.label.create"/></h3>
@@ -17,7 +17,7 @@
             </div>
     </form>
     <fmt:message key="orders_jsp.balance"/>:
-    ${client.balance==0?'0.00f':client.balance}
+    ${client.balance==0?'0':client.balance}
     <h3><fmt:message key="orders_jsp.label.orders"/>:</h3>
     <table style="width:100%" id= "orders">
         <tr>
@@ -91,6 +91,29 @@
       function closeModal() {
           modal.style.display = "none";
       }
+      // Get the button that opens the modal
+      var btn = document.getElementById("myBtn");
+
+      // Get the <span> element that closes the modal
+      var span = document.getElementsByClassName("close")[0];
+
+      $(document).ready(function() {
+          span.onclick = function() {
+              modal.style.display = "none";
+          }
+          
+          // When the user clicks anywhere outside of the modal, close it
+          window.onclick = function(event) {
+              if (event.target == modal) {
+                  modal.style.display = "none";
+              }
+          }
+      });
+
+      function closeModal(){
+       modal.style.display = "none";
+       }
+
 </script>
 </body>
 </html>

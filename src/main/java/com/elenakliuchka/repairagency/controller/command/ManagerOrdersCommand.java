@@ -26,6 +26,12 @@ public class ManagerOrdersCommand extends AbstractCommand {
     @Override
     public void process() throws ServletException, IOException {
         LOGGER.info("Get orders for manager");
+        
+        if(request.getAttribute("locale")!=null) {
+            request.setAttribute("command", "ManagerOrders");
+            forward(PageConstants.PAGE_MANAGER_ORDERS);
+        }
+        
         HttpSession session = request.getSession();
         Employee user = (Employee) session.getAttribute("manager");        
              
@@ -61,6 +67,7 @@ public class ManagerOrdersCommand extends AbstractCommand {
             //request.setAttribute("orders", ordersList);
             request.getSession().setAttribute("orders", ordersList);
             
+            request.setAttribute("command", "ManagerOrders");
         } catch (SQLException e) {
             LOGGER.error(e.getMessage(), e);
         }finally {
