@@ -11,7 +11,12 @@ import javax.servlet.annotation.WebListener;
 
 import org.apache.log4j.Logger;
 
-
+/**
+ * Listener to initalize locale and set "path" attribute.
+ * 
+ * @author Kliuchka Olena.
+ *
+ */
 @WebListener
 public class ContextListener implements ServletContextListener {
 

@@ -13,6 +13,12 @@ import com.elenakliuchka.repairagency.db.service.OrderService;
 import com.elenakliuchka.repairagency.entity.Customer;
 import com.elenakliuchka.repairagency.util.PageConstants;
 
+/**
+ * Command to save customers feedback for order.
+ * 
+ * @author Kliuchka Olena
+ *
+ */
 public class FeedbackCommand extends AbstractCommand {
 
     private static final Logger LOGGER = Logger

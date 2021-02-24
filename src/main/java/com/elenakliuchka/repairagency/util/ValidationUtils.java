@@ -6,6 +6,12 @@ import java.util.regex.Pattern;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 
+/**
+ * Class to validate parameters retrieving in commands.
+ * 
+ * @author Kliuchka Olena.
+ *
+ */
 public class ValidationUtils {
 
     private ValidationUtils() {

@@ -21,6 +21,12 @@ import com.elenakliuchka.repairagency.util.ValidationUtils;
 
 import exception.DBException;
 
+/**
+ * Command check login user and defines their role. 
+ * 
+ * @author Kliuchka Olena
+ *
+ */
 public class LoginCommand extends AbstractCommand {
 
     private static final Logger LOGGER = Logger.getLogger(LoginCommand.class);

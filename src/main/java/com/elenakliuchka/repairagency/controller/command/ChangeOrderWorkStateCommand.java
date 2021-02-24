@@ -16,6 +16,12 @@ import com.elenakliuchka.repairagency.entity.Employee;
 import com.elenakliuchka.repairagency.entity.Order;
 import com.elenakliuchka.repairagency.util.PageConstants;
 
+/**
+ * Command to change work state by master. 
+ * 
+ * @author Kliuchka Olena
+ *
+ */
 public class ChangeOrderWorkStateCommand extends AbstractCommand {
 
     private static final Logger LOGGER = Logger.getLogger(LoginCommand.class);

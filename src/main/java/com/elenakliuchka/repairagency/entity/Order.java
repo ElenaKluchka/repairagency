@@ -4,6 +4,12 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * Class order.
+ * 
+ * @author Kliuchka Olena
+ *
+ */
 public class Order implements Serializable {
 
     private static final long serialVersionUID = -3721472966658601675L;

@@ -16,6 +16,12 @@ import org.apache.log4j.Logger;
 
 import com.elenakliuchka.repairagency.util.PageConstants;
 
+/**
+ * Filter to check command requests for existing 'command' parameter.
+ * 
+ * @author Kliuchka Olena.
+ *
+ */
 @WebFilter("/do/*")
 public class CommandFilter implements Filter {
  

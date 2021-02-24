@@ -15,6 +15,12 @@ import com.elenakliuchka.repairagency.entity.Role;
 
 import exception.DBException;
 
+/**
+ * Class to retrieve data from db table 'employee'.
+ * 
+ * @author Kliuchka Olena
+ *
+ */
 public class EmployeeService extends AbstractEntityService<Employee> {
 
     private final static String TABLE_NAME = "employee";

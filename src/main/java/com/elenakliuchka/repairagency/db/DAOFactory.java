@@ -14,6 +14,13 @@ import com.elenakliuchka.repairagency.db.service.EmployeeService;
 import com.elenakliuchka.repairagency.db.service.OrderMasterService;
 import com.elenakliuchka.repairagency.db.service.OrderService;
 
+/**
+ * Class to retrive data base connection from pool.
+ * and fabric method to return service class for corresponding table.
+ * 
+ * @author Kliuchka Olena
+ *
+ */
 public class DAOFactory {
     
     private static final Logger LOGGER = Logger

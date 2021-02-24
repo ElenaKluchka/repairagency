@@ -21,6 +21,12 @@ import com.elenakliuchka.repairagency.util.ValidationUtils;
 import exception.DBException;
 import exception.NotUniqueException;
 
+/**
+ * Command to registrate new customer.
+ * 
+ * @author Kliuchka Olena
+ *
+ */
 public class SignupCommand extends AbstractCommand {
 
     private static final Logger LOGGER = Logger
@@ -42,9 +48,7 @@ public class SignupCommand extends AbstractCommand {
             request.setAttribute("newCustomer", customer);
             forward(PageConstants.PAGE_SIGNUP);
             return;
-        }
-        
-      
+        }      
  
         DAOFactory daoFactory = DAOFactory.getInstance();
         try {            

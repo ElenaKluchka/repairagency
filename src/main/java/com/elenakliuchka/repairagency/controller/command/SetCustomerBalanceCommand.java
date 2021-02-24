@@ -15,6 +15,12 @@ import com.elenakliuchka.repairagency.util.PageConstants;
 
 import exception.DBException;
 
+/**
+ * Command to change customer balance.
+ * 
+ * @author Kliuchka Olena
+ *
+ */
 public class SetCustomerBalanceCommand extends AbstractCommand {
     private static final Logger LOGGER = Logger
             .getLogger(SetCustomerBalanceCommand.class); 

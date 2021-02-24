@@ -18,6 +18,14 @@ import com.elenakliuchka.repairagency.entity.Order;
 import com.elenakliuchka.repairagency.entity.Role;
 import com.elenakliuchka.repairagency.util.PageConstants;
 
+/**
+ *  Command to retrieve data for manager home page.
+ *  Get orders with masters for manager.
+ *  Retrives list of all masters for filter  
+ * 
+ * @author Kliuchka Olena
+ *
+ */
 public class ManagerOrdersCommand extends AbstractCommand {
     private static final Logger LOGGER = Logger
             .getLogger(ManagerOrdersCommand.class);

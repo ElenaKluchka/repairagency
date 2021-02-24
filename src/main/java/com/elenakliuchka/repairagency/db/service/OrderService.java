@@ -14,6 +14,12 @@ import com.elenakliuchka.repairagency.entity.Order;
 import com.elenakliuchka.repairagency.entity.OrderManagmentState;
 import com.elenakliuchka.repairagency.entity.OrderWorkState;
 
+/**
+ * Class to retrieve data from db table 'orders'.
+ * 
+ * @author Kliuchka Olena
+ *
+ */
 public class OrderService extends AbstractEntityService<Order> {
     private final static String TABLE_NAME = "orders";
 

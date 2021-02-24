@@ -15,6 +15,12 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 
+/**
+ * Filter to change users locale.
+ * 
+ * @author Kliuchka Olena.
+ *
+ */
 @WebFilter("/*")
 public class LocaleFilter implements Filter {
 

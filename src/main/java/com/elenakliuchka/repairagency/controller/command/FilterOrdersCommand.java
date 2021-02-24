@@ -16,6 +16,12 @@ import com.elenakliuchka.repairagency.db.service.OrderService;
 import com.elenakliuchka.repairagency.entity.Order;
 import com.elenakliuchka.repairagency.util.PageConstants;
 
+/**
+ * Command to find all orders that matches selected parameters.
+ * 
+ * @author Kliuchka Olena
+ *
+ */
 public class FilterOrdersCommand extends AbstractCommand {
     private static final Logger LOGGER = Logger
             .getLogger(FilterOrdersCommand.class);

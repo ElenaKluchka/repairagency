@@ -9,6 +9,12 @@ import org.apache.log4j.Logger;
 
 import com.elenakliuchka.repairagency.util.PageConstants;
 
+/**
+ * Command to logout and invalidate user session.
+ * 
+ * @author Kliuchka Olena
+ *
+ */
 public class LogoutCommand extends AbstractCommand {
     
     private static final Logger LOGGER = Logger.getLogger(LogoutCommand.class);

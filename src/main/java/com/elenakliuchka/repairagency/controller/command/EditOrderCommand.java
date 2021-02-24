@@ -18,6 +18,13 @@ import com.elenakliuchka.repairagency.entity.OrderManagmentState;
 import com.elenakliuchka.repairagency.entity.OrderMaster;
 import com.elenakliuchka.repairagency.util.PageConstants;
 
+/**
+ * Command to set new parameters for order
+ * set master or changes payment state.
+ * 
+ * @author Kliuchka Olena
+ *
+ */
 public class EditOrderCommand extends AbstractCommand {
     private static final Logger LOGGER = Logger
             .getLogger(EditOrderCommand.class);

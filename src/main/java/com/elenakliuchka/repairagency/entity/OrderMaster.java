@@ -2,6 +2,13 @@ package com.elenakliuchka.repairagency.entity;
 
 import java.io.Serializable;
 
+/**
+ * Class corresponds db table 'order_master'.
+ * 
+ * @author Kliuchka Olena
+ *
+ */
+
 public class OrderMaster implements Serializable{
 
     private static final long serialVersionUID = -6205048494627536380L;

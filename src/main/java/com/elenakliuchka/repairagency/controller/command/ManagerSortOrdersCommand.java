@@ -14,6 +14,12 @@ import com.elenakliuchka.repairagency.db.service.OrderService;
 import com.elenakliuchka.repairagency.entity.Order;
 import com.elenakliuchka.repairagency.util.PageConstants;
 
+/**
+ * Command to sort all orders for manager.
+ * 
+ * @author Kliuchka Olena
+ *
+ */
 public class ManagerSortOrdersCommand extends AbstractCommand {
     private static final Logger LOGGER = Logger.getLogger(LoginCommand.class);
 

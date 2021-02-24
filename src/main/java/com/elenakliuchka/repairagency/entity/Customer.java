@@ -3,6 +3,12 @@ package com.elenakliuchka.repairagency.entity;
 import java.io.Serializable;
 import java.util.List;
 
+/**
+ * Class customer.
+ * 
+ * @author Kliuchka Olena
+ *
+ */
 public class Customer implements Serializable {
 
     private static final long serialVersionUID = -1540587379836408091L;

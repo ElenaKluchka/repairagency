@@ -18,6 +18,12 @@ import com.elenakliuchka.repairagency.entity.Order;
 import com.elenakliuchka.repairagency.entity.Role;
 import com.elenakliuchka.repairagency.util.PageConstants;
 
+/**
+ * Retrieve information about order to display in edit order page. 
+ * 
+ * @author Kliuchka Olena
+ *
+ */
 public class EditOrderFormCommand extends AbstractCommand {
     private static final Logger LOGGER = Logger
             .getLogger(EditOrderFormCommand.class);

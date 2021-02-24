@@ -17,7 +17,12 @@ import org.apache.log4j.Logger;
 
 import com.elenakliuchka.repairagency.entity.Role;
 import com.elenakliuchka.repairagency.util.PageConstants;
-
+/**
+ * Filter to check user logged in or not and which page is requested.
+ * 
+ * @author Kliuchka Olena.
+ *
+ */
 @WebFilter("/*")
 public class AuthentificationFilter implements Filter {
 

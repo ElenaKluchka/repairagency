@@ -10,6 +10,12 @@ import org.apache.log4j.Logger;
 
 import com.elenakliuchka.repairagency.entity.OrderMaster;
 
+/**
+ * Class to retrieve data from db table 'order_master'.
+ * 
+ * @author Kliuchka Olena
+ *
+ */
 public class OrderMasterService extends AbstractEntityService<OrderMaster>{
 
     private final static String TABLE_NAME = "order_master";

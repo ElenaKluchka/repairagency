@@ -14,6 +14,12 @@ import com.elenakliuchka.repairagency.entity.Customer;
 import com.elenakliuchka.repairagency.entity.Order;
 import com.elenakliuchka.repairagency.util.PageConstants;
 
+/**
+ * Creates new order for customer.
+ * 
+ * @author Kliuchka Olena
+ *
+ */
 public class AddOrderCommand extends AbstractCommand {
 
     private static final Logger LOGGER = Logger
@@ -27,8 +33,7 @@ public class AddOrderCommand extends AbstractCommand {
         request.setCharacterEncoding("UTF-8");
         order.setName(request.getParameter("orderName"));
         order.setDescription(request.getParameter("orderDescription"));
-
-        LOGGER.trace("servletPath" + request.getServletPath());
+        
         LOGGER.trace("add order:" + order);
         Customer customer = (Customer) request.getSession()
                 .getAttribute("customer");

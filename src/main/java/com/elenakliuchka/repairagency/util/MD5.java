@@ -3,6 +3,13 @@ package com.elenakliuchka.repairagency.util;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+/**
+ *
+ * Class to encrypt passwords by MD5 algorithm.
+ * 
+ * @author Kliuchka Olena.
+ *
+ */
 public class MD5 {
 
     public static String encode(String message) {

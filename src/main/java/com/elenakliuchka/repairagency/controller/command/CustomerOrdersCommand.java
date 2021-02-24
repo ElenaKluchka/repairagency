@@ -15,8 +15,9 @@ import com.elenakliuchka.repairagency.entity.Customer;
 import com.elenakliuchka.repairagency.util.PageConstants;
 
 /**
- * Retrieve ordeers for logged customer
- * @author kos
+ * Command to retrieve customer orders for logged customer home page.
+ * 
+ * @author Kliuchka Olena
  *
  */
 public class CustomerOrdersCommand extends AbstractCommand {

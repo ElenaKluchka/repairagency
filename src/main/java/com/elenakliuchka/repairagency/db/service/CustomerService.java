@@ -14,6 +14,12 @@ import com.elenakliuchka.repairagency.entity.Customer;
 import exception.DBException;
 import exception.NotUniqueException;
 
+/**
+ * Class to retrieve data from db table 'customer'.
+ * 
+ * @author Kliuchka Olena
+ *
+ */
 public class CustomerService extends AbstractEntityService<Customer> {
 
     private final static String TABLE_NAME = "customer";

@@ -8,7 +8,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
-
+/**
+ * Abstract class for all commands.
+ * 
+ * @author Kliuchka Olena
+ *
+ */
 public abstract class AbstractCommand {
     protected ServletContext context;
     protected HttpServletRequest request;

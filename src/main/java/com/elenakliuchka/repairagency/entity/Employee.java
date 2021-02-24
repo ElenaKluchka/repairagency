@@ -2,6 +2,12 @@ package com.elenakliuchka.repairagency.entity;
 
 import java.io.Serializable;
 
+/**
+ * Class employee.
+ * 
+ * @author Kliuchka Olena
+ *
+ */
 public class Employee  implements Serializable{
 
     private static final long serialVersionUID = -1540587379836408091L;

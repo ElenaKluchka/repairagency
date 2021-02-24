@@ -9,6 +9,12 @@ import javax.servlet.jsp.tagext.TagSupport;
 
 import com.elenakliuchka.repairagency.entity.Customer;
 
+/**
+ * Tag to display user name and balance.
+ * 
+ * @author Kliuchka Olena.
+ *
+ */
 public class DisplayUserTag extends TagSupport {
 
     private static final long serialVersionUID = -6516112166485797266L;

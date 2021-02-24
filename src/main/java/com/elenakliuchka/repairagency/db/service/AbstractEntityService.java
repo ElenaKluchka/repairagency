@@ -7,6 +7,13 @@ import java.util.List;
 import exception.DBException;
 import exception.NotUniqueException;
 
+/**
+ * Abstract class with basic function on db tables.
+ * 
+ * @author Kliuchka Olena
+ *
+ * @param <T>
+ */
 public abstract class AbstractEntityService<T> {    
     
     public abstract List<T> findAll(int start, int max);

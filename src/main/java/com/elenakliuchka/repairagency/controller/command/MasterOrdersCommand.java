@@ -15,6 +15,12 @@ import com.elenakliuchka.repairagency.entity.Employee;
 import com.elenakliuchka.repairagency.entity.Order;
 import com.elenakliuchka.repairagency.util.PageConstants;
 
+/**
+ * Command to retrieve masters orders for masters home page.
+ * 
+ * @author Kliuchka Olena
+ *
+ */
 public class MasterOrdersCommand extends AbstractCommand {
     private static final Logger LOGGER = Logger.getLogger(LoginCommand.class);
 

@@ -12,6 +12,11 @@ import org.apache.log4j.Logger;
 import com.elenakliuchka.repairagency.controller.command.AbstractCommand;
 import com.elenakliuchka.repairagency.controller.command.UnknownCommand;
 
+/**
+ * Main servlet.
+ * @author Kliuchka Olena
+ *
+ */
 @WebServlet({"/do/*"})
 public class FrontControllerServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
@@ -42,8 +47,7 @@ public class FrontControllerServlet extends HttpServlet {
 
     private AbstractCommand getCommand(HttpServletRequest request) {
         try {
-            LOGGER.trace("getCommand parameter:" + request.getParameter("command"));
-            LOGGER.trace("getCommand pathInfo:" + request.getPathInfo());    
+            LOGGER.trace("getCommand parameter:" + request.getParameter("command"));               
             String commandName = request.getParameter("command");            
             Class<?> type = Class.forName(String.format(
                     "com.elenakliuchka.repairagency.controller.command.%sCommand",

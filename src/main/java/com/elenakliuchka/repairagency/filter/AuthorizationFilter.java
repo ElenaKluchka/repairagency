@@ -19,6 +19,12 @@ import org.apache.log4j.Logger;
 import com.elenakliuchka.repairagency.entity.Role;
 import com.elenakliuchka.repairagency.util.PageConstants;
 
+/**
+ * Filter to check logged user credentinals for requested page by role.
+ * 
+ * @author Kliuchka Olena.
+ *
+ */
 @WebFilter({ "/do/client/*", "/do/manager/*", "/do/master/*", "/client/*",
         "/manager/*", "/master/*" })
 public class AuthorizationFilter implements Filter {
