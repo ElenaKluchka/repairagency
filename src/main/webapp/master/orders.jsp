@@ -24,9 +24,12 @@
                     ${stdDatum }
                 </td>			
 				<td>${order.workState}</td>
-				<td><button id="myBtn" 
-				onclick="showDetailsModal('${order.id}','${order.name}',
-				'${stdDatum }','${order.description}','${order.workState}');"><fmt:message key="order.details"/></button></td>				
+				<td>
+					<c:if test="${order.workState ne 'FINISHED' }">
+						<button id="myBtn" onclick="showDetailsModal('${order.id}','${order.name}',
+						'${stdDatum }','${order.description}','${order.workState}');"><fmt:message key="order.details"/></button>
+					</c:if>
+			    </td>				
 						
 			</tr>
 		</c:forEach>
