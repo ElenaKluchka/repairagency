@@ -27,20 +27,20 @@ public class OrderService extends AbstractEntityService<Order> {
  
     private static final String SQL_FIND_ALL_ORDERS = "SELECT * FROM "+TABLE_NAME+ " ORDER BY date DESC ";
 
-    private static final String SQL_FIND_ALL_ORDERS_SORT = "SELECT * FROM "+TABLE_NAME+"ORDER BY ";
+    private static final String SQL_FIND_ALL_ORDERS_SORT = "SELECT * FROM "+TABLE_NAME+" ORDER BY ";
 
     private static final String SQL_ADD_ORDER = "INSERT INTO "+TABLE_NAME+" (customer_id, name, description) VALUES (?,?,?)";
     private static final String SQL_FIND_ORDER_BY_ID = "SELECT * FROM "+TABLE_NAME+" WHERE id=?";
 
-    private static final String SQL_SET_FEEDBACK = "UPDATE "+TABLE_NAME+"SET feedback = ? WHERE id = ?";
+    private static final String SQL_SET_FEEDBACK = "UPDATE "+TABLE_NAME+" SET feedback = ? WHERE id = ?";
 
-    private static final String SQL_FIND_ORDER_BY_MASTER = "SELECT * FROM " +TABLE_NAME+"od, repair_agency.order_master om WHERE od.id=om.order_id AND om.master_id=?";
+    private static final String SQL_FIND_ORDER_BY_MASTER = "SELECT * FROM " +TABLE_NAME+" od, repair_agency.order_master om WHERE od.id=om.order_id AND om.master_id=?";
 
-    private static final String SQL_SET_WORK_STATE = "UPDATE "+TABLE_NAME+ "SET work_state = ? WHERE (id = ?)";
+    private static final String SQL_SET_WORK_STATE = "UPDATE "+TABLE_NAME+ " SET work_state = ? WHERE (id = ?)";
 
     private static final String SQL_FIND_ORDER_BY_PARAM = "SELECT * FROM " +TABLE_NAME+" WHERE ";
     private static final String SQL_FIND_ORDER_BY_MASTER_AND_PARAM = "SELECT * FROM " +TABLE_NAME+ " od, repair_agency.order_master om "
-            + "WHERE od.id=om.order_id AND om.master_id=? ";
+            + " WHERE od.id=om.order_id AND om.master_id=? ";
     
     private static final String SQL_UPDATE_ORDER = "UPDATE " +TABLE_NAME+" SET price= ?, managment_state=?  WHERE id = ?";
     
