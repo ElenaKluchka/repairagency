@@ -30,7 +30,6 @@ public class FilterOrdersCommand extends AbstractCommand {
     public void process() throws ServletException, IOException {
 
         DAOFactory daoFactory = DAOFactory.getInstance();
-
         try {
             String[] stateResults = request.getParameterValues("state");
             String[] workStateResults = request
@@ -38,7 +37,8 @@ public class FilterOrdersCommand extends AbstractCommand {
 
             LOGGER.trace("stateResults: " + stateResults + " workStateResults"
                     + workStateResults);
-
+          
+            
             int masterId = Integer.parseInt(request.getParameter("masters"));
             OrderService orderService = (OrderService) daoFactory
                     .getService(Table.ORDER);
@@ -46,11 +46,12 @@ public class FilterOrdersCommand extends AbstractCommand {
             if(stateResults==null &&workStateResults==null &&masterId==0) {
                 redirect(PageConstants.HOME_PAGE_MANAGER);
                 return;
-            }
+            }            
             else{
                 orders = orderService.findFilterSorted(stateResults,
                     workStateResults, masterId);
             }
+            request.setAttribute("filter", "true");
             
             if (stateResults != null) {
                 LOGGER.trace(" selectedState:" + Arrays.toString(stateResults));
@@ -78,10 +79,7 @@ public class FilterOrdersCommand extends AbstractCommand {
                     .getService(Table.EMPLOYEE);
             for (Order order : orders) {
                 order.setMasters(employeeService.findEmployeesForOrder(order));
-            }
-
-           
-          
+            }          
         } catch (SQLException e) {
             LOGGER.error(e.getMessage(), e);
         } finally {

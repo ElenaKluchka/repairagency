@@ -24,7 +24,7 @@
 			<div class="container">
 				<input type="hidden" name="command" value="FindCustomer"> <label
 					for="subject">Find by Name</label>					
-                <input type="text" name="uname"	value="${searchCustomer.name }" placeholder="name"><br>
+                <input type="text" name="uname"	value="${searchCustomer.name }" placeholder="name" maxlength="45"><br>
 				Or find by <label for="subject">Phone in format +380...</label><br> 
 				<input id="online_phone" type="tel"
 					maxlength="50" value="${searchCustomer.phone}" name="phone"

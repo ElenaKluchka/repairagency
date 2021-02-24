@@ -9,7 +9,7 @@
         <h3 style="text-align: center"><fmt:message key="orders_jsp.label.create"/></h3>
             <div class="container">     
 		        <input type="hidden" name="command" value="AddOrder">
-		        <fmt:message key="order.name"/>: <input type="text" id="orderName" name="orderName" required> <br>
+		        <fmt:message key="order.name"/>: <input type="text" id="orderName" name="orderName" maxlength="45" required> <br>
 		        <br> <fmt:message key="order.description"/>: <textarea name="orderDescription" id="orderDescription" 
 		             class="description" placeholder=" <fmt:message key="orders_jsp.descript"/>" 
 		              maxlength="500" required></textarea>

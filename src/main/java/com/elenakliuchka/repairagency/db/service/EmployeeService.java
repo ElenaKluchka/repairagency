@@ -50,8 +50,7 @@ public class EmployeeService extends AbstractEntityService<Employee> {
         if (employee == null) {
             return null;
         }
-        Employee employeeRes = null;
-        LOGGER.trace(employee);
+        Employee employeeRes = null;        
         try (PreparedStatement pStatement = connection
                 .prepareStatement(SQL_FIND_EMPLOYEE)) {
             pStatement.setString(1, employee.getName());

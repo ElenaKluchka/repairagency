@@ -120,7 +120,8 @@
 			</c:choose>
 		</table>
 	<br>
-	
+<c:if test="${filter eq null}">
+
 <!-- Pagination -->
 
 	<c:choose>
@@ -136,8 +137,10 @@
             <a href="${path }/do/manager/manage_orders?command=ManagerOrders&page=${page+1}">Next</a>
         </c:otherwise>
     </c:choose>
-	</div>
-	
+    
+</c:if>     
+</div>
+
 <!-- Modal window to view details of order -->	
 	<div id="myModal" class="modal">
 
