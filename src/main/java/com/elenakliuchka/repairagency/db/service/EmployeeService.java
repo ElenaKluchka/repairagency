@@ -27,11 +27,15 @@ public class EmployeeService extends AbstractEntityService<Employee> {
 
     private static final String SQL_FIND_EMPLOYEE_BY_ROlE = "SELECT * FROM "
             + TABLE_NAME + " WHERE role=?";
+    
     private static final String SQL_FIND_EMPLOYEE = "SELECT * FROM "
             + TABLE_NAME + " WHERE name=? and password=?";
     
     private static final String SQL_FIND_EMPLOYEES_FOR_ORDER = "SELECT id,name,m.order_id FROM "
             + TABLE_NAME + " JOIN  order_master m ON master_id=id WHERE order_id=?";
+    
+    private static final String SQL_FIND_EMPLOYEE_BY_ID = "SELECT * FROM "
+            + TABLE_NAME + " WHERE id=?";
 
 
     private static final Logger LOGGER = Logger
@@ -122,9 +126,20 @@ public class EmployeeService extends AbstractEntityService<Employee> {
     @Override
     public void save(Employee object) {
     }
-
+    
     @Override
     public Employee find(int id) {
-        return null;
+        Employee employee = null;
+        try (PreparedStatement pStatement = connection
+                .prepareStatement(SQL_FIND_EMPLOYEE_BY_ID)) {
+            pStatement.setInt(1, id);
+            try (ResultSet rs = pStatement.executeQuery()) {
+                rs.next();
+                employee = retrieveEmployee(rs);
+            }
+        } catch (SQLException e) {
+            LOGGER.error("Fail to find user", e);
+        }
+        return employee;
     }
 }

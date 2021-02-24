@@ -2,7 +2,6 @@ package com.elenakliuchka.repairagency.db.service;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.List;
 
 import exception.DBException;
 import exception.NotUniqueException;
