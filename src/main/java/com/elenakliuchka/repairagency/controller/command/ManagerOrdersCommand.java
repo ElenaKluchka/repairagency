@@ -18,6 +18,8 @@ import com.elenakliuchka.repairagency.entity.Order;
 import com.elenakliuchka.repairagency.entity.Role;
 import com.elenakliuchka.repairagency.util.PageConstants;
 
+import exception.DBException;
+
 /**
  *  Command to retrieve data for manager home page.
  *  Get orders with masters for manager.
@@ -75,12 +77,12 @@ public class ManagerOrdersCommand extends AbstractCommand {
                 List<Employee> mastersList = employeeService
                         .findEmployeesByRole(Role.MASTER);
                 request.getSession().setAttribute("mastersList", mastersList);
-                LOGGER.trace(mastersList);
+                LOGGER.trace(mastersList); 
             }
             request.getSession().setAttribute("orders", ordersList);
 
             request.setAttribute("command", "ManagerOrders");
-        } catch (SQLException e) {
+        } catch (SQLException | DBException e) {
             LOGGER.error(e.getMessage(), e);
         } finally {
             dbManager.close();

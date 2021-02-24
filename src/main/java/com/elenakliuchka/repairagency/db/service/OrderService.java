@@ -14,6 +14,8 @@ import com.elenakliuchka.repairagency.entity.Order;
 import com.elenakliuchka.repairagency.entity.OrderManagmentState;
 import com.elenakliuchka.repairagency.entity.OrderWorkState;
 
+import exception.DBException;
+
 /**
  * Class to retrieve data from db table 'orders'.
  * 
@@ -23,7 +25,7 @@ import com.elenakliuchka.repairagency.entity.OrderWorkState;
 public class OrderService extends AbstractEntityService<Order> {
     private final static String TABLE_NAME = "orders";
 
-    private static final String SQL_FIND_ORDER_BY_CUSTOMER_ID = "SELECT * FROM "+TABLE_NAME+ " WHERE customer_id=? ORDER BY work_state, managment_state";
+    private static final String SQL_FIND_ORDER_BY_CUSTOMER_ID = "SELECT * FROM "+TABLE_NAME+ " WHERE customer_id=? ORDER BY date DESC, work_state, managment_state DESC";
  
     private static final String SQL_FIND_ALL_ORDERS = "SELECT * FROM "+TABLE_NAME+ " ORDER BY date DESC ";
 
@@ -53,7 +55,7 @@ public class OrderService extends AbstractEntityService<Order> {
         super(connection, TABLE_NAME);
     }
 
-    public List<Order> findAll(int offset, int limit) {
+    public List<Order> findAll(int offset, int limit) throws DBException {
         List<Order> orders = new ArrayList<>();
 
         String queryString = SQL_FIND_ALL_ORDERS +querylimit(offset, limit);
@@ -67,6 +69,7 @@ public class OrderService extends AbstractEntityService<Order> {
             }
         } catch (SQLException e) {
             LOGGER.error("Fail to find orders", e);
+            throw new DBException("Fail to find orders");
         }
         return orders;
     }
@@ -82,7 +85,7 @@ public class OrderService extends AbstractEntityService<Order> {
     }
 
     @Override
-    public void save(Order order) {
+    public void save(Order order) throws DBException {
         if (order == null) {
             return;
         }
@@ -101,11 +104,12 @@ public class OrderService extends AbstractEntityService<Order> {
             }
         } catch (SQLException e) {
             LOGGER.error("Fail add order", e);
+            throw new DBException("Fail to add order");
         }
     }
 
     @Override
-    public Order find(int id) {
+    public Order find(int id) throws DBException {
         Order order = null;
         try (PreparedStatement pStatement = connection
                 .prepareStatement(SQL_FIND_ORDER_BY_ID)) {
@@ -116,16 +120,17 @@ public class OrderService extends AbstractEntityService<Order> {
             }
         } catch (SQLException e) {
             LOGGER.error("Fail to find user", e);
+            throw new DBException("Fail to find order");
         }
         return order;
     }
 
     @Override
-    public Order find(Order order) {
+    public Order find(Order order) throws DBException {
         return find(order.getId());
     }
 
-    public int getCount() {
+    public int getCount() throws DBException {
         int ordersCount = 0;
 
         try (Statement st = connection.createStatement()) {
@@ -136,12 +141,13 @@ public class OrderService extends AbstractEntityService<Order> {
             }
         } catch (SQLException e) {
             LOGGER.error("Fail to count orders", e);
+            throw new DBException("Fail to count order");
         }
         LOGGER.trace("count orders:"+ordersCount);
         return ordersCount;
     }
 
-    public boolean setFeedback(int id, String feedback) {
+    public boolean setFeedback(int id, String feedback) throws DBException {
 
         if (id <= 0 || feedback == null || feedback.isEmpty()) {
             return false;
@@ -154,12 +160,13 @@ public class OrderService extends AbstractEntityService<Order> {
                 return true;
             }
         } catch (SQLException e) {
-            LOGGER.error("Fail add order", e);
+            LOGGER.error("Fail to set feedback for order", e);
+            throw new DBException("Fail to set feedback for order");
         }
         return false;
     }
 
-    public boolean setWorkState(int id, String state) {
+    public boolean setWorkState(int id, String state) throws DBException {
 
         if (id <= 0 || state == null) {
             return false;
@@ -172,12 +179,13 @@ public class OrderService extends AbstractEntityService<Order> {
                 return true;
             }
         } catch (SQLException e) {
-            LOGGER.error("Fail add order", e);
+            LOGGER.error("Fail to set new work state for order", e);
+            throw new DBException("Fail to set new work state for order");
         }
         return false;
     }
 
-    public boolean updateOrder(Order order) {
+    public boolean updateOrder(Order order) throws DBException {
         if (order == null) {
             return false;
         }
@@ -190,12 +198,13 @@ public class OrderService extends AbstractEntityService<Order> {
                 return true;
             }
         } catch (SQLException e) {
-            LOGGER.error("Fail add order", e);
+            LOGGER.error("Fail to update order parameters", e);
+            throw new DBException("Fail to update order parameters");
         }
         return false;
     }
 
-    public List<Order> findByUserId(int userId) {
+    public List<Order> findByUserId(int userId) throws DBException {
         List<Order> orders = new ArrayList<>();
 
         try (PreparedStatement pStatement = connection
@@ -207,12 +216,13 @@ public class OrderService extends AbstractEntityService<Order> {
                 }
             }
         } catch (SQLException e) {
-            LOGGER.error("Fail to find orders", e);
+            LOGGER.error("Fail to find order", e);
+            throw new DBException("Fail to find order");
         }
         return orders;
     }
 
-    public List<Order> findOrdersForMaster(int userId) {
+    public List<Order> findOrdersForMaster(int userId) throws DBException {
         List<Order> orders = new ArrayList<>();
 
         try (PreparedStatement pStatement = connection
@@ -224,7 +234,8 @@ public class OrderService extends AbstractEntityService<Order> {
                 }
             }
         } catch (SQLException e) {
-            LOGGER.error("Fail to find orders", e);
+            LOGGER.error("Fail to find orders for master", e);
+            throw new DBException("Fail to find orders for master");
         }
         return orders;
     }
@@ -266,7 +277,8 @@ public class OrderService extends AbstractEntityService<Order> {
     private Boolean isFirstParam = true;
 
     public List<Order> findFilterSorted(String[] stateResults,
-            String[] workStateResults, int masterId) {
+            String[] workStateResults, int masterId) throws DBException {
+        
         if ((stateResults == null || stateResults.length == 0)
                 && (workStateResults == null || workStateResults.length == 0)
                 && masterId <= 0) {

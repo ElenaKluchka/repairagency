@@ -15,9 +15,9 @@ import exception.NotUniqueException;
  */
 public abstract class AbstractEntityService<T> {        
    
-    public abstract void save(T object) throws SQLException, NotUniqueException, DBException;
+    public abstract void save(T object) throws NotUniqueException, DBException;
 
-    public abstract T find(int id);
+    public abstract T find(int id) throws DBException;
     
     public abstract T find(T object) throws DBException;
     

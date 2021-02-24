@@ -16,6 +16,8 @@ import com.elenakliuchka.repairagency.entity.Employee;
 import com.elenakliuchka.repairagency.entity.Order;
 import com.elenakliuchka.repairagency.util.PageConstants;
 
+import exception.DBException;
+
 /**
  * Command to change work state by master. 
  * 
@@ -46,7 +48,7 @@ public class ChangeOrderWorkStateCommand extends AbstractCommand {
                 session.setAttribute("orders", orders);
             }
 
-        } catch (SQLException e) {
+        } catch (SQLException | DBException e) {
             LOGGER.error(e.getMessage(), e);
         } finally {
             daoFactory.close();

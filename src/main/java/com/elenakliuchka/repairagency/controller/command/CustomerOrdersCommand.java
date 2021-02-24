@@ -14,6 +14,8 @@ import com.elenakliuchka.repairagency.db.service.OrderService;
 import com.elenakliuchka.repairagency.entity.Customer;
 import com.elenakliuchka.repairagency.util.PageConstants;
 
+import exception.DBException;
+
 /**
  * Command to retrieve customer orders for logged customer home page.
  * 
@@ -41,7 +43,7 @@ public class CustomerOrdersCommand extends AbstractCommand {
                 session.setAttribute("client", customer);
             }
             request.setAttribute("command", "CustomerOrders");
-        } catch (SQLException e) {
+        } catch (SQLException | DBException e) {
             LOGGER.error(e.getMessage(), e);
         } finally {
             daoFactory.close();

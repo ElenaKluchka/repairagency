@@ -14,6 +14,8 @@ import com.elenakliuchka.repairagency.entity.Customer;
 import com.elenakliuchka.repairagency.entity.Order;
 import com.elenakliuchka.repairagency.util.PageConstants;
 
+import exception.DBException;
+
 /**
  * Creates new order for customer.
  * 
@@ -46,7 +48,7 @@ public class AddOrderCommand extends AbstractCommand {
             order = orderService.find(order.getId());
             customer.getOrders().add(order);
             request.getSession().setAttribute("client", customer);
-        } catch (SQLException e) {
+        } catch (SQLException | DBException e) {
             LOGGER.error("Error open connection to add new order" + order, e);
         } finally {
             daoFactory.close();

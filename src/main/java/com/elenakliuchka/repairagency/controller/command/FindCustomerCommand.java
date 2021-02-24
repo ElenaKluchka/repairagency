@@ -18,6 +18,8 @@ import com.elenakliuchka.repairagency.entity.Order;
 import com.elenakliuchka.repairagency.util.PageConstants;
 import com.elenakliuchka.repairagency.util.ValidationUtils;
 
+import exception.DBException;
+
 /**
  * Find customer by phone or by name
  * and all orders for this customer.
@@ -88,8 +90,9 @@ public class FindCustomerCommand extends AbstractCommand {
             }
             LOGGER.trace(dbCustomer);
 
-        } catch (SQLException e) {
+        } catch (SQLException | DBException e) {
             LOGGER.error(e.getMessage(), e);
+            request.setAttribute("error", "Error while searching customer");
         } finally {
             daoFactory.close();
         }

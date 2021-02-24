@@ -25,10 +25,10 @@ public class CustomerService extends AbstractEntityService<Customer> {
 
     private static final String SQL_FIND_CUSTOMERS = "SELECT * FROM "
             + TABLE_NAME + " WHERE name=? and password=?";
-    
+
     private static final String SQL_FIND_CUSTOMERS_BY_PARAM = "SELECT * FROM "
             + TABLE_NAME + " WHERE %s=?";
-    
+
     private static final String SQL_FIND_CUSTOMERS_SET_BALANCE = "UPDATE "
             + TABLE_NAME + " SET balance = ? WHERE (id = ?)";
     private static final String SQL_ADD_CUSTOMER = "INSERT INTO " + TABLE_NAME
@@ -36,7 +36,10 @@ public class CustomerService extends AbstractEntityService<Customer> {
 
     private static final String SQL_FIND_CUSTOMERS_BY_PARAMETERS = "SELECT * FROM "
             + TABLE_NAME + " WHERE name=? OR email=? OR phone=?";
-    
+
+    private static final String SQL_FIND_CUSTOMER_BY_ID = "SELECT * FROM "
+            + TABLE_NAME + " WHERE id=?";
+
     private static final Logger LOGGER = Logger
             .getLogger(CustomerService.class.getName());
 
@@ -44,48 +47,51 @@ public class CustomerService extends AbstractEntityService<Customer> {
         super(connection, TABLE_NAME);
     }
 
-    private String checkUnique(Customer customer) throws SQLException {
-        String emailNotUnique="";
-        String nameNotUnique="";
-        String phoneNotUnique="";
-        
+    private String checkUnique(Customer customer) throws DBException {
+        String emailNotUnique = "";
+        String nameNotUnique = "";
+        String phoneNotUnique = "";
+
         try (PreparedStatement pstmt = connection
                 .prepareStatement(SQL_FIND_CUSTOMERS_BY_PARAMETERS)) {
 
             pstmt.setString(1, customer.getName());
             pstmt.setString(2, customer.getEmail());
             pstmt.setString(3, customer.getPhone());
- 
+
             try (ResultSet rs = pstmt.executeQuery()) {
-                while(rs.next()) {
+                while (rs.next()) {
                     Customer сustomerRes = retrieveCustomer(rs);
-                    
-                    if(nameNotUnique.isEmpty() && customer.getName().equals(сustomerRes.getName())) {
-                        nameNotUnique=" Such name already exists. ";
+
+                    if (nameNotUnique.isEmpty() && customer.getName()
+                            .equals(сustomerRes.getName())) {
+                        nameNotUnique = " Such name already exists. ";
                     }
-                    
-                    if(emailNotUnique.isEmpty() && customer.getEmail().equals(сustomerRes.getEmail())) {
-                        emailNotUnique=" Such email already exists. ";
+
+                    if (emailNotUnique.isEmpty() && customer.getEmail()
+                            .equals(сustomerRes.getEmail())) {
+                        emailNotUnique = " Such email already exists. ";
                     }
-                    if(phoneNotUnique.isEmpty() && customer.getPhone().equals(сustomerRes.getPhone())) {
-                        phoneNotUnique=" Such phone already exists. ";
+                    if (phoneNotUnique.isEmpty() && customer.getPhone()
+                            .equals(сustomerRes.getPhone())) {
+                        phoneNotUnique = " Such phone already exists. ";
                     }
                 }
             }
 
         } catch (SQLException e) {
-            throw e;
+            throw new DBException("Fail to add customer");
         }
-        return nameNotUnique+emailNotUnique+phoneNotUnique;
+        return nameNotUnique + emailNotUnique + phoneNotUnique;
     }
 
     @Override
-    public void save(Customer customer)
-            throws SQLException, NotUniqueException, DBException {
+    public void save(Customer customer) throws NotUniqueException, DBException {
         LOGGER.info("Add customer: " + customer);
         if (customer == null) {
             return;
         }
+
         String resultString = checkUnique(customer);
         if (!resultString.isEmpty()) {
             throw new NotUniqueException(resultString);
@@ -93,9 +99,10 @@ public class CustomerService extends AbstractEntityService<Customer> {
 
         try (PreparedStatement pstmt = connection.prepareStatement(
                 SQL_ADD_CUSTOMER, Statement.RETURN_GENERATED_KEYS)) {
-            
-            customer.setPhone(customer.getPhone().trim().replaceAll("(|)|-|\\s", ""));
-            LOGGER.trace("phone:" +customer.getPhone() );
+
+            customer.setPhone(
+                    customer.getPhone().trim().replaceAll("(|)|-|\\s", ""));
+            LOGGER.trace("phone:" + customer.getPhone());
             pstmt.setString(1, customer.getName());
             pstmt.setString(2, customer.getEmail());
             pstmt.setString(3, customer.getPassword());
@@ -109,15 +116,34 @@ public class CustomerService extends AbstractEntityService<Customer> {
                 }
             }
         } catch (SQLException e) {
-             LOGGER.error("Fail to add customer: "+customer, e);
-            throw new DBException("Fail to add customer: "+customer);
+            LOGGER.error("Fail to add customer: " + customer, e);
+            throw new DBException("Fail to add customer: " + customer);
         }
     }
 
     @Override
-    public Customer find(int id) {
-        // TODO Auto-generated method stub
-        return null;
+    public Customer find(int id) throws DBException {
+        if (id == 0) {
+            return null;
+        }
+        Customer сustomerRes = null;
+        try (PreparedStatement pStatement = connection
+                .prepareStatement(SQL_FIND_CUSTOMER_BY_ID)) {
+            pStatement.setInt(1, id);
+            try (ResultSet rs = pStatement.executeQuery()) {
+                if (rs.next()) {
+                    сustomerRes = retrieveCustomer(rs);
+                } else {
+                    LOGGER.info("Can't find Customer with id=" + id);
+                    return null;
+                }
+            }
+
+        } catch (SQLException e) {
+            LOGGER.error("Can't find Customer with id=" + id, e);
+            throw new DBException("Can't find Customer with name=" + id);
+        }
+        return сustomerRes;
     }
 
     @Override
@@ -136,15 +162,17 @@ public class CustomerService extends AbstractEntityService<Customer> {
                     сustomerRes = retrieveCustomer(rs);
                 } else {
                     LOGGER.info("Can't find Customer with name="
-                            + сustomer.getName()+" "+  сustomer.getPassword());
+                            + сustomer.getName() + " "
+                            + сustomer.getPassword());
                     return null;
                 }
             }
 
-        } catch (SQLException e) {            
+        } catch (SQLException e) {
             LOGGER.error("Can't find Customer with name=" + сustomer.getName(),
                     e);
-             throw new DBException("Can't find Customer with name=" + сustomer.getName());
+            throw new DBException(
+                    "Can't find Customer with name=" + сustomer.getName());
         }
         return сustomerRes;
     }
@@ -154,13 +182,14 @@ public class CustomerService extends AbstractEntityService<Customer> {
         customer.setId(rs.getInt("id"));
         customer.setName(rs.getString("name"));
         customer.setEmail(rs.getString("email"));
-        customer.setPassword(rs.getString("password"));      
+        customer.setPassword(rs.getString("password"));
         customer.setPhone(rs.getString("phone"));
         customer.setBalance(rs.getDouble("balance"));
         return customer;
     }
 
-    public Customer findByParam(String paramName, String paramValue) throws SQLException {
+    public Customer findByParam(String paramName, String paramValue)
+            throws DBException {
         Customer сustomerRes = null;
         LOGGER.trace(paramName + ": " + paramValue);
         try (PreparedStatement pStatement = connection.prepareStatement(
@@ -180,7 +209,8 @@ public class CustomerService extends AbstractEntityService<Customer> {
         } catch (SQLException e) {
             LOGGER.error("Can't find Customer with " + paramName + " = "
                     + paramValue);
-             throw e;
+            throw new DBException("Can't find Customer with " + paramName + " = "
+                    + paramValue);
         }
         return сustomerRes;
     }
@@ -196,7 +226,7 @@ public class CustomerService extends AbstractEntityService<Customer> {
             if (pstmt.executeUpdate() > 0) {
                 return true;
             }
-        } catch (SQLException e) {     
+        } catch (SQLException e) {
             LOGGER.error("Fail to set balance", e);
             throw new DBException("Fail to set balance");
         }

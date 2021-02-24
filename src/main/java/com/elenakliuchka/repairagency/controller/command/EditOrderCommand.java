@@ -18,6 +18,8 @@ import com.elenakliuchka.repairagency.entity.OrderManagmentState;
 import com.elenakliuchka.repairagency.entity.OrderMaster;
 import com.elenakliuchka.repairagency.util.PageConstants;
 
+import exception.DBException;
+
 /**
  * Command to set new parameters for order
  * set master or changes payment state.
@@ -74,8 +76,8 @@ public class EditOrderCommand extends AbstractCommand {
                         "New parameters was saved");                
             }
 
-        } catch (SQLException e) {
-            LOGGER.error(e.getMessage(), e);
+        } catch (SQLException | DBException e) {
+            LOGGER.error(e.getMessage(), e);          
         } finally {         
                 daoFactory.close();
         }

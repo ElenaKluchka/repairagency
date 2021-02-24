@@ -5,9 +5,13 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import javax.xml.bind.DataBindingException;
+
 import org.apache.log4j.Logger;
 
 import com.elenakliuchka.repairagency.entity.OrderMaster;
+
+import exception.DBException;
 
 /**
  * Class to retrieve data from db table 'order_master'.
@@ -29,7 +33,7 @@ public class OrderMasterService extends AbstractEntityService<OrderMaster>{
     } 
 
     @Override
-    public void save(OrderMaster orderMaster) {
+    public void save(OrderMaster orderMaster) throws DBException {
         if (orderMaster == null) {
             return;
         }
@@ -41,6 +45,7 @@ public class OrderMasterService extends AbstractEntityService<OrderMaster>{
             pstmt.executeUpdate();
         } catch (SQLException e) {
             LOGGER.error("Fail add order master", e);
+            throw new DBException("Fail add  master for order");
         }
     }
 

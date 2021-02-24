@@ -127,7 +127,7 @@ public class EmployeeService extends AbstractEntityService<Employee> {
     }
     
     @Override
-    public Employee find(int id) {
+    public Employee find(int id) throws DBException {
         Employee employee = null;
         try (PreparedStatement pStatement = connection
                 .prepareStatement(SQL_FIND_EMPLOYEE_BY_ID)) {
@@ -138,6 +138,7 @@ public class EmployeeService extends AbstractEntityService<Employee> {
             }
         } catch (SQLException e) {
             LOGGER.error("Fail to find user", e);
+            throw new DBException("Fail to find user");
         }
         return employee;
     }

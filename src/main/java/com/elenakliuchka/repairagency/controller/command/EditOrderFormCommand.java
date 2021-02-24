@@ -18,6 +18,8 @@ import com.elenakliuchka.repairagency.entity.Order;
 import com.elenakliuchka.repairagency.entity.Role;
 import com.elenakliuchka.repairagency.util.PageConstants;
 
+import exception.DBException;
+
 /**
  * Retrieve information about order to display in edit order page. 
  * 
@@ -66,7 +68,7 @@ public class EditOrderFormCommand extends AbstractCommand {
             }
 
             session.setAttribute("order", orderDb);
-        } catch (SQLException e) {
+        } catch (SQLException | DBException e) {
             LOGGER.error(e.getMessage(), e);
         } finally {
             daoFactory.close();

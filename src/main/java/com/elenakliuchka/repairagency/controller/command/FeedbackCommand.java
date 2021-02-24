@@ -13,6 +13,8 @@ import com.elenakliuchka.repairagency.db.service.OrderService;
 import com.elenakliuchka.repairagency.entity.Customer;
 import com.elenakliuchka.repairagency.util.PageConstants;
 
+import exception.DBException;
+
 /**
  * Command to save customers feedback for order.
  * 
@@ -40,7 +42,7 @@ public class FeedbackCommand extends AbstractCommand {
                 customer.setOrders(orderService.findByUserId(customer.getId()));
                 request.getSession().setAttribute("client", customer);
             }
-        } catch (SQLException e) {
+        } catch (SQLException | DBException e) {
             LOGGER.error(e.getMessage(), e);
         } finally {
             daoFactory.close();

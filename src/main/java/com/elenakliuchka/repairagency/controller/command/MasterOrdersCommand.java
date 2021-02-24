@@ -15,6 +15,8 @@ import com.elenakliuchka.repairagency.entity.Employee;
 import com.elenakliuchka.repairagency.entity.Order;
 import com.elenakliuchka.repairagency.util.PageConstants;
 
+import exception.DBException;
+
 /**
  * Command to retrieve masters orders for masters home page.
  * 
@@ -42,7 +44,7 @@ public class MasterOrdersCommand extends AbstractCommand {
                     .findOrdersForMaster(employee.getId());
             request.setAttribute("orders", orders);
             request.setAttribute("command", "MasterOrders");
-        } catch (SQLException e) {
+        } catch (SQLException | DBException e) {
             LOGGER.error(e.getMessage(), e);
         } finally {
             dbManager.close();

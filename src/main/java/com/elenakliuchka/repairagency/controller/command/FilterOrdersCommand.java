@@ -16,6 +16,8 @@ import com.elenakliuchka.repairagency.db.service.OrderService;
 import com.elenakliuchka.repairagency.entity.Order;
 import com.elenakliuchka.repairagency.util.PageConstants;
 
+import exception.DBException;
+
 /**
  * Command to find all orders that matches selected parameters.
  * 
@@ -80,7 +82,7 @@ public class FilterOrdersCommand extends AbstractCommand {
             for (Order order : orders) {
                 order.setMasters(employeeService.findEmployeesForOrder(order));
             }          
-        } catch (SQLException e) {
+        } catch (SQLException | DBException e) {
             LOGGER.error(e.getMessage(), e);
         } finally {
             daoFactory.close();
