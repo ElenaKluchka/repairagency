@@ -27,12 +27,7 @@ public class OrderMasterService extends AbstractEntityService<OrderMaster>{
 
     public OrderMasterService(Connection connection) {
         super(connection, TABLE_NAME);
-    }
-    
-    @Override
-    public List<OrderMaster> findAll(int start, int max) {
-        return null;
-    }
+    } 
 
     @Override
     public void save(OrderMaster orderMaster) {

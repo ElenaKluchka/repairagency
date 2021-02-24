@@ -69,11 +69,6 @@ public class EmployeeService extends AbstractEntityService<Employee> {
         }
         return employeeRes;
     }
-
-    @Override
-    public List<Employee> findAll(int start, int max) {      
-        return null;
-    }
     
     public List<Employee> findEmployeesForOrder(Order order) {     
         List<Employee> mastersList = new ArrayList<>(); 

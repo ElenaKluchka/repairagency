@@ -53,7 +53,6 @@ public class OrderService extends AbstractEntityService<Order> {
         super(connection, TABLE_NAME);
     }
 
-    @Override
     public List<Order> findAll(int offset, int limit) {
         List<Order> orders = new ArrayList<>();
 
@@ -122,8 +121,8 @@ public class OrderService extends AbstractEntityService<Order> {
     }
 
     @Override
-    public Order find(Order object) {
-        return null;
+    public Order find(Order order) {
+        return find(order.getId());
     }
 
     public int getCount() {

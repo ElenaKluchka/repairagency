@@ -5,11 +5,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
 
 import com.elenakliuchka.repairagency.entity.Customer;
+import com.elenakliuchka.repairagency.entity.Order;
 
 import exception.DBException;
 import exception.NotUniqueException;
@@ -26,8 +28,10 @@ public class CustomerService extends AbstractEntityService<Customer> {
 
     private static final String SQL_FIND_CUSTOMERS = "SELECT * FROM "
             + TABLE_NAME + " WHERE name=? and password=?";
+    
     private static final String SQL_FIND_CUSTOMERS_BY_PARAM = "SELECT * FROM "
             + TABLE_NAME + " WHERE %s=?";
+    
     private static final String SQL_FIND_CUSTOMERS_SET_BALANCE = "UPDATE "
             + TABLE_NAME + " SET balance = ? WHERE (id = ?)";
     private static final String SQL_ADD_CUSTOMER = "INSERT INTO " + TABLE_NAME
@@ -41,11 +45,6 @@ public class CustomerService extends AbstractEntityService<Customer> {
 
     public CustomerService(Connection connection) {
         super(connection, TABLE_NAME);
-    }
-
-    @Override
-    public List<Customer> findAll(int start, int max) {   
-        return null;
     }
 
     private String checkUnique(Customer customer) throws SQLException {

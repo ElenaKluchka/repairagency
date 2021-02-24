@@ -14,10 +14,8 @@ import exception.NotUniqueException;
  *
  * @param <T>
  */
-public abstract class AbstractEntityService<T> {    
-    
-    public abstract List<T> findAll(int start, int max);
-
+public abstract class AbstractEntityService<T> {        
+   
     public abstract void save(T object) throws SQLException, NotUniqueException, DBException;
 
     public abstract T find(int id);
