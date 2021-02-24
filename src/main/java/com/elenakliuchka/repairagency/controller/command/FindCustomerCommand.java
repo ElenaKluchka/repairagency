@@ -5,7 +5,6 @@ import java.sql.SQLException;
 import java.util.List;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 
@@ -19,6 +18,12 @@ import com.elenakliuchka.repairagency.entity.Order;
 import com.elenakliuchka.repairagency.util.PageConstants;
 import com.elenakliuchka.repairagency.util.ValidationUtils;
 
+/**
+ * Find customer by phone or by name
+ * and all orders for this customer.
+ * @author Kliuchka Olena
+ *
+ */
 public class FindCustomerCommand extends AbstractCommand {
 
     private static final Logger LOGGER = Logger
@@ -31,8 +36,7 @@ public class FindCustomerCommand extends AbstractCommand {
             request.setAttribute("command", "FindCustomer");
             forward(PageConstants.PAGE_MANAGER_CUSTOMERS);
         }
-
-        HttpSession session = request.getSession(true);
+        
         String name = request.getParameter("uname");
         String phone = request.getParameter("phone");
 
@@ -42,6 +46,7 @@ public class FindCustomerCommand extends AbstractCommand {
         customer.setPhone(phone.trim());
 
         if (!validate(customer)) {
+            request.getSession().setAttribute("customer", null);
             forward(PageConstants.PAGE_MANAGER_CUSTOMERS);
             return;
         }
@@ -74,8 +79,9 @@ public class FindCustomerCommand extends AbstractCommand {
                     order.setMasters(
                             employeeService.findEmployeesForOrder(order));
                 }
-                request.setAttribute("customer", dbCustomer);
+                request.getSession().setAttribute("customer", dbCustomer);
             } else {
+                request.getSession().setAttribute("customer", null);
                 request.setAttribute("searchCustomer", customer);
                 request.setAttribute("message", "No search results");
             }

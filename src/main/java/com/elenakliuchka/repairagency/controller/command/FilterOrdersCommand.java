@@ -2,6 +2,7 @@ package com.elenakliuchka.repairagency.controller.command;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -10,6 +11,7 @@ import org.apache.log4j.Logger;
 
 import com.elenakliuchka.repairagency.db.DAOFactory;
 import com.elenakliuchka.repairagency.db.Table;
+import com.elenakliuchka.repairagency.db.service.EmployeeService;
 import com.elenakliuchka.repairagency.db.service.OrderService;
 import com.elenakliuchka.repairagency.entity.Order;
 import com.elenakliuchka.repairagency.util.PageConstants;
@@ -34,16 +36,46 @@ public class FilterOrdersCommand extends AbstractCommand {
             int masterId = Integer.parseInt(request.getParameter("masters"));
             OrderService orderService = (OrderService) daoFactory
                     .getService(Table.ORDER);
-            List<Order> orders = orderService.findFilterSorted(stateResults,
+            List<Order> orders = null;
+            if(stateResults==null &&workStateResults==null &&masterId==0) {
+                redirect(PageConstants.HOME_PAGE_MANAGER);
+                return;
+            }
+            else{
+                orders = orderService.findFilterSorted(stateResults,
                     workStateResults, masterId);
+            }
+            
+            if (stateResults != null) {
+                LOGGER.trace(" selectedState:" + Arrays.toString(stateResults));
+                request.setAttribute("selectedState",
+                        Arrays.toString(stateResults));
+            }
 
-            // request.setAttribute("selectedState", state);
-            // request.setAttribute("selectedWorkState", workState);
-            // request.setAttribute("selectedMaster", masterId);
-            request.setAttribute("orders", orders);
+            if (workStateResults != null) {
+                LOGGER.trace(
+                        " selectedWorkState:" + Arrays.toString(workStateResults));
+                request.setAttribute("selectedWorkState",
+                        Arrays.toString(workStateResults));
+            }
+            
+            request.setAttribute("selectedMaster", masterId);
             if (orders == null || orders.isEmpty()) {
                 request.setAttribute("message", "No search results");
+                forward(PageConstants.PAGE_MANAGER_ORDERS);
+                return;
             }
+            
+            request.setAttribute("orders", orders);
+
+            EmployeeService employeeService = (EmployeeService) daoFactory
+                    .getService(Table.EMPLOYEE);
+            for (Order order : orders) {
+                order.setMasters(employeeService.findEmployeesForOrder(order));
+            }
+
+           
+          
         } catch (SQLException e) {
             LOGGER.error(e.getMessage(), e);
         } finally {

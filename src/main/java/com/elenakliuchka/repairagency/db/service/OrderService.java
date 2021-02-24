@@ -10,7 +10,6 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-import com.elenakliuchka.repairagency.entity.Employee;
 import com.elenakliuchka.repairagency.entity.Order;
 import com.elenakliuchka.repairagency.entity.OrderManagmentState;
 import com.elenakliuchka.repairagency.entity.OrderWorkState;
@@ -19,10 +18,7 @@ public class OrderService extends AbstractEntityService<Order> {
     private final static String TABLE_NAME = "orders";
 
     private static final String SQL_FIND_ORDER_BY_CUSTOMER_ID = "SELECT * FROM "+TABLE_NAME+ " WHERE customer_id=? ORDER BY work_state, managment_state";
-    /*  private static final String SQL_FIND_ALL_ORDERS = "SELECT od.id, od.name,od.description, od.price, od.date, od.managment_state, od.work_state,"
-            + " e.id as master_id, e.name as master_name "
-            + "FROM repair_agency.order od, repair_agency.order_master om, employee e WHERE od.id=om.order_id AND e.id = om.master_id ORDER BY date DESC";
-    */
+ 
     private static final String SQL_FIND_ALL_ORDERS = "SELECT * FROM "+TABLE_NAME+ " ORDER BY date DESC ";
 
     private static final String SQL_FIND_ALL_ORDERS_SORT = "SELECT * FROM "+TABLE_NAME+"ORDER BY ";
@@ -30,25 +26,19 @@ public class OrderService extends AbstractEntityService<Order> {
     private static final String SQL_ADD_ORDER = "INSERT INTO "+TABLE_NAME+" (customer_id, name, description) VALUES (?,?,?)";
     private static final String SQL_FIND_ORDER_BY_ID = "SELECT * FROM "+TABLE_NAME+" WHERE id=?";
 
-    private static final String SQL_SET_FEEDBACK = "UPDATE repair_agency.order SET feedback = ? WHERE id = ?";
+    private static final String SQL_SET_FEEDBACK = "UPDATE "+TABLE_NAME+"SET feedback = ? WHERE id = ?";
 
-    private static final String SQL_FIND_ORDER_BY_MASTER = "SELECT * FROM repair_agency.order od, repair_agency.order_master om WHERE od.id=om.order_id AND om.master_id=?";
+    private static final String SQL_FIND_ORDER_BY_MASTER = "SELECT * FROM " +TABLE_NAME+"od, repair_agency.order_master om WHERE od.id=om.order_id AND om.master_id=?";
 
-    private static final String SQL_SET_WORK_STATE = "UPDATE repair_agency.order SET work_state = ? WHERE (id = ?)";
+    private static final String SQL_SET_WORK_STATE = "UPDATE "+TABLE_NAME+ "SET work_state = ? WHERE (id = ?)";
 
-    private static final String SQL_FIND_ORDER_BY_PARAM1 = "SELECT * FROM repair_agency.order WHERE ";// managment_state
-                                                                                                      // =?
-                                                                                                      // AND
-                                                                                                      // work_state=?";
-
-    private static final String SQL_FIND_ORDER_BY_PARAM = "SELECT * FROM repair_agency.order WHERE ";
-    private static final String SQL_FIND_ORDER_BY_MASTER_AND_PARAM = "SELECT * FROM repair_agency.order od, repair_agency.order_master om "
-            + "WHERE od.id=om.order_id AND om.master_id=? ";// WHERE
-    // managment_state =?
-    // AND work_state=?
-    private static final String SQL_UPDATE_ORDER = "UPDATE repair_agency.order SET price= ?, managment_state=?  WHERE id = ?";
-    // select count(*) from users
-    private static final String SQL_COUNT_ORDERS = "SELECT COUNT(*) FROM  repair_agency.order";
+    private static final String SQL_FIND_ORDER_BY_PARAM = "SELECT * FROM " +TABLE_NAME+" WHERE ";
+    private static final String SQL_FIND_ORDER_BY_MASTER_AND_PARAM = "SELECT * FROM " +TABLE_NAME+ " od, repair_agency.order_master om "
+            + "WHERE od.id=om.order_id AND om.master_id=? ";
+    
+    private static final String SQL_UPDATE_ORDER = "UPDATE " +TABLE_NAME+" SET price= ?, managment_state=?  WHERE id = ?";
+    
+    private static final String SQL_COUNT_ORDERS = "SELECT COUNT(*) FROM  "+TABLE_NAME;
 
     private static final Logger LOGGER = Logger
             .getLogger(OrderService.class.getName());
@@ -86,26 +76,6 @@ public class OrderService extends AbstractEntityService<Order> {
         return strBuilder.toString();
     }
 
-    /*   
-    private Order retrieveOrderWithMaster(ResultSet rs) throws SQLException {
-        Order order = new Order();
-        order.setId(rs.getInt("id"));
-        order.setName(rs.getString("name"));
-        order.setDescription(rs.getString("description"));
-        order.setPrice(rs.getDouble("price"));
-        order.setDate(rs.getTimestamp("date").toLocalDateTime());
-        order.setManagementState(
-                OrderManagmentState.valueOf(rs.getString("managment_state")));
-        order.setWorkState(OrderWorkState.valueOf(rs.getString("work_state")));
-    //    order.setFeedback(rs.getString("feedback"));
-        Employee master = new Employee();
-        master.setId(rs.getInt("master_id"));
-        master.setName(rs.getString("master_name"));
-        // LOGGER.trace(order);
-        order.setEmployee(master);
-        return order;
-    }
-    */
     @Override
     public void save(Order order) {
         if (order == null) {
@@ -125,7 +95,6 @@ public class OrderService extends AbstractEntityService<Order> {
                 }
             }
         } catch (SQLException e) {
-            // LOGGER.log(Level.SEVERE, e.getMessage(), e);
             LOGGER.error("Fail add order", e);
         }
     }
@@ -155,7 +124,7 @@ public class OrderService extends AbstractEntityService<Order> {
         int ordersCount = 0;
 
         try (Statement st = connection.createStatement()) {
-            try (ResultSet rs = st.executeQuery(SQL_FIND_ALL_ORDERS)) {
+            try (ResultSet rs = st.executeQuery(SQL_COUNT_ORDERS)) {
                 if (rs.next()) {
                     ordersCount = rs.getInt(1);
                 }
@@ -180,7 +149,6 @@ public class OrderService extends AbstractEntityService<Order> {
                 return true;
             }
         } catch (SQLException e) {
-            // LOGGER.log(Level.SEVERE, e.getMessage(), e);
             LOGGER.error("Fail add order", e);
         }
         return false;
@@ -199,7 +167,6 @@ public class OrderService extends AbstractEntityService<Order> {
                 return true;
             }
         } catch (SQLException e) {
-            // LOGGER.log(Level.SEVERE, e.getMessage(), e);
             LOGGER.error("Fail add order", e);
         }
         return false;
@@ -268,7 +235,6 @@ public class OrderService extends AbstractEntityService<Order> {
                 OrderManagmentState.valueOf(rs.getString("managment_state")));
         order.setWorkState(OrderWorkState.valueOf(rs.getString("work_state")));
         order.setFeedback(rs.getString("feedback"));
-        // LOGGER.trace(order);
         return order;
     }
 
@@ -320,17 +286,7 @@ public class OrderService extends AbstractEntityService<Order> {
         LOGGER.trace("isFirstParam: " + isFirstParam);
         sqlBuilder.append(generateQueryParam(workStateResults,
                 " work_state IN(", paramsSet));
-        /*
-        if (workStateResults != null && workStateResults.length > 0) {
-            if (!isFirstParam) {
-                sqlBuilder.append(" AND ");
-            }
-            sqlBuilder.append(" work_state in(?)");
-            paramsSet++;
-        }*/
-        /*    if (stateResults != null && stateResults.length>0) {
-            sqlBuilder.append()String.format("select * from test where field in (%s)",Arrays.asList(stateResults).stream().collect(Collectors.joining(", "));
-        }*/
+     
         LOGGER.debug(sqlBuilder.toString());
 
         try (PreparedStatement pStatement = connection
@@ -389,112 +345,5 @@ public class OrderService extends AbstractEntityService<Order> {
 
         sqlBuilder.append(placeHolders).append(")");
         return sqlBuilder.toString();
-    }
-
-    public List<Order> findFilterSorted22(String state, String workState,
-            int masterId) {
-        if ((state == null || state.isEmpty())
-                && (workState == null || workState.isEmpty())
-                && masterId <= 0) {
-            return findAll(0, 3);
-        }
-        List<Order> orders = new ArrayList<>();
-        StringBuilder sqlBuilder = new StringBuilder();
-
-        int paramsSet = 0;
-
-        boolean isFirstParam = true;
-        if (masterId <= 0) {
-            sqlBuilder.append(SQL_FIND_ORDER_BY_PARAM1);
-        } else {
-            sqlBuilder.append(SQL_FIND_ORDER_BY_MASTER_AND_PARAM);
-            isFirstParam = false;
-            paramsSet++;
-        }
-        if (state != null && !state.isEmpty()) {
-            if (!isFirstParam) {
-                sqlBuilder.append(" AND ");
-            }
-            sqlBuilder.append(" managment_state =?");
-            isFirstParam = false;
-            paramsSet++;
-        }
-        if (workState != null && !workState.isEmpty()) {
-            if (!isFirstParam) {
-                sqlBuilder.append(" AND ");
-            }
-            sqlBuilder.append(" work_state =?");
-            paramsSet++;
-        }
-        LOGGER.debug(sqlBuilder.toString());
-
-        try (PreparedStatement pStatement = connection
-                .prepareStatement(sqlBuilder.toString())) {
-
-            int curr = 1;
-            if (masterId > 0) {
-                pStatement.setInt(curr, masterId);
-                ++curr;
-            }
-
-            if (state != null && !state.isEmpty()) {
-                pStatement.setString(curr, state);
-                ++curr;
-            }
-            if (workState != null && !workState.isEmpty()) {
-                pStatement.setString(curr, workState);
-                ++curr;
-            }
-            LOGGER.debug(pStatement);
-
-            try (ResultSet rs = pStatement.executeQuery()) {
-                while (rs.next()) {
-                    orders.add(retrieveOrder(rs));
-                }
-            }
-        } catch (SQLException e) {
-            LOGGER.error("Fail to find orders", e);
-        }
-        return orders;
-    }
-
-    public List<Order> findFilterSorted11(String state, String workState,
-            int masterId) {
-        if ((state == null || state.isEmpty())
-                && (workState == null || workState.isEmpty())
-                && masterId <= 0) {
-            return findAll(0, 3);
-        }
-        List<Order> orders = new ArrayList<>();
-        if (masterId <= 0) {
-            try (PreparedStatement pStatement = connection
-                    .prepareStatement(SQL_FIND_ORDER_BY_PARAM)) {
-                pStatement.setString(1, state);
-                pStatement.setString(2, workState);
-                try (ResultSet rs = pStatement.executeQuery()) {
-                    while (rs.next()) {
-                        orders.add(retrieveOrder(rs));
-                    }
-                }
-            } catch (SQLException e) {
-                LOGGER.error("Fail to find orders", e);
-            }
-        } else {
-            try (PreparedStatement pStatement = connection
-                    .prepareStatement(SQL_FIND_ORDER_BY_MASTER_AND_PARAM)) {
-                pStatement.setString(1, state);
-                pStatement.setString(2, workState);
-                pStatement.setInt(3, masterId);
-                try (ResultSet rs = pStatement.executeQuery()) {
-                    while (rs.next()) {
-                        orders.add(retrieveOrder(rs));
-                    }
-                }
-            } catch (SQLException e) {
-                LOGGER.error("Fail to find orders", e);
-            }
-        }
-
-        return orders;
     }
 }

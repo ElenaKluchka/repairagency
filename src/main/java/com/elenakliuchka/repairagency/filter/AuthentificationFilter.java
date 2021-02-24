@@ -11,7 +11,6 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
@@ -19,10 +18,6 @@ import org.apache.log4j.Logger;
 import com.elenakliuchka.repairagency.entity.Role;
 import com.elenakliuchka.repairagency.util.PageConstants;
 
-/**
- * Servlet Filter implementation class AuthentificationFilter
- */
-//@WebFilter({ "/do/*", "/client/*", "/manager/*", "/master/*" })
 @WebFilter("/*")
 public class AuthentificationFilter implements Filter {
 
@@ -47,7 +42,7 @@ public class AuthentificationFilter implements Filter {
         if (request.getCharacterEncoding() == null) {
             request.setCharacterEncoding("UTF-8");
         }
-        // HttpServletResponse httpResponse = (HttpServletResponse) response;
+
         String path = httpRequest.getRequestURI()
                 .substring(httpRequest.getContextPath().length());
 
@@ -80,20 +75,11 @@ public class AuthentificationFilter implements Filter {
         LOGGER.trace("isLoginRequest: " + isLoginRequest + " isLoginPage: "
                 + isLoginPage);
 
-        // if (isLoggedIn && (isLoginRequest || isLoginPage)) {
         if (isLoggedIn && (isLoginPage || isLoginRequest || path.equals("/"))) {
             // the user is already logged in and he's trying to login again
             // then forward to the homepage
             LOGGER.trace(" user isLoggedIn");
-            // if (path.startsWith("do/client/")) {
-            Role role = (Role) session.getAttribute("role");
-            /*   if(role==null) {
-                LOGGER.info(" user not lo");
-                // continues the filter chain
-                // allows the request to reach the destination
-                chain.doFilter(request, response);
-                return;
-            }*/
+            Role role = (Role) session.getAttribute("role");            
             LOGGER.trace(" role" + role);
             if (role.equals(Role.CUSTOMER)) {
                 LOGGER.info("client");
@@ -107,8 +93,6 @@ public class AuthentificationFilter implements Filter {
                 httpRequest
                         .getRequestDispatcher(PageConstants.HOME_PAGE_MANAGER)
                         .forward(request, response);
-                // } else if ((path.contains("/master/")||path.equals("/")) &&
-                // role.equals(Role.MASTER)) {
             } else if (role.equals(Role.MASTER)) {
                 LOGGER.info("master");
                 httpRequest.getRequestDispatcher(PageConstants.HOME_PAGE_MASTER)
@@ -145,9 +129,6 @@ public class AuthentificationFilter implements Filter {
         return false;
     }
 
-    /**
-     * @see Filter#init(FilterConfig)
-     */
     public void init(FilterConfig fConfig) throws ServletException {
     }
 

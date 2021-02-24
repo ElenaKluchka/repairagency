@@ -23,10 +23,10 @@
 			<br>
 			<div class="container">
 				<input type="hidden" name="command" value="FindCustomer"> <label
-					for="subject">Find by Name</label> <input type="text" name="uname"
-					value="${searchCustomer.name }" placeholder="name"><br>
-				Or find by <label for="subject">Phone in format
-					+380(xx)xxx-xx-x</label><br> <input id="online_phone" type="tel"
+					for="subject">Find by Name</label>					
+                <input type="text" name="uname"	value="${searchCustomer.name }" placeholder="name"><br>
+				Or find by <label for="subject">Phone in format +380...</label><br> 
+				<input id="online_phone" type="tel"
 					maxlength="50" value="${searchCustomer.phone}" name="phone"
 					autofocus="autofocus"
 					pattern="(\+380[-_()\s]+)?|\+380\s?[(]{0,1}[0-9]{2}[)]{0,1}\s?\d{3}[-]{0,1}\d{2}[-]{0,1}\d{2}"

@@ -25,7 +25,7 @@ public class EmployeeService extends AbstractEntityService<Employee> {
             + TABLE_NAME + " WHERE name=? and password=?";
     
     private static final String SQL_FIND_EMPLOYEES_FOR_ORDER = "SELECT id,name,m.order_id FROM "
-            + TABLE_NAME + " JOIN  order_master m ON master_id=id WHERE order_id=?"; //IN(%s)";
+            + TABLE_NAME + " JOIN  order_master m ON master_id=id WHERE order_id=?";
 
 
     private static final Logger LOGGER = Logger

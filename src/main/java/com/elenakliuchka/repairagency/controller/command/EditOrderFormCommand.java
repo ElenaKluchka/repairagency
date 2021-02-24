@@ -36,7 +36,7 @@ public class EditOrderFormCommand extends AbstractCommand {
             LOGGER.trace("orderId" + orderId);
             forward(PageConstants.PAGE_MANAGER_EDIT_ORDER);
             return;
-        }
+        } 
         LOGGER.trace("Set state for orderId: " + orderId);
         try {
             EmployeeService employeeService = (EmployeeService) daoFactory

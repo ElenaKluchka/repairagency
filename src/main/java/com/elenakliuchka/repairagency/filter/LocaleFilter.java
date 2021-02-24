@@ -15,9 +15,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 
-/**
- * Servlet Filter implementation class LocaleFilter
- */
 @WebFilter("/*")
 public class LocaleFilter implements Filter {
 

@@ -17,12 +17,13 @@ import exception.DBException;
 
 public class SetCustomerBalanceCommand extends AbstractCommand {
     private static final Logger LOGGER = Logger
-            .getLogger(SetCustomerBalanceCommand.class);
+            .getLogger(SetCustomerBalanceCommand.class); 
 
     @Override
     public void process() throws ServletException, IOException {
 
         int customerId = Integer.parseInt(request.getParameter("customerId"));
+        LOGGER.trace(customerId);
         double balance = Double.parseDouble(request.getParameter("balance"));
         DAOFactory dbManager = DAOFactory.getInstance();
 
@@ -32,6 +33,7 @@ public class SetCustomerBalanceCommand extends AbstractCommand {
             if (customerService.setBalance(customerId, balance)) {
                 Customer customer = (Customer) request.getSession()
                         .getAttribute("customer");
+                LOGGER.trace(customer);
                customer.setBalance(balance+customer.getBalance());
                 request.getSession().setAttribute("customer", customer);
             }else {

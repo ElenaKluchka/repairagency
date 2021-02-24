@@ -8,7 +8,6 @@ import javax.sql.DataSource;
 
 import org.apache.log4j.Logger;
 
-import com.elenakliuchka.repairagency.controller.command.SignupCommand;
 import com.elenakliuchka.repairagency.db.service.AbstractEntityService;
 import com.elenakliuchka.repairagency.db.service.CustomerService;
 import com.elenakliuchka.repairagency.db.service.EmployeeService;
@@ -51,7 +50,6 @@ public class DAOFactory {
         }
     }
 
-    // Private
     private DataSource src;
     private Connection connection;
 

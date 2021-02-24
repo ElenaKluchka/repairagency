@@ -19,6 +19,7 @@ public class LogoutCommand extends AbstractCommand {
         if (session != null) {
             session.invalidate();
         }
+        LOGGER.debug("User logout");
         redirect(PageConstants.PAGE_LOGIN+".jsp");       
     }
 

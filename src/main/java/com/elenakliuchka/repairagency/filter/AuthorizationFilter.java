@@ -19,9 +19,6 @@ import org.apache.log4j.Logger;
 import com.elenakliuchka.repairagency.entity.Role;
 import com.elenakliuchka.repairagency.util.PageConstants;
 
-/**
- * Servlet Filter implementation class AuthorizationFilter
- */
 @WebFilter({ "/do/client/*", "/do/manager/*", "/do/master/*", "/client/*",
         "/manager/*", "/master/*" })
 public class AuthorizationFilter implements Filter {
@@ -29,18 +26,10 @@ public class AuthorizationFilter implements Filter {
     private static final Logger LOGGER = Logger
             .getLogger(AuthorizationFilter.class);
 
-    /**
-     * Default constructor.
-     */
-    public AuthorizationFilter() {
-        // TODO Auto-generated constructor stub
+    public AuthorizationFilter() {   
     }
 
-    /**
-     * @see Filter#destroy()
-     */
-    public void destroy() {
-        // TODO Auto-generated method stub
+    public void destroy() {       
     }
 
     /**
@@ -58,11 +47,8 @@ public class AuthorizationFilter implements Filter {
         
         HttpServletResponse httpResponse = (HttpServletResponse) response;
 
-        // boolean isLoggedIn = (session != null
-        // && session.getAttribute("loggedUser") != null);
         if (session == null) {
             LOGGER.info(" user is not logged");
-            String loginPage = PageConstants.PAGE_LOGIN;
             RequestDispatcher dispatcher = httpRequest
                     .getRequestDispatcher("/");
             dispatcher.forward(request, response);
@@ -87,32 +73,19 @@ public class AuthorizationFilter implements Filter {
         } else {
             if (role.equals(Role.CUSTOMER)) {
                 LOGGER.info("client");
-          /*      httpRequest
-                        .getRequestDispatcher(PageConstants.HOME_PAGE_CUSTOMER)
-                        .forward(request, response);*/
                 httpResponse.sendRedirect(httpRequest.getContextPath()+PageConstants.HOME_PAGE_CUSTOMER);
 
                 LOGGER.debug("forward: " + PageConstants.HOME_PAGE_CUSTOMER);
             } else if (role.equals(Role.MANAGER)) {
-                LOGGER.info("manager");
-           /*     httpRequest
-                        .getRequestDispatcher(PageConstants.HOME_PAGE_MANAGER)
-                        .forward(request, response);*/
+                LOGGER.info("manager");       
                 httpResponse.sendRedirect(httpRequest.getContextPath()+PageConstants.HOME_PAGE_MANAGER);
-            } else if (role.equals(Role.MASTER)) {
-             /*   LOGGER.info("master");
-                httpRequest.getRequestDispatcher(PageConstants.HOME_PAGE_MASTER)
-                        .forward(request, response);*/
+            } else if (role.equals(Role.MASTER)) {           
                 httpResponse.sendRedirect(httpRequest.getContextPath()+PageConstants.HOME_PAGE_MASTER);
             }
         }
     }
 
-    /**
-     * @see Filter#init(FilterConfig)
-     */
-    public void init(FilterConfig fConfig) throws ServletException {
-        // TODO Auto-generated method stub
+    public void init(FilterConfig fConfig) throws ServletException {      
     }
 
 }

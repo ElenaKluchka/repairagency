@@ -14,8 +14,7 @@ public class DisplayUserTag extends TagSupport {
     private static final long serialVersionUID = -6516112166485797266L;
 
     public int doStartTag() throws JspException {
-        JspWriter out = pageContext.getOut();// returns the instance of
-                                             // JspWriter
+        JspWriter out = pageContext.getOut();                                            
 
         HttpSession session = pageContext.getSession();
         try {

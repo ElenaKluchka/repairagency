@@ -20,7 +20,6 @@ public class ContextListener implements ServletContextListener {
 
     public void contextDestroyed(ServletContextEvent event) {
         LOGGER.trace("Servlet context destruction starts");
-        // do nothing
         LOGGER.trace("Servlet context destruction finished");
     }
 
@@ -49,8 +48,7 @@ public class ContextListener implements ServletContextListener {
             
             LOGGER.debug("Application attribute set: locales --> " + locales);
             servletContext.setAttribute("locales", locales);
-        }       
-        
+        }        
         LOGGER.debug("I18N subsystem initialization finished");
     }
 }

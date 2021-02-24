@@ -16,28 +16,60 @@
 		<h2 class="filter">Filter BY</h2>
 		<form action="${path }/do/manager/filter">
 			<input type="hidden" name="command" value="FilterOrders">
-			<h3>Payment State</h3>
-
-			<input type="checkbox" name="state" value="NEW"> New<BR>
-			<input type="checkbox" name="state" value="WAIT_FOR_PAYMENT">
-			Wait for payment<BR> <input type="checkbox" name="state"
-				value="PAYED"> Payed<BR> <input type="checkbox"
-				name="state" value="CANCELED"> Canceled<BR>
+			<h3>Payment State</h3> 
+			<c:choose>
+			 <c:when test="${selectedState ne null }">                   
+			         <input type="checkbox" name="state" value="NEW" 
+			           ${fn:contains(selectedState, 'NEW')?'checked':''} > New<BR>			
+			         <input type="checkbox" name="state" value="WAIT_FOR_PAYMENT" 
+			             ${fn:contains(selectedState, 'WAIT_FOR_PAYMENT')?'checked':''}> Wait for payment<BR>
+			         <input type="checkbox" name="state" value="PAYED"
+			             ${fn:contains(selectedState, 'PAYED')?'checked':''}> Payed<BR> 
+                    <input type="checkbox" name="state" value="CANCELED" 
+                         ${fn:contains(selectedState, 'CANCELED')?'checked':''}> Canceled<BR>
+			  </c:when>
+			  <c:otherwise>
+			      <input type="checkbox" name="state" value="NEW"> New<BR>            
+                  <input type="checkbox" name="state" value="WAIT_FOR_PAYMENT"> Wait for payment<BR>
+                  <input type="checkbox" name="state" value="PAYED"> Payed<BR> 
+                  <input type="checkbox" name="state" value="CANCELED"> Canceled<BR>
+			  </c:otherwise>
+			  </c:choose>
+			
 			<h3>Work state</h3>
-			<input type="checkbox" name="work_state" value="NEW"> New<BR>
-			<input type="checkbox" name="work_state" value="IN_WORK"> In work<BR> 
-			<input type="checkbox" name="work_state" value="FINISHED"> Finished<BR>
+			<c:choose>
+             <c:when test="${selectedWorkState ne null }">
+                    <input type="checkbox" name="work_state" value="NEW"
+                        ${fn:contains(selectedWorkState, 'NEW')?'checked':''} > New<BR>
+                     <input type="checkbox" name="work_state" value="IN_WORK"
+                        ${fn:contains(selectedWorkState, 'IN_WORK')?'checked':''}> In work<BR> 
+                     <input type="checkbox" name="work_state" value="FINISHED"
+                        ${fn:contains(selectedWorkState, 'FINISHED')?'checked':''} > Finished<BR>
+             </c:when>
+               <c:otherwise>
+                     <input type="checkbox" name="work_state" value="NEW"> New<BR>
+                     <input type="checkbox" name="work_state" value="IN_WORK"> In work<BR> 
+                     <input type="checkbox" name="work_state" value="FINISHED"> Finished<BR>
+               </c:otherwise>
+            </c:choose>
+			
 			<h3>Master</h3>
-			<select name="masters">
-				<option value="0">Select master</option>
-				<c:forEach items="${mastersList}" var="master">
-					<option value="${master.id}">${master.name}</option>
+			<select name="masters">			    
+				<option value="0" >${(selectedMaster eq null||selectedMaster == 0) ? 'Select master': '' }</option>				
+				<c:forEach items="${mastersList}" var="master">				    
+				     <c:choose>
+				       <c:when test="${selectedMaster ne null  && master.id eq selectedMaster}">					     
+					           <option value="${master.id}" selected>${master.name}</option>					      
+					   </c:when>
+					<c:otherwise>
+					   <option value="${master.id}">${master.name}</option>
+					</c:otherwise>
+					</c:choose> 					
 				</c:forEach>
 			</select><br> <input type="submit" id="changeSt" value="Submit">
 		</form>
 	</div>
-	<div id="content">
-		<!--   <input type="button" onclick="location.href='https://google.com';" value="Go to Google" /> -->
+	<div id="content">		
 		Sort all orders by <a
 			href="${path }/do/manager/sort?command=ManagerSortOrders&param=date"
 			class="button"> Date </a> &nbsp; <a
@@ -47,9 +79,6 @@
 			class="button"> Payment State </a>&nbsp; &nbsp; <a
 			href="${path }/do/manager/sort?command=ManagerSortOrders&param=work_state"
 			class="button"> Work state </a>
-
-		<!--    <input type="button" onclick="location.href='${path }/do/sort?command=ManagerSortOrders&param=date'" value="DATE" /> -->
-
 		<table style="width: 100%" id="orders">
 			<tr>
 				<th>Number</th>
@@ -115,16 +144,10 @@
 		<!-- Modal content -->
 		<div class="modal-content" style="width: 500;">
 			<span class="close">&times;</span>
-			<div class="container">
-				<!--     <form action="${path }/do/master/changeOrderState" method="post">   
-        <input type="hidden"  name="command" value="ChangeOrderWorkState">        
-        <input type="hidden" id="orderId" name="orderId" >
-        <input type="hidden" id="newState" name="newState" > -->
+			<div class="container">			
 				Number: <label id="N"></label> <br> Order name: <label
 					id="name"></label> <br> Date: <label id="date"></label> <br>
 				Description: <label id="description"></label> <br>
-
-				<!--        <input type="submit" id="changeSt" value="OK"> -->
 				<button id="okMod" onclick="closeModal();">OK</button>
 			</div>
 		</div>
